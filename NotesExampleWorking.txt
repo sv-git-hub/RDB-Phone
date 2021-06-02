@@ -1,0 +1,29 @@
+Declare:
+
+    private NotesDatabase db;
+    private Notes note;
+
+Initialize:
+
+        db = NotesDatabase.getInstance(this);
+        note = db.notesDao().getNote(id);
+
+
+Set the new details:
+
+		note.setTitle(noteTitle.getText().toString());
+                note.setNote(noteDetails.getText().toString());
+
+Pass to Update:
+
+                db.notesDao().updateNote(note);
+
+
+This should probably happen next:
+
+                Intent i = new Intent(getApplicationContext(), Details.class);
+                i.putExtra("ID", note.getId());
+                startActivity(i);
+
+
+/data/data/com.mistywillow.researchdb/databases/Apologetic.db

@@ -1,0 +1,69 @@
+<resources>
+    <string name="app_name">ResearchDB</string>
+    <!-- FIELD LABELS -->
+    <string name="lbl_note_id">ID:</string>
+    <string name="lbl_note_type">Type:</string>
+    <string name="lbl_note_summary">Summary:</string>
+    <string name="lbl_note_source">Source:</string>
+    <string name="lbl_note_Authors">Author(s):</string>
+
+    <!-- MENU and MENU ITEMS -->
+    <string name="menu_title_file">File</string>
+    <string name="menu_title_edit">Edit</string>
+    <string name="menu_title_help">Help</string>
+
+    <!-- FILE -->
+    <string name="menu_title_database">Database</string>
+    <string name="menu_title_note">Note</string>
+    <string name="menu_title_print">Print</string>
+    <string name="menu_title_close">Close</string>
+
+    <string name="menu_title_new_database">New Database</string>
+    <string name="menu_title_open_database">Open Database</string>
+    <string name="menu_title_backup_database">Backup Database</string>
+
+    <string name="menu_title_note_import">Import</string>
+    <string name="menu_title_note_export">Export</string>
+    <string name="menu_title_export_selection">Selection</string>
+    <string name="menu_title_export_results">Search Results</string>
+
+    <!-- EDIT -->
+    <string name="menu_title_clear">Clear Fields</string>
+    <string name="menu_title_add_note">Add Note</string>
+    <string name="menu_title_edit_note">Edit Note</string>
+    <string name="menu_title_update_note">Update Note</string>
+    <string name="menu_title_mark_note_for_delete">Mark Note for Delete</string>
+    <string name="menu_title_unmark_note_for_delete">Unmark Note for Delete</string>
+    <string name="menu_title_review_notes_for_delete">Review Notes for Delete</string>
+    <string name="menu_title_permanently_delete_note">Permanently Delete Note</string>
+    <string name="menu_title_delete_database">Delete Database</string>
+
+    <!-- HELP -->
+    <string name="menu_title_manual">ResearchDB Manual</string>
+    <string name="menu_title_about">About</string>
+    <string name="lbl_note_topic">Topic:</string>
+    <string name="lbl_note_comment">Comment:</string>
+    <string name="lbl_note_term">Term:</string>
+    <string name="lbl_note_question">Question:</string>
+    <string name="lbl_note_quote">Quote:</string>
+    <string name="lbl_note_file">File(s):</string>
+    <string name="hint_comment">Comment</string>
+    <string name="hint_type">Type</string>
+    <string name="hint_source">Source</string>
+    <string name="hint_question">Question</string>
+    <string name="hint_authors">Author(s)</string>
+    <string name="hint_term">Term</string>
+    <string name="hint_topic">Topic</string>
+    <string name="hint_summary">Summary</string>
+    <string name="lbl_tab_quote_term">Quote and Term</string>
+    <string name="lbl_tab_files">File(s)</string>
+    <string name="lbl_column_filename">Filename</string>
+    <string name="lbl_column_filepath">Filepath</string>
+    <string name="lbl_column_file_id">FileID</string>
+    <string name="hint_quote">Quote</string>
+    <string name="lbl_note_hyperlink">Retrieve:</string>
+    <string name="hint_hyperlink">File Path/Hyperlink</string>
+    <string name="add_topic">Add or Select a Topic</string>
+    <string name="add_source">Add or Select a Source</string>
+    <string name="add_question">Add or Select a Question</string>
+</resources>

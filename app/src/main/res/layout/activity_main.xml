@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".MainActivity"
+        android:background="#DEDEE3"
+>
+    <androidx.appcompat.widget.Toolbar
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="?attr/colorPrimary"
+            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+            android:minHeight="?attr/actionBarSize"
+            android:id="@+id/toolbar"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
+
+    <Spinner
+            android:layout_width="175dp"
+            android:layout_height="25dp"
+            app:layout_constraintTop_toBottomOf="@+id/toolbar"
+            app:layout_constraintLeft_toLeftOf="parent"
+            android:layout_marginTop="8dp"
+            android:id="@+id/listTopic"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginLeft="8dp"
+            android:layout_marginStart="8dp"
+            android:background="#FAFAFA"/>
+
+    <EditText
+            android:layout_width="0dp"
+            android:layout_height="25dp"
+            android:id="@+id/txtCustom"
+            android:paddingLeft="5dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/listTopic"
+            app:layout_constraintTop_toTopOf="@+id/listTopic"
+            android:layout_marginLeft="8dp"
+            android:layout_marginStart="8dp"
+            android:background="#FAFAFA"
+            android:hint="Custom search term(s)"
+            android:inputType="text"
+            android:imeOptions="actionDone"
+            android:cursorVisible="false"
+
+            android:textSize="12sp" android:gravity="center_vertical"
+            app:layout_constraintHorizontal_bias="1.0"/>
+    <Spinner
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:minHeight="25dp"
+            app:layout_constraintTop_toBottomOf="@+id/listTopic"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginTop="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginRight="8dp" android:layout_marginEnd="8dp"
+            android:id="@+id/listQuestion" android:background="#FAFAFA"/>
+    <androidx.recyclerview.widget.RecyclerView
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintStart_toStartOf="parent" app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/listQuestion" app:layout_constraintHorizontal_bias="0.0"
+            android:layout_marginTop="8dp" android:layout_marginLeft="8dp" android:layout_marginStart="8dp"
+            android:layout_marginRight="8dp" android:layout_marginEnd="8dp" android:layout_marginBottom="8dp"
+            app:layout_constraintBottom_toBottomOf="parent" android:id="@+id/listNotes" android:background="#DEDEE3"/>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
