@@ -2,11 +2,11 @@ package com.mistywillow.researchdb;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.graphics.Typeface;
 import android.net.Uri;
-import android.text.Editable;
 import android.text.Html;
-import android.text.TextWatcher;
+import android.text.InputType;
 import android.text.method.LinkMovementMethod;
 import android.view.*;
 import android.webkit.MimeTypeMap;
@@ -15,6 +15,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import androidx.appcompat.widget.Toolbar;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import com.mistywillow.researchdb.database.ResearchDatabase;
 import com.mistywillow.researchdb.database.entities.*;
 
@@ -48,8 +49,12 @@ public class EditNote extends AppCompatActivity {
     private AutoCompleteTextView question;
     private AutoCompleteTextView summary;
 
-    private TableLayout tableLayout;
+    private TableLayout tableLayoutFiles;
+    private TableLayout tableLayoutAuthors;
     private Menu editMenu;
+
+    private Button btnAddAuthor;
+    private Button btnDelAuthor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,7 +81,16 @@ public class EditNote extends AppCompatActivity {
         quote = findViewById(R.id.tab_View_Quote);
         term = findViewById(R.id.tab_View_Term);
 
-        tableLayout = findViewById(R.id.table_files);
+        // TABLES
+        tableLayoutFiles = findViewById(R.id.table_files);
+        tableLayoutAuthors = findViewById(R.id.table_authors);
+        tableLayoutAuthors.addView(setupAuthorsTableRow("+", "Organization/First", "Middle Name", "Last Name","Suffix", true));
+
+        // BUTTONS and SPECIAL ONCLICK ACTIONS
+        btnAddAuthor = findViewById(R.id.btn_add_author);
+        btnDelAuthor = findViewById(R.id.btn_del_author);
+
+        // BEGIN SETUP and LOADING ACTIVITY and DATA ==================================================================
 
         Intent viewDetails = getIntent();
         Bundle viewBundle = viewDetails.getExtras();
@@ -112,6 +126,12 @@ public class EditNote extends AppCompatActivity {
                 if(author.getText().toString().equals("need new author")){
 
                 }
+            }
+        });
+        btnAddAuthor.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                tableLayoutAuthors.addView(setupAuthorsTableRow("-","", "", "", "", false));
             }
         });
 
@@ -301,11 +321,11 @@ public class EditNote extends AppCompatActivity {
     }
 
     private void populateFileData(List<Files> files){
-        tableLayout.addView(setupFilesTableRow("FileID", "FileName", true));
+        tableLayoutFiles.addView(setupFilesTableRow("FileID", "FileName", true));
         if(files != null){
             if(files.size() > 0){
                 for (Files f: files) {
-                    tableLayout.addView(setupFilesTableRow(String.valueOf(f.getFileID()), f.getFileName(), false));
+                    tableLayoutFiles.addView(setupFilesTableRow(String.valueOf(f.getFileID()), f.getFileName(), false));
                 }
             }
         }
@@ -342,7 +362,35 @@ public class EditNote extends AppCompatActivity {
         return row;
     }
 
+    private TableRow setupAuthorsTableRow (String add_del, String first, String middle, String last, String suffix, boolean bold){
+        TableRow row = new TableRow(this);
+        if(bold) {
+            row.addView(setupRowTextView(add_del, true));
+            row.addView(setupRowTextView(first, true));
+            row.addView(setupRowTextView(middle, true));
+            row.addView(setupRowTextView(last, true));
+            row.addView(setupRowTextView(suffix, true));
+        }
+        if(!bold) {
+            //CheckBox checkBox = new CheckBox();
 
+            row.addView(setupRowTextView(add_del, true));
+            for(int r=1; r<5;r++) {
+                EditText editText = new EditText(this);
+                TableRow.LayoutParams trLayoutParams = new TableRow.LayoutParams();
+                trLayoutParams.setMargins(3,3,3,3);
+                editText.setLayoutParams(trLayoutParams);
+                editText.setBackgroundColor(Color.WHITE);
+                editText.setTextSize(12);
+                editText.setGravity(Gravity.CENTER);
+                editText.setSingleLine();
+                editText.setPadding(8, 8, 8, 8);
+                row.addView(editText);
+                row.setClickable(true);
+            }
+        }
+        return row;
+    }
 
     private TextView setupRowTextView(String value, boolean bold){
         TextView tv = new TextView(this);

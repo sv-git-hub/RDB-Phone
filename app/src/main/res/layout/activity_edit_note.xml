@@ -333,21 +333,46 @@
                     android:imeOptions="actionDone"
                     android:background="@color/colorWhite"
                     android:textSize="12sp"
-                    app:layout_constraintStart_toEndOf="@id/lblViewAuthors" app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/lblViewAuthors"
+                    app:layout_constraintEnd_toEndOf="parent"
                     android:layout_marginStart="5dp" android:layout_marginEnd="5dp"
                     app:layout_constraintBaseline_toBaselineOf="@+id/lblViewAuthors"/>
+
+            <Button
+                    android:id="@+id/btn_add_author"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/btn_add_author"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/viewAuthors"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginEnd="5dp"
+                    android:layout_marginStart="5dp"/>
+
+            <Button
+                    android:id="@+id/btn_del_author"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/btn_del_author"
+                    app:layout_constraintStart_toEndOf="@id/btn_add_author"
+                    app:layout_constraintTop_toBottomOf="@id/viewAuthors"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginEnd="5dp"
+                    android:layout_marginStart="5dp"/>
 
             <TableLayout
                     android:id="@+id/table_authors"
                     android:layout_width="wrap_content"
-                         android:layout_height="wrap_content"
-                         android:orientation="vertical"
-                         app:layout_constraintStart_toStartOf="parent"
-                         app:layout_constraintEnd_toEndOf="parent"
-                         app:layout_constraintTop_toBottomOf="@id/viewAuthors"
-                         android:layout_marginTop="15dp"
-                         android:layout_marginEnd="5dp"
-                         android:layout_marginStart="5dp"/>
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:stretchColumns="*"
+                    android:background="@color/colorDkGray"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/btn_add_author"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginEnd="5dp"
+                    android:layout_marginStart="5dp"/>
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>

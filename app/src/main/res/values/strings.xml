@@ -66,4 +66,8 @@
     <string name="add_topic">Add or Select a Topic</string>
     <string name="add_source">Add or Select a Source</string>
     <string name="add_question">Add or Select a Question</string>
+
+    <!-- Buttons -->
+    <string name="btn_add_author">Add Author</string>
+    <string name="btn_del_author">Delete Author</string>
 </resources>
