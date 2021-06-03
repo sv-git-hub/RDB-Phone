@@ -6,7 +6,6 @@ import android.graphics.Color;
 import android.graphics.Typeface;
 import android.net.Uri;
 import android.text.Html;
-import android.text.InputType;
 import android.text.method.LinkMovementMethod;
 import android.view.*;
 import android.webkit.MimeTypeMap;
@@ -15,7 +14,6 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import androidx.appcompat.widget.Toolbar;
-import androidx.constraintlayout.widget.ConstraintLayout;
 import com.mistywillow.researchdb.database.ResearchDatabase;
 import com.mistywillow.researchdb.database.entities.*;
 
@@ -372,24 +370,70 @@ public class EditNote extends AppCompatActivity {
             row.addView(setupRowTextView(suffix, true));
         }
         if(!bold) {
-            //CheckBox checkBox = new CheckBox();
-
-            row.addView(setupRowTextView(add_del, true));
+            //row.addView(setupRowTextView(add_del, true));
+            row.addView(addCheckBoxToTable());
             for(int r=1; r<5;r++) {
-                EditText editText = new EditText(this);
-                TableRow.LayoutParams trLayoutParams = new TableRow.LayoutParams();
-                trLayoutParams.setMargins(3,3,3,3);
-                editText.setLayoutParams(trLayoutParams);
-                editText.setBackgroundColor(Color.WHITE);
-                editText.setTextSize(12);
-                editText.setGravity(Gravity.CENTER);
-                editText.setSingleLine();
-                editText.setPadding(8, 8, 8, 8);
-                row.addView(editText);
+                row.addView(addEditTextToTable());
                 row.setClickable(true);
             }
         }
         return row;
+    }
+
+    private Button setupAddRow(){
+        btnAddAuthor.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                tableLayoutAuthors.addView(setupAuthorsTableRow("-","", "", "", "", false));
+            }
+        });
+        return btnAddAuthor;
+    }
+
+    private CheckBox addCheckBoxToTable(){
+        CheckBox checkBox = new CheckBox(this);
+        TableRow.LayoutParams trLayoutParams = new TableRow.LayoutParams();
+        trLayoutParams.setMargins(3,3,3,3);
+        trLayoutParams.width = 25;
+        trLayoutParams.height = 55;
+        checkBox.setLayoutParams(trLayoutParams);
+        checkBox.setPadding(3,3,3,3);
+        checkBox.setBackgroundColor(Color.WHITE);
+        checkBox.setGravity(Gravity.CENTER);
+        checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(isChecked){
+                    deleteTableRows(tableLayoutAuthors);
+                }
+            }
+        });
+
+        return checkBox;
+    }
+
+    private EditText addEditTextToTable(){
+        EditText editText = new EditText(this);
+        TableRow.LayoutParams trLayoutParams = new TableRow.LayoutParams();
+        trLayoutParams.setMargins(3,3,3,3);
+        editText.setLayoutParams(trLayoutParams);
+        editText.setBackgroundColor(Color.WHITE);
+        editText.setTextSize(14);
+        editText.setGravity(Gravity.CENTER);
+        editText.setSingleLine();
+        editText.setPadding(5, 5, 5, 5);
+        return editText;
+    }
+
+    private void deleteTableRows(TableLayout table){
+        for (int i=1; i < table.getChildCount(); i++){
+            TableRow tblRow = (TableRow) table.getChildAt(i);
+            CheckBox cbx = (CheckBox) tblRow.getChildAt(0);
+            if(cbx.isChecked()){
+                tableLayoutAuthors.removeView(tblRow);
+            }
+
+        }
     }
 
     private TextView setupRowTextView(String value, boolean bold){
