@@ -281,10 +281,13 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
+                    android:shrinkColumns="0"
+                    android:stretchColumns="1"
                     android:background="@color/colorDkGray"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/tab_View_Term"
+                    android:padding="2dp"
                     android:layout_marginTop="15dp"
                     android:layout_marginEnd="5dp"
                     android:layout_marginStart="5dp">
@@ -342,27 +345,27 @@
                     android:layout_marginStart="5dp" android:layout_marginEnd="5dp"
                     app:layout_constraintBaseline_toBaselineOf="@+id/lblViewAuthors"/>
 
-            <Button
-                    android:id="@+id/btn_add_author"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/btn_add_author"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/viewAuthors"
-                    android:layout_marginTop="15dp"
-                    android:layout_marginEnd="5dp"
-                    android:layout_marginStart="5dp"/>
+<!--            <Button-->
+<!--                    android:id="@+id/btn_add_author"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:text="@string/btn_add_author"-->
+<!--                    app:layout_constraintStart_toStartOf="parent"-->
+<!--                    app:layout_constraintTop_toBottomOf="@id/viewAuthors"-->
+<!--                    android:layout_marginTop="15dp"-->
+<!--                    android:layout_marginEnd="5dp"-->
+<!--                    android:layout_marginStart="5dp"/>-->
 
-            <Button
-                    android:id="@+id/btn_del_author"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/btn_del_author"
-                    app:layout_constraintStart_toEndOf="@id/btn_add_author"
-                    app:layout_constraintTop_toBottomOf="@id/viewAuthors"
-                    android:layout_marginTop="15dp"
-                    android:layout_marginEnd="5dp"
-                    android:layout_marginStart="5dp"/>
+<!--            <Button-->
+<!--                    android:id="@+id/btn_del_author"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:text="@string/btn_del_author"-->
+<!--                    app:layout_constraintStart_toEndOf="@id/btn_add_author"-->
+<!--                    app:layout_constraintTop_toBottomOf="@id/viewAuthors"-->
+<!--                    android:layout_marginTop="15dp"-->
+<!--                    android:layout_marginEnd="5dp"-->
+<!--                    android:layout_marginStart="5dp"/>-->
 
             <TableLayout
                     android:id="@+id/table_authors"
@@ -373,7 +376,7 @@
                     android:background="@color/colorDkGray"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/btn_add_author"
+                    app:layout_constraintTop_toBottomOf="@id/viewAuthors"
                     app:layout_constraintBottom_toBottomOf="@id/ConstraintLayout2"
                     android:padding="2dp"
                     android:layout_marginTop="15dp"

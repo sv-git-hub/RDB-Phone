@@ -133,10 +133,8 @@ public class DBQueryTools {
             newAuthors = rdb.getAuthorBySourceDao().getAuthorsForSource(newSource.get(0).getSourceID());
         }else{
             Toast.makeText( context, "New Source", Toast.LENGTH_SHORT).show();
-            return "need new author";
+            return "Select an Author or Add new below";
         }
-
-
         return DBQueryTools.concatenateAuthors(newAuthors);
     }
 

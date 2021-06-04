@@ -1,14 +1,11 @@
 package com.mistywillow.researchdb;
 
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
-import android.net.Uri;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
 import android.view.*;
-import android.webkit.MimeTypeMap;
 import android.widget.*;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -17,12 +14,9 @@ import androidx.appcompat.widget.Toolbar;
 import com.mistywillow.researchdb.database.ResearchDatabase;
 import com.mistywillow.researchdb.database.entities.*;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-
-import static androidx.core.content.FileProvider.getUriForFile;
 
 public class EditNote extends AppCompatActivity {
     private ResearchDatabase rdb;
@@ -51,9 +45,6 @@ public class EditNote extends AppCompatActivity {
     private TableLayout tableLayoutAuthors;
     private Menu editMenu;
 
-    private Button btnAddAuthor;
-    private Button btnDelAuthor;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -75,21 +66,16 @@ public class EditNote extends AppCompatActivity {
 
         // REGULAR TEXT VIEWS
         comment = findViewById(R.id.viewComment);
-        hyperlink = findViewById(R.id.viewHyperlink);
-        quote = findViewById(R.id.tab_View_Quote);
-        term = findViewById(R.id.tab_View_Term);
 
         // TABLES
         tableLayoutFiles = findViewById(R.id.table_files);
+        tableLayoutFiles.setTag(R.id.table_files, "tableFiles");
         tableLayoutAuthors = findViewById(R.id.table_authors);
-        tableLayoutAuthors.addView(setupAuthorsTableRow("+", "Organization/First", "Middle Name", "Last Name","Suffix", true));
+        tableLayoutAuthors.setTag(R.id.table_authors, "table_Authors");
 
-        // BUTTONS and SPECIAL ONCLICK ACTIONS
-        btnAddAuthor = findViewById(R.id.btn_add_author);
-        btnDelAuthor = findViewById(R.id.btn_del_author);
+        tableLayoutAuthors.addView(BuildTableLayout.setupAuthorsTableRow( this,tableLayoutAuthors, "Organization/First", "Middle Name", "Last Name","Suffix", true));
 
         // BEGIN SETUP and LOADING ACTIVITY and DATA ==================================================================
-
         Intent viewDetails = getIntent();
         Bundle viewBundle = viewDetails.getExtras();
 
@@ -115,24 +101,14 @@ public class EditNote extends AppCompatActivity {
     }
 
     private void setupOnClickActions() {
-        sourceTitle.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if(!hasFocus){
-                    author.setText(DBQueryTools.captureAuthorNewOrOldSource(getApplicationContext(), sourceTitle.getText().toString()));
-                }
-                if(author.getText().toString().equals("need new author")){
-
-                }
+        sourceTitle.setOnFocusChangeListener((v, hasFocus) -> {
+            if(!hasFocus){
+                author.setText(DBQueryTools.captureAuthorNewOrOldSource(getApplicationContext(), sourceTitle.getText().toString()));
+            }
+            if(author.getText().toString().equals("Select an Author or Add new below")){
+                Toast.makeText(this, "TODO: New Author Needed or Selected.", Toast.LENGTH_SHORT).show();
             }
         });
-        btnAddAuthor.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                tableLayoutAuthors.addView(setupAuthorsTableRow("-","", "", "", "", false));
-            }
-        });
-
     }
 
     // MENU METHODS
@@ -319,59 +295,46 @@ public class EditNote extends AppCompatActivity {
     }
 
     private void populateFileData(List<Files> files){
-        tableLayoutFiles.addView(setupFilesTableRow("FileID", "FileName", true));
+        tableLayoutFiles.addView(BuildTableLayout.setupFilesTableRow(this,tableLayoutFiles,"FileID", "FileName", true));
         if(files != null){
             if(files.size() > 0){
                 for (Files f: files) {
-                    tableLayoutFiles.addView(setupFilesTableRow(String.valueOf(f.getFileID()), f.getFileName(), false));
+                    tableLayoutFiles.addView(BuildTableLayout.setupFilesTableRow(this, tableLayoutFiles,"", f.getFileName(), false));
                 }
             }
         }
     }
 
-    private TableRow setupFilesTableRow(String fileID, String fileName, boolean bold) {
+    /*private TableRow setupFilesTableRow(String fileID, String fileName, boolean bold) {
 
         TableRow row = new TableRow(this);
-        row.addView(setupRowTextView(fileID, bold));
-        row.addView(setupRowTextView(fileName, bold));
-        row.setClickable(true);
+        if(bold) {
+            //row.addView(setupRowTextView(fileID, true));
+            row.addView(setupFilesAddRowButton(tableLayoutFiles));
+            row.addView(setupRowTextView(fileName, true));
 
+        }
         if (!bold) {
-            row.setOnClickListener(v -> {
-
-                TableRow tablerow = (TableRow) v;
-                TextView sample = (TextView) tablerow.getChildAt(1);
-                String result = sample.getText().toString();
-
-                MimeTypeMap myMime = MimeTypeMap.getSingleton();
-                String mimeType = myMime.getMimeTypeFromExtension(getFileExtension(result));
-
-                checkFolderExists(this, "note_files");
-
-                File filePaths = new File(getFilesDir().toString() + "/note_files/");
-                File newFile = new File(filePaths, result);
-
-                if(!newFile.exists()){
-                    Uri contentUri = getUriForFile(getApplicationContext(), "com.mistywillow.fileprovider", newFile);
-                    openFile(contentUri, mimeType);
-                }
-            });
+            row.addView(setupDeleteRowButton(tableLayoutFiles));
+            for(int r=1; r < 2; r++){
+                row.addView(addEditTextToTable());
+                row.setClickable(true);
+            }
         }
         return row;
     }
 
-    private TableRow setupAuthorsTableRow (String add_del, String first, String middle, String last, String suffix, boolean bold){
+    private TableRow setupAuthorsTableRow (String first, String middle, String last, String suffix, boolean bold){
         TableRow row = new TableRow(this);
         if(bold) {
-            row.addView(setupRowTextView(add_del, true));
+            row.addView(setupAuthorsAddRowButton(tableLayoutAuthors));
             row.addView(setupRowTextView(first, true));
             row.addView(setupRowTextView(middle, true));
             row.addView(setupRowTextView(last, true));
             row.addView(setupRowTextView(suffix, true));
         }
         if(!bold) {
-            //row.addView(setupRowTextView(add_del, true));
-            row.addView(addCheckBoxToTable());
+            row.addView(setupDeleteRowButton(tableLayoutAuthors));
             for(int r=1; r<5;r++) {
                 row.addView(addEditTextToTable());
                 row.setClickable(true);
@@ -380,17 +343,52 @@ public class EditNote extends AppCompatActivity {
         return row;
     }
 
-    private Button setupAddRow(){
-        btnAddAuthor.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                tableLayoutAuthors.addView(setupAuthorsTableRow("-","", "", "", "", false));
-            }
-        });
-        return btnAddAuthor;
+    private Button setupFilesAddRowButton(TableLayout table){
+        Button btnAddRow = new Button(this);
+        TableRow.LayoutParams trLayoutParams = new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.MATCH_PARENT);
+        trLayoutParams.setMargins(3,3,3,3);
+        btnAddRow.setBackgroundColor(Color.WHITE);
+        btnAddRow.setLayoutParams(trLayoutParams);
+        btnAddRow.setText("+");
+        btnAddRow.setTypeface(Typeface.DEFAULT,Typeface.BOLD);
+        btnAddRow.setGravity(Gravity.CENTER);
+        btnAddRow.setPadding(5,5,5,5);
+        btnAddRow.setOnClickListener(v -> table.addView(setupFilesTableRow("", "",  false)));
+        return btnAddRow;
     }
 
-    private CheckBox addCheckBoxToTable(){
+    private Button setupAuthorsAddRowButton(TableLayout table){
+        Button btnAddRow = new Button(this);
+        TableRow.LayoutParams trLayoutParams = new TableRow.LayoutParams(0, TableRow.LayoutParams.MATCH_PARENT);
+        trLayoutParams.setMargins(3,3,3,3);
+        btnAddRow.setLayoutParams(trLayoutParams);
+        btnAddRow.setBackgroundColor(Color.WHITE);
+        btnAddRow.setText("+");
+        btnAddRow.setTypeface(Typeface.DEFAULT,Typeface.BOLD);
+        btnAddRow.setGravity(Gravity.CENTER);
+        btnAddRow.setPadding(5,5,5,5);
+        if(table==tableLayoutAuthors)
+            btnAddRow.setOnClickListener(v -> table.addView(setupAuthorsTableRow("", "", "", "", false)));
+        else if(table==tableLayoutFiles)
+            btnAddRow.setOnClickListener(v -> table.addView(setupFilesTableRow("", "",  false)));
+        return btnAddRow;
+    }
+
+    private Button setupDeleteRowButton(TableLayout table){
+        Button btnDeleteAuthor = new Button(this);
+        TableRow.LayoutParams trLayoutParams = new TableRow.LayoutParams(0, TableRow.LayoutParams.MATCH_PARENT);
+        trLayoutParams.setMargins(3,3,3,3);
+        btnDeleteAuthor.setBackgroundColor(Color.WHITE);
+        btnDeleteAuthor.setLayoutParams(trLayoutParams);
+        btnDeleteAuthor.setText("-");
+        btnDeleteAuthor.setTypeface(Typeface.DEFAULT,Typeface.BOLD);
+        btnDeleteAuthor.setGravity(Gravity.CENTER);
+        btnDeleteAuthor.setPadding(5,5,5,5);
+        btnDeleteAuthor.setOnClickListener(v -> deleteTableRows(table));
+        return btnDeleteAuthor;
+    }
+
+    *//*private CheckBox addCheckBoxToTable(){
         CheckBox checkBox = new CheckBox(this);
         TableRow.LayoutParams trLayoutParams = new TableRow.LayoutParams();
         trLayoutParams.setMargins(3,3,3,3);
@@ -400,17 +398,14 @@ public class EditNote extends AppCompatActivity {
         checkBox.setPadding(3,3,3,3);
         checkBox.setBackgroundColor(Color.WHITE);
         checkBox.setGravity(Gravity.CENTER);
-        checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if(isChecked){
-                    deleteTableRows(tableLayoutAuthors);
-                }
+        checkBox.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            if(isChecked){
+                deleteTableRows(tableLayoutAuthors);
             }
         });
 
         return checkBox;
-    }
+    }*//*
 
     private EditText addEditTextToTable(){
         EditText editText = new EditText(this);
@@ -428,11 +423,7 @@ public class EditNote extends AppCompatActivity {
     private void deleteTableRows(TableLayout table){
         for (int i=1; i < table.getChildCount(); i++){
             TableRow tblRow = (TableRow) table.getChildAt(i);
-            CheckBox cbx = (CheckBox) tblRow.getChildAt(0);
-            if(cbx.isChecked()){
-                tableLayoutAuthors.removeView(tblRow);
-            }
-
+            table.removeView(tblRow);
         }
     }
 
@@ -448,26 +439,7 @@ public class EditNote extends AppCompatActivity {
         tv.setPadding(8,8,8,8);
         tv.setBackgroundColor(getColor(R.color.colorWhite));
         return tv;
-    }
-
-    private void openFile(Uri uri, String mime){
-        Intent intent = new Intent(Intent.ACTION_VIEW);
-        intent.setDataAndType(uri,mime);
-        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-        startActivityForResult(intent, 2);
-    }
-
-    public static void checkFolderExists(Context context, String folder){
-        File location = new File(context.getFilesDir() + "/" + folder);
-        if(!location.exists())
-            if(location.mkdir())
-                Toast.makeText(context, "Director " + folder + " was created!", Toast.LENGTH_SHORT).show();
-    }
-
-    private String getFileExtension(String fileName){
-        String[] ext = fileName.split("[.]");
-        return ext[ext.length-1];
-    }
+    }*/
 
     private String buildHyperlink(String link){
         return "<a href=\"" + link + "\">" + link + "</a> ";
