@@ -66,6 +66,9 @@ public class EditNote extends AppCompatActivity {
 
         // REGULAR TEXT VIEWS
         comment = findViewById(R.id.viewComment);
+        quote = findViewById(R.id.tab_View_Quote);
+        term = findViewById(R.id.tab_View_Term);
+        hyperlink = findViewById(R.id.viewHyperlink);
 
         // TABLES
         tableLayoutFiles = findViewById(R.id.table_files);

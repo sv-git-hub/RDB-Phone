@@ -70,9 +70,9 @@ public class BuildTableLayout {
         btnAddRow.setTypeface(Typeface.DEFAULT,Typeface.BOLD);
         btnAddRow.setGravity(Gravity.CENTER);
         btnAddRow.setPadding(5,5,5,5);
-        if(table.getTag().equals("tableLayoutAuthors"))
+        if(table.getTag()=="table_Authors")
             btnAddRow.setOnClickListener(v -> table.addView(setupAuthorsTableRow(context, table, "", "", "", "", false)));
-        else if(table.getTag().equals("tableLayoutFiles"))
+        else if(table.getTag()=="table_Files")
             btnAddRow.setOnClickListener(v -> table.addView(setupFilesTableRow(context, table, "", "",  false)));
         return btnAddRow;
     }
