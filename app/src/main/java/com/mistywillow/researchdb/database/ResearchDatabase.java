@@ -15,7 +15,6 @@ import com.mistywillow.researchdb.database.entities.*;
 
 import java.io.File;
 import java.nio.file.Paths;
-//import java.nio.file.Files;
 
 @Database(entities = {AuthorBySource.class, Authors.class,  Comments.class, Files.class, FilesByNote.class,
         Notes.class, Questions.class, Quotes.class, Sources.class, Terms.class, Topics.class}, version = 1)

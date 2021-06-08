@@ -43,13 +43,13 @@
                 android:id="@+id/ConstraintLayout2">
 
             <Spinner
-                    android:id="@+id/viewSourceType"
+                    android:id="@+id/viewType"
                     android:layout_width="100dp"
                     android:layout_height="25dp"
                     android:background="@color/colorWhite"
                     android:hint="@string/hint_type"
-                    app:layout_constraintStart_toEndOf="@+id/lblViewType"
-                    app:layout_constraintTop_toTopOf="@+id/lblViewType"
+                    app:layout_constraintStart_toEndOf="@+id/lbl_View_Type"
+                    app:layout_constraintTop_toTopOf="@+id/lbl_View_Type"
                     android:layout_marginStart="5dp"/>
 
             <TextView
@@ -61,8 +61,8 @@
                     android:padding="5dp"
                     android:textStyle="bold"
                     android:textSize="12sp"
-                    app:layout_constraintStart_toEndOf="@+id/viewSourceType"
-                    app:layout_constraintBaseline_toBaselineOf="@+id/viewSourceType"
+                    app:layout_constraintStart_toEndOf="@+id/viewType"
+                    app:layout_constraintBaseline_toBaselineOf="@+id/viewType"
                     android:layout_marginStart="10dp"/>
             <TextView
                     android:text="@string/lbl_note_question"
@@ -74,7 +74,7 @@
                     android:id="@+id/lbl_View_Question" android:textStyle="bold"
                     android:textSize="12sp"
                     app:layout_constraintStart_toStartOf="parent" android:layout_marginStart="5dp"
-                    app:layout_constraintTop_toBottomOf="@+id/lblViewType" android:layout_marginTop="5dp"/>
+                    app:layout_constraintTop_toBottomOf="@+id/lbl_View_Type" android:layout_marginTop="5dp"/>
 
             <AutoCompleteTextView
                     android:id="@+id/viewQuestion"
@@ -129,7 +129,7 @@
                     android:gravity="center_vertical"
                     android:background="@color/colorWhite"
                     android:padding="5dp"
-                    android:id="@+id/lblViewType"
+                    android:id="@+id/lbl_View_Type"
                     android:textSize="12sp"
                     android:textStyle="bold"
                     android:layout_marginStart="5dp"
@@ -197,7 +197,7 @@
                     android:layout_marginEnd="5dp" android:autofillHints=""/>
 
             <TextView android:layout_width="67dp" android:layout_height="wrap_content"
-                      android:id="@+id/lbl_view_Hyperlink"
+                      android:id="@+id/lbl_View_Hyperlink"
                       android:text="@string/lbl_note_hyperlink"
                       app:layout_constraintStart_toStartOf="parent"
                       android:layout_marginStart="5dp"
@@ -219,9 +219,9 @@
                     android:padding="5dp"
                     android:inputType="text"
                     android:imeOptions="actionDone"
-                    app:layout_constraintStart_toEndOf="@+id/lbl_view_Hyperlink"
+                    app:layout_constraintStart_toEndOf="@+id/lbl_View_Hyperlink"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintBaseline_toBaselineOf="@+id/lbl_view_Hyperlink"
+                    app:layout_constraintBaseline_toBaselineOf="@+id/lbl_View_Hyperlink"
                     android:layout_marginStart="5dp"
                     android:layout_marginEnd="5dp"/>
 
@@ -233,14 +233,14 @@
                     android:padding="5dp"
                     android:background="@color/colorWhite"
                     android:gravity="end"
-                    android:id="@+id/lblViewQuote" android:textStyle="bold" android:textSize="12sp"
+                    android:id="@+id/lbl_View_Quote" android:textStyle="bold" android:textSize="12sp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/viewHyperlink" android:layout_marginStart="5dp"
                     android:layout_marginTop="15dp"/>
             <EditText
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:id="@+id/tab_View_Quote"
+                    android:id="@+id/viewQuote"
                     android:autofillHints="@string/hint_quote"
                     android:padding="5dp"
                     android:inputType="textMultiLine"
@@ -248,27 +248,27 @@
                     android:background="@color/colorWhite"
                     android:hint="@string/hint_quote"
                     android:textSize="12sp"
-                    app:layout_constraintStart_toEndOf="@+id/lblViewQuote"
-                    app:layout_constraintBaseline_toBaselineOf="@+id/lblViewQuote"
+                    app:layout_constraintStart_toEndOf="@+id/lbl_View_Quote"
+                    app:layout_constraintBaseline_toBaselineOf="@+id/lbl_View_Quote"
                     app:layout_constraintEnd_toEndOf="parent" android:layout_marginStart="5dp"
                     android:layout_marginEnd="5dp"/>
             <TextView
                     android:text="@string/lbl_note_term"
                     android:layout_width="67dp"
                     android:layout_height="wrap_content"
-                    android:id="@+id/lblViewTerm"
+                    android:id="@+id/lbl_View_Term"
                     android:padding="5dp"
                     android:background="@color/colorWhite"
                     android:gravity="end"
                     android:textSize="12sp"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/tab_View_Quote"
+                    app:layout_constraintTop_toBottomOf="@+id/viewQuote"
                     android:layout_marginTop="5dp"
                     android:layout_marginStart="5dp" android:textStyle="bold"/>
             <EditText
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:id="@+id/tab_View_Term"
+                    android:id="@+id/viewTerm"
                     android:hint="@string/hint_term"
                     android:autofillHints="@string/hint_term"
                     android:padding="5dp"
@@ -277,8 +277,8 @@
                     android:background="@color/colorWhite"
                     android:textSize="12sp"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintBaseline_toBaselineOf="@+id/lblViewTerm"
-                    app:layout_constraintStart_toEndOf="@+id/lblViewTerm" android:layout_marginStart="5dp"
+                    app:layout_constraintBaseline_toBaselineOf="@+id/lbl_View_Term"
+                    app:layout_constraintStart_toEndOf="@+id/lbl_View_Term" android:layout_marginStart="5dp"
                     android:layout_marginEnd="5dp"/>
             <TableLayout
                     android:id="@+id/table_files"
@@ -288,7 +288,7 @@
                     android:background="@color/colorDkGray"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/tab_View_Term"
+                    app:layout_constraintTop_toBottomOf="@+id/viewTerm"
 
                     android:layout_marginTop="15dp"
                     android:layout_marginEnd="5dp" android:layout_marginStart="5dp">
@@ -301,7 +301,7 @@
                     android:layout_height="wrap_content"
                     android:padding="5dp"
                     android:background="@color/colorWhite"
-                    android:id="@+id/lblViewSource" android:textStyle="bold" android:textSize="12sp"
+                    android:id="@+id/lbl_View_Source" android:textStyle="bold" android:textSize="12sp"
                     app:layout_constraintTop_toBottomOf="@id/table_files"
                     app:layout_constraintStart_toStartOf="parent" android:layout_marginStart="5dp"
                     android:layout_marginTop="15dp"/>
@@ -318,13 +318,13 @@
                     android:layout_marginStart="5dp"
                     android:layout_marginEnd="5dp"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintBaseline_toBaselineOf="@+id/lblViewSource"
-                    app:layout_constraintStart_toEndOf="@id/lblViewSource"/>
+                    app:layout_constraintBaseline_toBaselineOf="@+id/lbl_View_Source"
+                    app:layout_constraintStart_toEndOf="@id/lbl_View_Source"/>
             <TextView
                     android:text="@string/lbl_note_Authors"
                     android:layout_width="67dp"
                     android:layout_height="wrap_content"
-                    android:id="@+id/lblViewAuthors"
+                    android:id="@+id/lbl_View_Authors"
                     android:padding="5dp"
                     android:background="@color/colorWhite"
                     android:textSize="12sp"
@@ -341,9 +341,9 @@
                     android:imeOptions="actionDone"
                     android:background="@color/colorWhite"
                     android:textSize="12sp"
-                    app:layout_constraintStart_toEndOf="@id/lblViewAuthors" app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/lbl_View_Authors" app:layout_constraintEnd_toEndOf="parent"
                     android:layout_marginStart="5dp" android:layout_marginEnd="5dp"
-                    app:layout_constraintBaseline_toBaselineOf="@+id/lblViewAuthors"/>
+                    app:layout_constraintBaseline_toBaselineOf="@+id/lbl_View_Authors"/>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>

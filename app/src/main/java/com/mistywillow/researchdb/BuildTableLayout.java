@@ -13,14 +13,14 @@ public class BuildTableLayout {
         TableRow row = new TableRow(context);
         if(bold) {
             //row.addView(setupRowTextView(fileID, true));
-            row.addView(addFilesAddRowButton(context, table));
+            row.addView(setupFilesAddRowButton(context, table));
             row.addView(addRowTextViewToTable(context, fileName, true));
 
         }
         if (!bold) {
-            row.addView(addDeleteRowButton(context, table));
+            row.addView(setupDeleteRowButton(context, table));
             for(int r=1; r < 2; r++){
-                row.addView(addEditTextToTable(context));
+                row.addView(addEditTextToTable(context, fileName));
                 row.setClickable(true);
             }
         }
@@ -30,23 +30,23 @@ public class BuildTableLayout {
      public static TableRow setupAuthorsTableRow (Context context, TableLayout table, String first, String middle, String last, String suffix, boolean bold){
         TableRow row = new TableRow(context);
         if(bold) {
-            row.addView(addAuthorsAddRowButton(context, table));
+            row.addView(setupAuthorsAddRowButton(context, table));
             row.addView(addRowTextViewToTable(context, first, true));
             row.addView(addRowTextViewToTable(context, middle, true));
             row.addView(addRowTextViewToTable(context, last, true));
             row.addView(addRowTextViewToTable(context, suffix, true));
         }
         if(!bold) {
-            row.addView(addDeleteRowButton(context, table));
+            row.addView(setupDeleteRowButton(context, table));
             for(int r=1; r<5;r++) {
-                row.addView(addEditTextToTable(context));
+                row.addView(addEditTextToTable(context, ""));
                 row.setClickable(true);
             }
         }
         return row;
     }
 
-    public static Button addFilesAddRowButton(Context context, TableLayout table){
+    public static Button setupFilesAddRowButton(Context context, TableLayout table){
         Button btnAddRow = new Button(context);
         TableRow.LayoutParams trLayoutParams = new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.MATCH_PARENT);
         trLayoutParams.setMargins(3,3,3,3);
@@ -60,7 +60,7 @@ public class BuildTableLayout {
         return btnAddRow;
     }
 
-    public static Button addAuthorsAddRowButton(Context context, TableLayout table){
+    public static Button setupAuthorsAddRowButton(Context context, TableLayout table){
         Button btnAddRow = new Button(context);
         TableRow.LayoutParams trLayoutParams = new TableRow.LayoutParams(0, TableRow.LayoutParams.MATCH_PARENT);
         trLayoutParams.setMargins(3,3,3,3);
@@ -70,15 +70,12 @@ public class BuildTableLayout {
         btnAddRow.setTypeface(Typeface.DEFAULT,Typeface.BOLD);
         btnAddRow.setGravity(Gravity.CENTER);
         btnAddRow.setPadding(5,5,5,5);
-        if(table.getTag()=="table_Authors")
-            btnAddRow.setOnClickListener(v -> table.addView(setupAuthorsTableRow(context, table, "", "", "", "", false)));
-        else if(table.getTag()=="table_Files")
-            btnAddRow.setOnClickListener(v -> table.addView(setupFilesTableRow(context, table, "", "",  false)));
+        btnAddRow.setOnClickListener(v -> table.addView(setupAuthorsTableRow(context, table, "", "", "", "", false)));
         return btnAddRow;
     }
 
 
-    public static Button addDeleteRowButton(Context context, TableLayout table){
+    public static Button setupDeleteRowButton(Context context, TableLayout table){
         Button btnDeleteAuthor = new Button(context);
         TableRow.LayoutParams trLayoutParams = new TableRow.LayoutParams(0, TableRow.LayoutParams.MATCH_PARENT);
         trLayoutParams.setMargins(3,3,3,3);
@@ -111,12 +108,13 @@ public class BuildTableLayout {
         return checkBox;
     }*/
 
-    public static EditText addEditTextToTable(Context context){
+    public static EditText addEditTextToTable(Context context, String value){
         EditText editText = new EditText(context);
         TableRow.LayoutParams trLayoutParams = new TableRow.LayoutParams();
         trLayoutParams.setMargins(3,3,3,3);
         editText.setLayoutParams(trLayoutParams);
         editText.setBackgroundColor(Color.WHITE);
+        editText.setText(value);
         editText.setTextSize(14);
         editText.setGravity(Gravity.CENTER);
         editText.setSingleLine();

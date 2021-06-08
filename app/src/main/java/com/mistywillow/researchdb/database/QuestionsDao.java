@@ -17,8 +17,10 @@ public interface QuestionsDao {
 
     @Query("SELECT * FROM Questions ORDER BY Question")
     List<Questions> getQuestions();
+
     @Query("SELECT * FROM Questions WHERE QuestionID = :questionID")
     Questions getQuestion(int questionID);
+
     @Query("SELECT last_insert_rowid()")
     int lastQuestionPKID();
     @RawQuery

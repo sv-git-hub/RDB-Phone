@@ -1,8 +1,6 @@
 package com.mistywillow.researchdb;
 
 import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.Typeface;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
 import android.view.*;
@@ -29,20 +27,19 @@ public class EditNote extends AppCompatActivity {
 
     private int nid;
 
+    private TextView sourceTitle;
+    private TextView author;
     private TextView quote;
     private TextView term;
     private TextView comment;
     private TextView hyperlink;
 
     private AutoCompleteTextView sourceType;
-    private AutoCompleteTextView sourceTitle;
-    private AutoCompleteTextView author;
     private AutoCompleteTextView topic;
     private AutoCompleteTextView question;
     private AutoCompleteTextView summary;
 
     private TableLayout tableLayoutFiles;
-    private TableLayout tableLayoutAuthors;
     private Menu editMenu;
 
     @Override
@@ -57,7 +54,7 @@ public class EditNote extends AppCompatActivity {
         rdb = ResearchDatabase.getInstance(this, "Apologetic.db");
 
         // AUTOCOMPLETE TEXT VIEWS
-        sourceType = findViewById(R.id.viewSourceType);
+        sourceType = findViewById(R.id.viewType);
         sourceTitle = findViewById(R.id.viewSource);
         author = findViewById(R.id.viewAuthors);
         topic = findViewById(R.id.viewTopic);
@@ -66,17 +63,13 @@ public class EditNote extends AppCompatActivity {
 
         // REGULAR TEXT VIEWS
         comment = findViewById(R.id.viewComment);
-        quote = findViewById(R.id.tab_View_Quote);
-        term = findViewById(R.id.tab_View_Term);
+        quote = findViewById(R.id.viewQuote);
+        term = findViewById(R.id.viewTerm);
         hyperlink = findViewById(R.id.viewHyperlink);
 
         // TABLES
         tableLayoutFiles = findViewById(R.id.table_files);
         tableLayoutFiles.setTag(R.id.table_files, "tableFiles");
-        tableLayoutAuthors = findViewById(R.id.table_authors);
-        tableLayoutAuthors.setTag(R.id.table_authors, "table_Authors");
-
-        tableLayoutAuthors.addView(BuildTableLayout.setupAuthorsTableRow( this,tableLayoutAuthors, "Organization/First", "Middle Name", "Last Name","Suffix", true));
 
         // BEGIN SETUP and LOADING ACTIVITY and DATA ==================================================================
         Intent viewDetails = getIntent();
@@ -88,6 +81,8 @@ public class EditNote extends AppCompatActivity {
         updatedNote = rdb.getNotesDao().getNote(vNoteID);
         viewNoteDetails = viewBundle.getStringArrayList("NoteDetails");
         List<Files> viewNoteFiles = viewBundle.getParcelableArrayList("NoteFiles");
+
+        Notes pkIDs = rdb.getNotesDao().getNote(nid);
 
         // CAPTURE DB INFORMATION FOR AUTO-COMPLETE TEXT VIEWS
         captureNoteAndTableIDs(vNoteID);
@@ -104,14 +99,7 @@ public class EditNote extends AppCompatActivity {
     }
 
     private void setupOnClickActions() {
-        sourceTitle.setOnFocusChangeListener((v, hasFocus) -> {
-            if(!hasFocus){
-                author.setText(DBQueryTools.captureAuthorNewOrOldSource(getApplicationContext(), sourceTitle.getText().toString()));
-            }
-            if(author.getText().toString().equals("Select an Author or Add new below")){
-                Toast.makeText(this, "TODO: New Author Needed or Selected.", Toast.LENGTH_SHORT).show();
-            }
-        });
+
     }
 
     // MENU METHODS
@@ -171,15 +159,6 @@ public class EditNote extends AppCompatActivity {
         sourceType.setInputType(0);
         sourceType.setAdapter(sourceTypeAdapter);
 
-        ArrayAdapter<String> sourceTitleAdapter = DBQueryTools.captureDBSources(this);
-        sourceTitle.setThreshold(1);
-        sourceTitle.setAdapter(sourceTitleAdapter);
-
-        ArrayAdapter<String> authorsAdapter = DBQueryTools.captureDBAuthors(this);
-        author.setThreshold(1);
-        author.setAdapter(authorsAdapter);
-        author.setFocusable(false);
-
         ArrayAdapter<String> summaryAdapter = DBQueryTools.captureSummaries(this);
         summary.setThreshold(1);
         summary.setAdapter(summaryAdapter);
@@ -217,7 +196,7 @@ public class EditNote extends AppCompatActivity {
 
     private void checkForUpdates(List<String> original, List<String> update, int vNoteID){
         // TYPE; TITLE; YEAR; MONTH; DAY; VOLUME; EDITION; ISSUE
-        if(!valuesAreDifferent(original.get(0), update.get(0)) || !valuesAreDifferent(original.get(2), update.get(2)) ||
+        if(!valuesAreDifferent(original.get(0), update.get(0)) ||
                 !valuesAreDifferent(original.get(7), update.get(7)) || !valuesAreDifferent(original.get(8), update.get(8)) ||
                 !valuesAreDifferent(original.get(9), update.get(9)) || !valuesAreDifferent(original.get(10), update.get(10)) ||
                 !valuesAreDifferent(original.get(11), update.get(11)) || !valuesAreDifferent(original.get(12), update.get(12))){
@@ -238,10 +217,7 @@ public class EditNote extends AppCompatActivity {
             cmts.setHyperlink(update.get(13));  // Hyperlink
             rdb.getCommentsDao().updateComment(cmts);
         }
-        // AUTHOR(S)
-        if(!valuesAreDifferent(original.get(3), update.get(3))){
-            Toast.makeText(this, "TODO: Authors with Edit Note!",Toast.LENGTH_SHORT).show();
-        }
+
         // QUESTION
         if(!valuesAreDifferent(original.get(4), update.get(4))){
             Questions questions = rdb.getQuestionsDao().getQuestion(updatedNote.getQuestionID());
@@ -273,6 +249,7 @@ public class EditNote extends AppCompatActivity {
     }
 
     // EVALUATES NOTES AS OBJECTS
+    @SuppressWarnings("BooleanMethodIsAlwaysInverted")
     private boolean valuesAreDifferent(String obj1, String obj2){
         if(obj1 == null || obj1.isEmpty() || obj1.trim().isEmpty()){obj1 = "";}
         if(obj2 == null || obj2.isEmpty() || obj2.trim().isEmpty()){obj2 = "";}
@@ -302,147 +279,12 @@ public class EditNote extends AppCompatActivity {
         if(files != null){
             if(files.size() > 0){
                 for (Files f: files) {
-                    tableLayoutFiles.addView(BuildTableLayout.setupFilesTableRow(this, tableLayoutFiles,"", f.getFileName(), false));
+                    String fName = f.getFileName();
+                    tableLayoutFiles.addView(BuildTableLayout.setupFilesTableRow(this, tableLayoutFiles,"", fName, false));
                 }
             }
         }
     }
-
-    /*private TableRow setupFilesTableRow(String fileID, String fileName, boolean bold) {
-
-        TableRow row = new TableRow(this);
-        if(bold) {
-            //row.addView(setupRowTextView(fileID, true));
-            row.addView(setupFilesAddRowButton(tableLayoutFiles));
-            row.addView(setupRowTextView(fileName, true));
-
-        }
-        if (!bold) {
-            row.addView(setupDeleteRowButton(tableLayoutFiles));
-            for(int r=1; r < 2; r++){
-                row.addView(addEditTextToTable());
-                row.setClickable(true);
-            }
-        }
-        return row;
-    }
-
-    private TableRow setupAuthorsTableRow (String first, String middle, String last, String suffix, boolean bold){
-        TableRow row = new TableRow(this);
-        if(bold) {
-            row.addView(setupAuthorsAddRowButton(tableLayoutAuthors));
-            row.addView(setupRowTextView(first, true));
-            row.addView(setupRowTextView(middle, true));
-            row.addView(setupRowTextView(last, true));
-            row.addView(setupRowTextView(suffix, true));
-        }
-        if(!bold) {
-            row.addView(setupDeleteRowButton(tableLayoutAuthors));
-            for(int r=1; r<5;r++) {
-                row.addView(addEditTextToTable());
-                row.setClickable(true);
-            }
-        }
-        return row;
-    }
-
-    private Button setupFilesAddRowButton(TableLayout table){
-        Button btnAddRow = new Button(this);
-        TableRow.LayoutParams trLayoutParams = new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.MATCH_PARENT);
-        trLayoutParams.setMargins(3,3,3,3);
-        btnAddRow.setBackgroundColor(Color.WHITE);
-        btnAddRow.setLayoutParams(trLayoutParams);
-        btnAddRow.setText("+");
-        btnAddRow.setTypeface(Typeface.DEFAULT,Typeface.BOLD);
-        btnAddRow.setGravity(Gravity.CENTER);
-        btnAddRow.setPadding(5,5,5,5);
-        btnAddRow.setOnClickListener(v -> table.addView(setupFilesTableRow("", "",  false)));
-        return btnAddRow;
-    }
-
-    private Button setupAuthorsAddRowButton(TableLayout table){
-        Button btnAddRow = new Button(this);
-        TableRow.LayoutParams trLayoutParams = new TableRow.LayoutParams(0, TableRow.LayoutParams.MATCH_PARENT);
-        trLayoutParams.setMargins(3,3,3,3);
-        btnAddRow.setLayoutParams(trLayoutParams);
-        btnAddRow.setBackgroundColor(Color.WHITE);
-        btnAddRow.setText("+");
-        btnAddRow.setTypeface(Typeface.DEFAULT,Typeface.BOLD);
-        btnAddRow.setGravity(Gravity.CENTER);
-        btnAddRow.setPadding(5,5,5,5);
-        if(table==tableLayoutAuthors)
-            btnAddRow.setOnClickListener(v -> table.addView(setupAuthorsTableRow("", "", "", "", false)));
-        else if(table==tableLayoutFiles)
-            btnAddRow.setOnClickListener(v -> table.addView(setupFilesTableRow("", "",  false)));
-        return btnAddRow;
-    }
-
-    private Button setupDeleteRowButton(TableLayout table){
-        Button btnDeleteAuthor = new Button(this);
-        TableRow.LayoutParams trLayoutParams = new TableRow.LayoutParams(0, TableRow.LayoutParams.MATCH_PARENT);
-        trLayoutParams.setMargins(3,3,3,3);
-        btnDeleteAuthor.setBackgroundColor(Color.WHITE);
-        btnDeleteAuthor.setLayoutParams(trLayoutParams);
-        btnDeleteAuthor.setText("-");
-        btnDeleteAuthor.setTypeface(Typeface.DEFAULT,Typeface.BOLD);
-        btnDeleteAuthor.setGravity(Gravity.CENTER);
-        btnDeleteAuthor.setPadding(5,5,5,5);
-        btnDeleteAuthor.setOnClickListener(v -> deleteTableRows(table));
-        return btnDeleteAuthor;
-    }
-
-    *//*private CheckBox addCheckBoxToTable(){
-        CheckBox checkBox = new CheckBox(this);
-        TableRow.LayoutParams trLayoutParams = new TableRow.LayoutParams();
-        trLayoutParams.setMargins(3,3,3,3);
-        trLayoutParams.width = 25;
-        trLayoutParams.height = 55;
-        checkBox.setLayoutParams(trLayoutParams);
-        checkBox.setPadding(3,3,3,3);
-        checkBox.setBackgroundColor(Color.WHITE);
-        checkBox.setGravity(Gravity.CENTER);
-        checkBox.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            if(isChecked){
-                deleteTableRows(tableLayoutAuthors);
-            }
-        });
-
-        return checkBox;
-    }*//*
-
-    private EditText addEditTextToTable(){
-        EditText editText = new EditText(this);
-        TableRow.LayoutParams trLayoutParams = new TableRow.LayoutParams();
-        trLayoutParams.setMargins(3,3,3,3);
-        editText.setLayoutParams(trLayoutParams);
-        editText.setBackgroundColor(Color.WHITE);
-        editText.setTextSize(14);
-        editText.setGravity(Gravity.CENTER);
-        editText.setSingleLine();
-        editText.setPadding(5, 5, 5, 5);
-        return editText;
-    }
-
-    private void deleteTableRows(TableLayout table){
-        for (int i=1; i < table.getChildCount(); i++){
-            TableRow tblRow = (TableRow) table.getChildAt(i);
-            table.removeView(tblRow);
-        }
-    }
-
-    private TextView setupRowTextView(String value, boolean bold){
-        TextView tv = new TextView(this);
-        TableRow.LayoutParams trLayoutParams = new TableRow.LayoutParams();
-        trLayoutParams.setMargins(3,3,3,3);
-        tv.setText(String.valueOf(value));
-        if(bold) tv.setTypeface(null, Typeface.BOLD);
-        tv.setLayoutParams(trLayoutParams);
-        tv.setTextSize(12);
-        tv.setGravity(Gravity.CENTER);
-        tv.setPadding(8,8,8,8);
-        tv.setBackgroundColor(getColor(R.color.colorWhite));
-        return tv;
-    }*/
 
     private String buildHyperlink(String link){
         return "<a href=\"" + link + "\">" + link + "</a> ";

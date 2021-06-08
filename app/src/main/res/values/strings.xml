@@ -1,11 +1,6 @@
 <resources>
     <string name="app_name">ResearchDB</string>
-    <!-- FIELD LABELS -->
-    <string name="lbl_note_id">ID:</string>
-    <string name="lbl_note_type">Type:</string>
-    <string name="lbl_note_summary">Summary:</string>
-    <string name="lbl_note_source">Source:</string>
-    <string name="lbl_note_Authors">Author(s):</string>
+
 
     <!-- MENU and MENU ITEMS -->
     <string name="menu_title_file">File</string>
@@ -41,12 +36,28 @@
     <!-- HELP -->
     <string name="menu_title_manual">ResearchDB Manual</string>
     <string name="menu_title_about">About</string>
+
+    <!-- FIELD LABELS -->
+    <string name="lbl_note_id">ID:</string>
+    <string name="lbl_note_type">Type:</string>
+    <string name="lbl_note_summary">Summary:</string>
+    <string name="lbl_note_source">Source:</string>
+    <string name="lbl_note_Authors">Author(s):</string>
     <string name="lbl_note_topic">Topic:</string>
     <string name="lbl_note_comment">Comment:</string>
     <string name="lbl_note_term">Term:</string>
     <string name="lbl_note_question">Question:</string>
     <string name="lbl_note_quote">Quote:</string>
     <string name="lbl_note_file">File(s):</string>
+    <string name="lbl_note_hyperlink">Retrieve:</string>
+    <string name="lbl_note_date">Date:</string>
+    <string name="lbl_note_volume">Volume:</string>
+    <string name="lbl_note_edition">Edition:</string>
+    <string name="lbl_note_issue">Issue:</string>
+    <string name="lbl_note_pgs_paras">Pg/Para(s):</string>
+    <string name="lbl_note_timestamp">TimeStamp:</string>
+
+    <!-- HINTS -->
     <string name="hint_comment">Comment</string>
     <string name="hint_type">Type</string>
     <string name="hint_source">Source</string>
@@ -54,15 +65,31 @@
     <string name="hint_authors">Author(s)</string>
     <string name="hint_term">Term</string>
     <string name="hint_topic">Topic</string>
+    <string name="hint_quote">Quote</string>
     <string name="hint_summary">Summary</string>
+    <string name="hint_hyperlink">File Path/Hyperlink</string>
+    <string name="hint_date">Date</string>
+    <string name="hint_volume">Volume</string>
+    <string name="hint_edition">Edition</string>
+    <string name="hint_issue">Issue</string>
+    <string name="hint_pgs_paras">Pg(s)/Para(s)</string>
+    <string name="hint_timestamp">TimeStamp</string>
+
+
     <string name="lbl_tab_quote_term">Quote and Term</string>
     <string name="lbl_tab_files">File(s)</string>
     <string name="lbl_column_filename">Filename</string>
     <string name="lbl_column_filepath">Filepath</string>
     <string name="lbl_column_file_id">FileID</string>
-    <string name="hint_quote">Quote</string>
-    <string name="lbl_note_hyperlink">Retrieve:</string>
-    <string name="hint_hyperlink">File Path/Hyperlink</string>
+
+
+
+
+
+
+
+
+
     <string name="add_topic">Add or Select a Topic</string>
     <string name="add_source">Add or Select a Source</string>
     <string name="add_question">Add or Select a Question</string>

@@ -42,39 +42,40 @@
                 android:id="@+id/ConstraintLayout2">
 
             <TextView
+                    android:id="@+id/viewType"
                     android:layout_width="100dp"
                     android:layout_height="wrap_content"
                     android:background="@color/colorWhite"
                     android:padding="5dp"
                     android:hint="@string/hint_type"
                     android:ems="10"
-                    android:id="@+id/viewSourceType"
                     android:singleLine="true" android:textSize="12sp"
-                    app:layout_constraintStart_toEndOf="@+id/lblViewType"
-                    app:layout_constraintBaseline_toBaselineOf="@+id/lblViewType" android:layout_marginStart="5dp"/>
+                    app:layout_constraintStart_toEndOf="@+id/lbl_View_Type"
+                    app:layout_constraintBaseline_toBaselineOf="@+id/lbl_View_Type" android:layout_marginStart="5dp"/>
 
             <TextView
+                    android:id="@+id/lbl_View_Topic"
                     android:text="@string/lbl_note_topic"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:background="@color/colorWhite"
                     android:padding="5dp"
-                    android:id="@+id/lbl_View_Topic"
                     android:textStyle="bold" android:textSize="12sp"
-                    app:layout_constraintStart_toEndOf="@+id/viewSourceType"
-                    app:layout_constraintBaseline_toBaselineOf="@+id/viewSourceType"
+                    app:layout_constraintStart_toEndOf="@+id/viewType"
+                    app:layout_constraintBaseline_toBaselineOf="@+id/viewType"
                     android:layout_marginStart="10dp"/>
             <TextView
+                    android:id="@+id/lbl_View_Question"
                     android:text="@string/lbl_note_question"
                     android:layout_width="67dp"
                     android:layout_height="wrap_content"
                     android:background="@color/colorWhite"
                     android:padding="5dp"
                     android:gravity="end"
-                    android:id="@+id/lbl_View_Question" android:textStyle="bold"
+                    android:textStyle="bold"
                     android:textSize="12sp"
                     app:layout_constraintStart_toStartOf="parent" android:layout_marginStart="5dp"
-                    app:layout_constraintTop_toBottomOf="@+id/lblViewType" android:layout_marginTop="5dp"/>
+                    app:layout_constraintTop_toBottomOf="@+id/lbl_View_Type" android:layout_marginTop="5dp"/>
 
             <TextView
                     android:id="@+id/viewQuestion"
@@ -92,30 +93,31 @@
 
 
             <TextView
+                    android:id="@+id/viewTopic"
                     android:layout_width="175dp"
                     android:layout_height="wrap_content"
                     android:background="@color/colorWhite"
                     android:padding="5dp"
                     android:hint="@string/hint_topic"
                     android:ems="10"
-                    android:id="@+id/viewTopic"
                     android:singleLine="true" android:textSize="12sp"
                     app:layout_constraintStart_toEndOf="@+id/lbl_View_Topic"
                     app:layout_constraintBaseline_toBaselineOf="@+id/lbl_View_Topic"
                     android:layout_marginStart="5dp"/>
             <TextView
+                    android:id="@+id/lbl_View_Type"
                     android:text="@string/lbl_note_type"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="center_vertical"
                     android:background="@color/colorWhite"
                     android:padding="5dp"
-                    android:id="@+id/lblViewType"
                     android:textSize="12sp" android:textStyle="bold"
                     app:layout_constraintTop_toTopOf="parent" app:layout_constraintStart_toStartOf="parent"
                     android:layout_marginTop="5dp" android:layout_marginStart="5dp"/>
 
             <TextView
+                    android:id="@+id/lbl_View_Summary"
                     android:text="@string/lbl_note_summary"
                     android:layout_width="67dp"
                     android:layout_height="wrap_content"
@@ -123,7 +125,6 @@
                     app:layout_constraintStart_toStartOf="parent"
                     android:layout_marginStart="5dp"
                     android:gravity="end"
-                    android:id="@+id/lbl_View_Summary"
                     app:layout_constraintTop_toBottomOf="@+id/viewQuestion"
                     android:layout_marginTop="15dp" android:padding="5dp"
                     android:textStyle="bold"
@@ -131,10 +132,11 @@
                     android:textSize="12sp"/>
 
             <TextView
+                    android:id="@+id/viewSummary"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:ems="10"
-                    android:id="@+id/viewSummary" android:background="@color/colorWhite" android:textSize="12sp"
+                    android:background="@color/colorWhite" android:textSize="12sp"
                     android:padding="5dp" app:layout_constraintStart_toEndOf="@+id/lbl_View_Summary"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintBaseline_toBaselineOf="@+id/lbl_View_Summary"
@@ -142,10 +144,10 @@
                     android:layout_marginEnd="5dp"/>
 
             <TextView
+                    android:id="@+id/lbl_View_Comment"
                     android:text="@string/lbl_note_comment"
                     android:layout_width="67dp"
                     android:layout_height="wrap_content"
-                    android:id="@+id/lbl_View_Comment"
                     android:textStyle="bold" android:background="@color/colorWhite"
                     android:textSize="12sp" android:padding="5dp"
                     app:layout_constraintTop_toBottomOf="@+id/viewSummary"
@@ -153,6 +155,7 @@
                     android:layout_marginStart="5dp" android:layout_marginTop="5dp"/>
 
             <TextView
+                    android:id="@+id/viewComment"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@color/colorWhite"
@@ -161,7 +164,6 @@
                     android:textSize="12sp"
                     android:gravity="start|top"
                     android:ems="10"
-                    android:id="@+id/viewComment"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/lbl_View_Comment"
@@ -169,78 +171,81 @@
                     android:layout_marginStart="5dp"
                     android:layout_marginEnd="5dp"/>
 
-            <TextView android:layout_width="67dp" android:layout_height="wrap_content"
-                      android:id="@+id/lbl_view_Hyperlink"
-                      android:text="@string/lbl_note_hyperlink"
-                      app:layout_constraintStart_toStartOf="parent"
-                      android:layout_marginStart="5dp"
-                      android:gravity="end"
-                      app:layout_constraintTop_toBottomOf="@+id/viewComment"
-                      android:layout_marginTop="15dp" android:padding="5dp"
-                      android:textStyle="bold"
-                      android:background="@color/colorWhite"
-                      android:textSize="12sp"/>
+            <TextView
+                    android:id="@+id/lbl_View_Hyperlink"
+                    android:layout_width="67dp" android:layout_height="wrap_content"
+                    android:text="@string/lbl_note_hyperlink"
+                    app:layout_constraintStart_toStartOf="parent"
+                    android:layout_marginStart="5dp"
+                    android:gravity="end"
+                    app:layout_constraintTop_toBottomOf="@+id/viewComment"
+                    android:layout_marginTop="15dp" android:padding="5dp"
+                    android:textStyle="bold"
+                    android:background="@color/colorWhite"
+                    android:textSize="12sp"/>
 
             <TextView
+                    android:id="@+id/viewHyperlink"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:ems="10"
-                    android:id="@+id/viewHyperlink"
                     android:background="@color/colorWhite"
                     android:textSize="12sp"
                     android:padding="5dp"
-                    app:layout_constraintStart_toEndOf="@+id/lbl_view_Hyperlink"
+                    app:layout_constraintStart_toEndOf="@+id/lbl_View_Hyperlink"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintBaseline_toBaselineOf="@+id/lbl_view_Hyperlink"
+                    app:layout_constraintBaseline_toBaselineOf="@+id/lbl_View_Hyperlink"
                     android:layout_marginStart="5dp"
                     android:layout_marginEnd="5dp"/>
 
             <TextView
+                    android:id="@+id/lbl_View_Quote"
                     android:text="@string/lbl_note_quote"
                     android:layout_width="67dp"
                     android:layout_height="wrap_content"
                     android:padding="5dp"
                     android:background="@color/colorWhite"
                     android:gravity="end"
-                    android:id="@+id/lblViewQuote" android:textStyle="bold" android:textSize="12sp"
+                    android:textStyle="bold" android:textSize="12sp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/viewHyperlink" android:layout_marginStart="5dp"
                     android:layout_marginTop="15dp"/>
             <TextView
+                    android:id="@+id/viewQuote"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:id="@+id/tab_View_Quote"
                     android:padding="5dp"
                     android:background="@color/colorWhite"
                     android:hint="@string/hint_quote"
                     android:textSize="12sp"
-                    app:layout_constraintStart_toEndOf="@+id/lblViewQuote"
-                    app:layout_constraintBaseline_toBaselineOf="@+id/lblViewQuote"
+                    app:layout_constraintStart_toEndOf="@+id/lbl_View_Quote"
+                    app:layout_constraintBaseline_toBaselineOf="@+id/lbl_View_Quote"
                     app:layout_constraintEnd_toEndOf="parent" android:layout_marginStart="5dp"
                     android:layout_marginEnd="5dp"/>
             <TextView
+                    android:id="@+id/lbl_View_Term"
                     android:text="@string/lbl_note_term"
                     android:layout_width="67dp"
                     android:layout_height="wrap_content"
-                    android:id="@+id/lblViewTerm"
                     android:padding="5dp"
                     android:background="@color/colorWhite"
                     android:gravity="end"
                     android:textSize="12sp"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/tab_View_Quote"
+                    app:layout_constraintTop_toBottomOf="@+id/viewQuote"
                     android:layout_marginTop="5dp"
                     android:layout_marginStart="5dp" android:textStyle="bold"/>
             <TextView
+                    android:id="@+id/viewTerm"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:id="@+id/tab_View_Term" android:hint="@string/hint_term"
+                     android:hint="@string/hint_term"
                     android:padding="5dp"
                     android:background="@color/colorWhite"
                     android:textSize="12sp"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintBaseline_toBaselineOf="@+id/lblViewTerm"
-                    app:layout_constraintStart_toEndOf="@+id/lblViewTerm" android:layout_marginStart="5dp"
+                    app:layout_constraintBaseline_toBaselineOf="@+id/lbl_View_Term"
+                    app:layout_constraintStart_toEndOf="@+id/lbl_View_Term" android:layout_marginStart="5dp"
                     android:layout_marginEnd="5dp"/>
             <TableLayout
                     android:id="@+id/table_files"
@@ -250,39 +255,39 @@
                     android:background="@color/colorDkGray"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/tab_View_Term"
-
+                    app:layout_constraintTop_toBottomOf="@+id/viewTerm"
                     android:layout_marginTop="15dp"
                     android:layout_marginEnd="5dp" android:layout_marginStart="5dp">
 
             </TableLayout>
 
             <TextView
+                    android:id="@+id/lbl_View_Source"
                     android:text="@string/lbl_note_source"
                     android:layout_width="67dp"
                     android:layout_height="wrap_content"
                     android:padding="5dp"
                     android:background="@color/colorWhite"
-                    android:id="@+id/lblViewSource" android:textStyle="bold" android:textSize="12sp"
+                    android:textStyle="bold" android:textSize="12sp"
                     app:layout_constraintTop_toBottomOf="@id/table_files"
                     app:layout_constraintStart_toStartOf="parent" android:layout_marginStart="5dp"
                     android:layout_marginTop="15dp"/>
             <TextView
+                    android:id="@+id/viewSource"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:id="@+id/viewSource"
                     android:padding="5dp"
                     android:background="@color/colorWhite"
-                    app:layout_constraintStart_toEndOf="@id/lblViewSource"
+                    app:layout_constraintStart_toEndOf="@id/lbl_View_Source"
                     android:layout_marginStart="5dp"
                     app:layout_constraintEnd_toEndOf="parent" android:hint="@string/hint_source"
                     android:textSize="12sp"
-                    android:layout_marginEnd="5dp" app:layout_constraintBaseline_toBaselineOf="@+id/lblViewSource"/>
+                    android:layout_marginEnd="5dp" app:layout_constraintBaseline_toBaselineOf="@+id/lbl_View_Source"/>
             <TextView
+                    android:id="@+id/lbl_View_Authors"
                     android:text="@string/lbl_note_Authors"
                     android:layout_width="67dp"
                     android:layout_height="wrap_content"
-                    android:id="@+id/lblViewAuthors"
                     android:padding="5dp"
                     android:background="@color/colorWhite"
                     android:textSize="12sp"
@@ -291,15 +296,166 @@
                     android:layout_marginTop="5dp"
                     android:layout_marginStart="5dp" android:textStyle="bold"/>
             <TextView
+                    android:id="@+id/viewAuthors"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:id="@+id/viewAuthors" android:hint="@string/hint_authors"
+                    android:hint="@string/hint_authors"
                     android:padding="5dp"
                     android:background="@color/colorWhite"
                     android:textSize="12sp"
-                    app:layout_constraintStart_toEndOf="@id/lblViewAuthors" app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/lbl_View_Authors" app:layout_constraintEnd_toEndOf="parent"
                     android:layout_marginStart="5dp" android:layout_marginEnd="5dp"
-                    app:layout_constraintBaseline_toBaselineOf="@+id/lblViewAuthors"/>
+                    app:layout_constraintBaseline_toBaselineOf="@+id/lbl_View_Authors"/>
+            <TextView
+                    android:id="@+id/lbl_View_Date"
+                    android:text="@string/lbl_note_date"
+                    android:layout_width="87dp"
+                    android:layout_height="wrap_content"
+                    android:gravity="end"
+                    android:background="@color/colorWhite"
+                    android:padding="5dp"
+                    android:textSize="12sp" android:textStyle="bold"
+                    app:layout_constraintTop_toBottomOf="@id/viewAuthors"
+                    app:layout_constraintStart_toStartOf="parent"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginStart="15dp"/>
+            <TextView
+                    android:id="@+id/viewDate"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:background="@color/colorWhite"
+                    android:padding="5dp"
+                    android:hint="@string/hint_date"
+                    android:ems="10"
+                    android:singleLine="true" android:textSize="12sp"
+                    app:layout_constraintStart_toEndOf="@+id/lbl_View_Date"
+                    app:layout_constraintBaseline_toBaselineOf="@+id/lbl_View_Date"
+                    android:layout_marginStart="5dp"/>
+            <TextView
+                    android:id="@+id/lbl_View_Volume"
+                    android:text="@string/lbl_note_volume"
+                    android:layout_width="67dp"
+                    android:layout_height="wrap_content"
+                    android:gravity="end"
+                    android:background="@color/colorWhite"
+                    android:padding="5dp"
+                    android:textSize="12sp" android:textStyle="bold"
+                    app:layout_constraintTop_toBottomOf="@id/viewAuthors"
+                    app:layout_constraintStart_toEndOf="@id/viewDate"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginStart="5dp"/>
+            <TextView
+                    android:id="@+id/viewVolume"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:background="@color/colorWhite"
+                    android:padding="5dp"
+                    android:hint="@string/hint_volume"
+                    android:ems="10"
+                    android:singleLine="true" android:textSize="12sp"
+                    app:layout_constraintStart_toEndOf="@+id/lbl_View_Volume"
+                    app:layout_constraintBaseline_toBaselineOf="@+id/lbl_View_Date"
+                    android:layout_marginStart="5dp"/>
+            <TextView
+                    android:id="@+id/lbl_View_PgsParas"
+                    android:text="@string/lbl_note_pgs_paras"
+                    android:layout_width="87dp"
+                    android:layout_height="wrap_content"
+                    android:gravity="end"
+                    android:background="@color/colorWhite"
+                    android:padding="5dp"
+                    android:textSize="12sp" android:textStyle="bold"
+                    app:layout_constraintTop_toBottomOf="@id/viewDate"
+                    app:layout_constraintStart_toStartOf="parent"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginStart="15dp"/>
+            <TextView
+                    android:id="@+id/viewPgsParas"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:background="@color/colorWhite"
+                    android:padding="5dp"
+                    android:hint="@string/hint_pgs_paras"
+                    android:ems="10"
+                    android:singleLine="true" android:textSize="12sp"
+                    app:layout_constraintStart_toEndOf="@+id/lbl_View_PgsParas"
+                    app:layout_constraintBaseline_toBaselineOf="@+id/lbl_View_PgsParas"
+                    android:layout_marginStart="5dp"/>
+            <TextView
+                    android:id="@+id/lbl_View_Edition"
+                    android:text="@string/lbl_note_edition"
+                    android:layout_width="67dp"
+                    android:layout_height="wrap_content"
+                    android:gravity="end"
+                    android:background="@color/colorWhite"
+                    android:padding="5dp"
+                    android:textSize="12sp" android:textStyle="bold"
+                    app:layout_constraintTop_toBottomOf="@id/viewDate"
+                    app:layout_constraintStart_toEndOf="@id/viewPgsParas"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginStart="5dp"/>
+            <TextView
+                    android:id="@+id/viewEdition"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:background="@color/colorWhite"
+                    android:padding="5dp"
+                    android:hint="@string/hint_edition"
+                    android:ems="10"
+                    android:singleLine="true" android:textSize="12sp"
+                    app:layout_constraintStart_toEndOf="@+id/lbl_View_Edition"
+                    app:layout_constraintBaseline_toBaselineOf="@+id/lbl_View_PgsParas"
+                    android:layout_marginStart="5dp"/>
+            <TextView
+                    android:id="@+id/lbl_View_TimeStamp"
+                    android:text="@string/lbl_note_timestamp"
+                    android:layout_width="87dp"
+                    android:layout_height="wrap_content"
+                    android:gravity="end"
+                    android:background="@color/colorWhite"
+                    android:padding="5dp"
+                    android:textSize="12sp" android:textStyle="bold"
+                    app:layout_constraintTop_toBottomOf="@id/viewPgsParas"
+                    app:layout_constraintStart_toStartOf="parent"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginStart="15dp"/>
+            <TextView
+                    android:id="@+id/viewTimeStamp"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:background="@color/colorWhite"
+                    android:padding="5dp"
+                    android:hint="@string/hint_timestamp"
+                    android:ems="10"
+                    android:singleLine="true" android:textSize="12sp"
+                    app:layout_constraintStart_toEndOf="@+id/lbl_View_TimeStamp"
+                    app:layout_constraintBaseline_toBaselineOf="@+id/lbl_View_TimeStamp"
+                    android:layout_marginStart="5dp"/>
+            <TextView
+                    android:id="@+id/lbl_View_Issue"
+                    android:text="@string/lbl_note_issue"
+                    android:layout_width="67dp"
+                    android:layout_height="wrap_content"
+                    android:gravity="end"
+                    android:background="@color/colorWhite"
+                    android:padding="5dp"
+                    android:textSize="12sp" android:textStyle="bold"
+                    app:layout_constraintTop_toBottomOf="@id/viewPgsParas"
+                    app:layout_constraintStart_toEndOf="@id/viewTimeStamp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginStart="5dp"/>
+            <TextView
+                    android:id="@+id/viewIssue"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:background="@color/colorWhite"
+                    android:padding="5dp"
+                    android:hint="@string/hint_issue"
+                    android:ems="10"
+                    android:singleLine="true" android:textSize="12sp"
+                    app:layout_constraintStart_toEndOf="@+id/lbl_View_Issue"
+                    app:layout_constraintBaseline_toBaselineOf="@+id/lbl_View_Issue"
+                    android:layout_marginStart="5dp"/>
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>

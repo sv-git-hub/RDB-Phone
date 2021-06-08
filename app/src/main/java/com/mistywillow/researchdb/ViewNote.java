@@ -65,7 +65,7 @@ public class ViewNote extends AppCompatActivity {
         toolbar.setTitleTextColor(getColor(R.color.colorWhite));
         setSupportActionBar(toolbar);
 
-        sourceType = findViewById(R.id.viewSourceType);
+        sourceType = findViewById(R.id.viewType);
         topic = findViewById(R.id.viewTopic);
         question = findViewById(R.id.viewQuestion);
         source = findViewById(R.id.viewSource);
@@ -73,8 +73,8 @@ public class ViewNote extends AppCompatActivity {
         summary = findViewById(R.id.viewSummary);
         comment = findViewById(R.id.viewComment);
         hyperlink = findViewById(R.id.viewHyperlink);
-        quote = findViewById(R.id.tab_View_Quote);
-        term = findViewById(R.id.tab_View_Term);
+        quote = findViewById(R.id.viewQuote);
+        term = findViewById(R.id.viewTerm);
 
         tableLayout = findViewById(R.id.table_files);
 

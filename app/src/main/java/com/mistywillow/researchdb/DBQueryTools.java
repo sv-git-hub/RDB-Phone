@@ -1,11 +1,14 @@
 package com.mistywillow.researchdb;
 
 import android.content.Context;
+import android.util.TypedValue;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.TextView;
 import android.widget.Toast;
 import com.mistywillow.researchdb.database.ResearchDatabase;
 import com.mistywillow.researchdb.database.entities.*;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -43,6 +46,8 @@ public class DBQueryTools {
         }
         return str.toString().trim();
     }
+
+        // CAPTURE METHODS FOR MAIN ACTIVITY ONLY - INCLUDES ""  (BLANK)
     public static List<String>spinnerTopicsList(Context context){
         rdb = ResearchDatabase.getInstance(context, "Apologetic.db");
         // TOPIC LIST
@@ -65,9 +70,8 @@ public class DBQueryTools {
         }
         return nQuestions;
     }
-    public static boolean checkForDuplicate(String data, String table){
-            return false;
-        }
+
+        // CAPTURE METHODS FOR LOADING SPINNERS IN EditNote and AddNote classes
     public static ArrayAdapter<String>captureSourceTypes(Context context){
         List<String> orgSourceTypes = new ArrayList<>(Arrays.asList("Article", "Audio", "Book", "Journal", "Periodical", "Question", "Quote", "Term", "Video", "Website", "Other"));
         return new ArrayAdapter<>(context, android.R.layout.simple_list_item_1, orgSourceTypes);
@@ -80,6 +84,37 @@ public class DBQueryTools {
             orgSourceTitles.add(s.getTitle());
         }
         return new ArrayAdapter<>(context, android.R.layout.simple_list_item_1, orgSourceTitles);
+        //sourceTitle.setAdapter(sourceTitleAdapter);
+    }
+
+    public static ArrayAdapter<String> captureDBSourcesWithAuthors(Context context){
+        rdb = ResearchDatabase.getInstance(context, "Apologetic.db");
+        List<Sources> sources = rdb.getSourcesDao().getSources();
+        List<String> orgSourceTitles = new ArrayList<>();
+        for(Sources src : sources){
+            List<Authors> authors = rdb.getAuthorsDao().getSourceAuthors(src.getSourceID());
+            orgSourceTitles.add(src.getTitle() + " by " + concatenateAuthors(authors));
+        }
+
+
+//        for(Sources s : sources){
+//            orgSourceTitles.add(s.getTitle());
+//        }
+        return new ArrayAdapter<String>(context, android.R.layout.simple_list_item_1, orgSourceTitles) {
+            @Override
+            public View getView(int position, View convertView, ViewGroup parent) {
+                /// Get the Item from ListView
+                View view = super.getView(position, convertView, parent);
+                TextView tv = (TextView) view.findViewById(android.R.id.text1);
+                // Set the text size 25 dip for ListView each item
+                tv.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 12);
+
+                // Return the view
+                return view;
+            }
+
+            ;
+        };
         //sourceTitle.setAdapter(sourceTitleAdapter);
     }
     public static ArrayAdapter<String> captureDBAuthors(Context context){
@@ -129,6 +164,9 @@ public class DBQueryTools {
         List<Sources> newSource = rdb.getSourcesDao().getSourceByTitle(sourceTitle);
         boolean authorsMatch;
 
+        if(newSource.size()>1)
+            Toast.makeText( context, "Which author?", Toast.LENGTH_SHORT).show();
+
         if(newSource.size() == 1) {
             newAuthors = rdb.getAuthorBySourceDao().getAuthorsForSource(newSource.get(0).getSourceID());
         }else{
@@ -141,4 +179,9 @@ public class DBQueryTools {
     private static boolean checkAuthorsMatchSource(List<Authors> newAuthors) {
         return false;
     }
+
+    public static boolean checkForDuplicate(String data, String table, String column){
+        return false;
+    }
+    private long countByString(){return 0;}
 }

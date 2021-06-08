@@ -22,8 +22,6 @@ import com.mistywillow.researchdb.database.ResearchDatabase;
 import com.mistywillow.researchdb.database.entities.*;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
@@ -77,7 +75,7 @@ public class AddNote extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         // AUTOCOMPLETE TEXT VIEWS
-        sourceType = findViewById(R.id.viewSourceType);
+        sourceType = findViewById(R.id.viewType);
         sourceTitle = findViewById(R.id.viewSource);
         author = findViewById(R.id.viewAuthors);
         topic = findViewById(R.id.viewTopic);
@@ -87,8 +85,8 @@ public class AddNote extends AppCompatActivity {
         // REGULAR TEXT VIEWS
         comment = findViewById(R.id.viewComment);
         hyperlink = findViewById(R.id.viewHyperlink);
-        quote = findViewById(R.id.tab_View_Quote);
-        term = findViewById(R.id.tab_View_Term);
+        quote = findViewById(R.id.viewQuote);
+        term = findViewById(R.id.viewTerm);
 
         tableLayout = findViewById(R.id.table_files);
 
