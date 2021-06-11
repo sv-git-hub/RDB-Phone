@@ -8,10 +8,7 @@ import android.text.Editable;
 import android.text.Html;
 import android.text.TextWatcher;
 import android.text.method.LinkMovementMethod;
-import android.view.Gravity;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
+import android.view.*;
 import android.webkit.MimeTypeMap;
 import android.widget.*;
 import androidx.annotation.NonNull;
@@ -32,37 +29,44 @@ public class AddNote extends AppCompatActivity {
     private ResearchDatabase rdb;
     private int vNoteID;
 
-    List<String> viewNoteDetails;
-    List<String> orgNoteDetails;
-    List<Files> viewNoteFiles;
-    List<Files> orgNoteFiles;
-    List<String> addTypes;
+    private List<String> viewNoteDetails;
+    private List<String> orgNoteDetails;
+    private List<Files> viewNoteFiles;
+    private List<Files> orgNoteFiles;
+    private List<String> addTypes;
 
-    List<String> orgQuestions;
-    List<String> orgTopics;
-    List<String> orgSourceTypes;
-    List<String> orgSourceTitles;
-    List<String> orgAuthors;
+    private List<String> orgQuestions;
+    private List<String> orgTopics;
+    private List<String> orgSourceTypes;
+    private List<String> orgSourceTitles;
+    private List<String> orgAuthors;
 
-    List<Sources> sources;
-    List<Authors> authors;
-    List<Topics> topics;
-    List<Questions> questions;
+    private List<Sources> sources;
+    private List<Authors> authors;
+    private List<Topics> topics;
+    private List<Questions> questions;
 
-    TextView quote;
-    TextView term;
-    TextView comment;
-    TextView hyperlink;
+    private TextView quote;
+    private TextView term;
+    private TextView comment;
+    private TextView hyperlink;
+    private TextView date;
+    private TextView volume;
+    private TextView edition;
+    private TextView issue;
+    private TextView pgs_paras;
+    private TextView timeStamp;
 
     //AutoCompleteTextView sourceType;
-    Spinner sourceType;
+    AutoCompleteTextView sourceType;
     AutoCompleteTextView sourceTitle;
     AutoCompleteTextView author;
     AutoCompleteTextView topic;
     AutoCompleteTextView question;
     AutoCompleteTextView summary;
 
-    TableLayout tableLayout;
+    TableLayout tableLayoutFiles;
+    TableLayout tableLayoutAuthors;
     Menu editMenu;
 
     @Override
@@ -88,35 +92,33 @@ public class AddNote extends AppCompatActivity {
         quote = findViewById(R.id.viewQuote);
         term = findViewById(R.id.viewTerm);
 
-        tableLayout = findViewById(R.id.table_files);
+        tableLayoutFiles = findViewById(R.id.table_files);
+        tableLayoutFiles.addView(BuildTableLayout.setupFilesTableRow(this,tableLayoutFiles,"FileID", "FileName",true));
+        tableLayoutAuthors = findViewById(R.id.table_authors);
+        tableLayoutAuthors.addView(BuildTableLayout.setupAuthorsTableRow(this,tableLayoutAuthors,"Organization/First", "Middle", "Last", "Suffix", true));
 
         // CAPTURE DB INFORMATION FOR AUTO-COMPLETE TEXT VIEWS
         loadAutoCompleteTextViews();
         setupOnClickActions();
+
 
         // BACK BUTTON <-
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
     }
 
     private void setupOnClickActions() {
-        sourceTitle.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
+        sourceTitle.setOnFocusChangeListener((v, hasFocus) -> {
+            if(!hasFocus){
+                author.setText(DBQueryTools.captureAuthorNewOrOldSource(getApplicationContext(), sourceTitle.getText().toString()));
             }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
+            if(author.getText().toString().equals("Select an Author or Add new below")){
+                Toast.makeText(this, "TODO: New Author Needed or Selected.", Toast.LENGTH_SHORT).show();
             }
-
+        });
+        sourceTitle.setOnKeyListener(new View.OnKeyListener() {
             @Override
-            public void afterTextChanged(Editable s) {
-                List<Sources> newSource = rdb.getSourcesDao().getSourceByTitle(sourceTitle.getText().toString());
-                if(newSource.size() == 1) {
-                    List<Authors> newAuthors = rdb.getAuthorBySourceDao().getAuthorsForSource(newSource.get(0).getSourceID());
-                    author.setText(DBQueryTools.concatenateAuthors(newAuthors));
-                }
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                return false;
             }
         });
     }
@@ -208,18 +210,19 @@ public class AddNote extends AppCompatActivity {
         }
     }
 
-    private void populateFileData(List<Files> files){
-        tableLayout.addView(setupTableRow("FileID", "FileName", true));
+/*    private void populateFileData(List<Files> files){
+        tableLayoutFiles.addView(BuildTableLayout.setupFilesTableRow(this,tableLayoutFiles,"FileID", "FileName",true));
         if(files != null){
             if(files.size() > 0){
                 for (Files f: files) {
-                    tableLayout.addView(setupTableRow(String.valueOf(f.getFileID()), f.getFileName(), false));
+                    String fName = f.getFileName();
+                    tableLayoutFiles.addView(BuildTableLayout.setupFilesTableRow(this, tableLayoutFiles,"", fName,false));
                 }
             }
         }
-    }
+    }*/
 
-    private TableRow setupTableRow(String fileID, String fileName, boolean bold) {
+/*    private TableRow setupTableRow(String fileID, String fileName, boolean bold) {
 
         TableRow row = new TableRow(this);
         row.addView(setupRowTextView(fileID, bold));
@@ -281,7 +284,7 @@ public class AddNote extends AppCompatActivity {
     private String getFileExtension(String fileName){
         String[] ext = fileName.split("[.]");
         return ext[ext.length-1];
-    }
+    }*/
 
     private String buildHyperlink(String link){
         StringBuilder sb = new StringBuilder();

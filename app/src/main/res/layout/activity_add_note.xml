@@ -30,7 +30,8 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             android:layout_marginTop="5dp"
-            android:layout_marginBottom="5dp" app:layout_constraintHorizontal_bias="0.0"
+            android:layout_marginBottom="5dp"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintVertical_bias="0.0">
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -41,15 +42,33 @@
                 android:layout_marginBottom="5dp"
                 android:layout_marginTop="5dp"
                 android:id="@+id/ConstraintLayout2">
-
-            <Spinner
+            <TextView
+                    android:id="@+id/lbl_View_Type"
+                    android:text="@string/lbl_note_type"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:background="@color/colorWhite"
+                    android:padding="5dp"
+                    android:textSize="12sp" android:textStyle="bold"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginStart="5dp"/>
+            <AutoCompleteTextView
                     android:id="@+id/viewType"
                     android:layout_width="100dp"
-                    android:layout_height="25dp"
+                    android:layout_height="wrap_content"
                     android:background="@color/colorWhite"
+                    android:padding="5dp"
+                    android:inputType="text"
+                    android:imeOptions="actionDone"
                     android:hint="@string/hint_type"
+                    android:ems="10"
+                    android:singleLine="true"
+                    android:textSize="12sp"
                     app:layout_constraintStart_toEndOf="@+id/lbl_View_Type"
-                    app:layout_constraintTop_toTopOf="@+id/lbl_View_Type"
+                    app:layout_constraintBaseline_toBaselineOf="@+id/lbl_View_Type"
                     android:layout_marginStart="5dp"/>
 
             <TextView
@@ -59,19 +78,33 @@
                     android:layout_height="wrap_content"
                     android:background="@color/colorWhite"
                     android:padding="5dp"
-                    android:textStyle="bold"
-                    android:textSize="12sp"
+                    android:textStyle="bold" android:textSize="12sp"
                     app:layout_constraintStart_toEndOf="@+id/viewType"
                     app:layout_constraintBaseline_toBaselineOf="@+id/viewType"
                     android:layout_marginStart="10dp"/>
+            <AutoCompleteTextView
+                    android:id="@+id/viewTopic"
+                    android:layout_width="175dp"
+                    android:layout_height="wrap_content"
+                    android:background="@color/colorWhite"
+                    android:padding="5dp"
+                    android:inputType="text"
+                    android:imeOptions="actionDone"
+                    android:hint="@string/hint_topic"
+                    android:ems="10"
+                    android:singleLine="true" android:textSize="12sp"
+                    app:layout_constraintStart_toEndOf="@+id/lbl_View_Topic"
+                    app:layout_constraintBaseline_toBaselineOf="@+id/lbl_View_Topic"
+                    android:layout_marginStart="5dp"/>
             <TextView
+                    android:id="@+id/lbl_View_Question"
                     android:text="@string/lbl_note_question"
                     android:layout_width="67dp"
                     android:layout_height="wrap_content"
                     android:background="@color/colorWhite"
                     android:padding="5dp"
                     android:gravity="end"
-                    android:id="@+id/lbl_View_Question" android:textStyle="bold"
+                    android:textStyle="bold"
                     android:textSize="12sp"
                     app:layout_constraintStart_toStartOf="parent" android:layout_marginStart="5dp"
                     app:layout_constraintTop_toBottomOf="@+id/lbl_View_Type" android:layout_marginTop="5dp"/>
@@ -85,59 +118,14 @@
                     android:padding="5dp"
                     android:inputType="textMultiLine"
                     android:imeOptions="actionDone"
-                    android:hint="@string/add_question"
+                    android:hint="@string/hint_question"
                     app:layout_constraintStart_toEndOf="@+id/lbl_View_Question"
                     app:layout_constraintEnd_toEndOf="parent"
-                    android:layout_marginStart="5dp"
-                    android:layout_marginEnd="5dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginEnd="8dp"
                     app:layout_constraintTop_toTopOf="@+id/lbl_View_Question"/>
-
-            <AutoCompleteTextView
-                    android:layout_width="175dp"
-                    android:layout_height="wrap_content"
-                    android:background="@color/colorWhite"
-                    android:padding="5dp"
-                    android:inputType="text"
-                    android:imeOptions="actionDone"
-                    android:hint="@string/add_topic"
-                    android:ems="10"
-                    android:id="@+id/viewTopic"
-                    android:singleLine="true" android:textSize="12sp"
-                    app:layout_constraintStart_toEndOf="@+id/lbl_View_Topic"
-                    app:layout_constraintBaseline_toBaselineOf="@+id/lbl_View_Topic"
-                    android:layout_marginStart="5dp"/>
-
-            <!--<AutoCompleteTextView
-                    android:layout_width="175dp"
-                    android:layout_height="wrap_content"
-                    android:background="@color/colorWhite"
-                    android:padding="5dp"
-                    android:inputType="text"
-                    android:imeOptions="actionDone"
-                    android:hint="@string/hint_topic"
-                    android:ems="10"
-                    android:id="@+id/viewTopic"
-                    android:singleLine="true" android:textSize="12sp"
-                    app:layout_constraintStart_toEndOf="@+id/lbl_View_Topic"
-                    app:layout_constraintBaseline_toBaselineOf="@+id/lbl_View_Topic"
-                    android:layout_marginStart="5dp"/>-->
-
             <TextView
-                    android:text="@string/lbl_note_type"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:gravity="center_vertical"
-                    android:background="@color/colorWhite"
-                    android:padding="5dp"
-                    android:id="@+id/lbl_View_Type"
-                    android:textSize="12sp"
-                    android:textStyle="bold"
-                    android:layout_marginStart="5dp"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    />
-
-            <TextView
+                    android:id="@+id/lbl_View_Summary"
                     android:text="@string/lbl_note_summary"
                     android:layout_width="67dp"
                     android:layout_height="wrap_content"
@@ -145,7 +133,6 @@
                     app:layout_constraintStart_toStartOf="parent"
                     android:layout_marginStart="5dp"
                     android:gravity="end"
-                    android:id="@+id/lbl_View_Summary"
                     app:layout_constraintTop_toBottomOf="@+id/viewQuestion"
                     android:layout_marginTop="15dp" android:padding="5dp"
                     android:textStyle="bold"
@@ -153,13 +140,16 @@
                     android:textSize="12sp"/>
 
             <AutoCompleteTextView
+                    android:id="@+id/viewSummary"
+                    android:hint="@string/hint_summary"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:ems="10"
-                    android:id="@+id/viewSummary" android:background="@color/colorWhite" android:textSize="12sp"
+                    android:background="@color/colorWhite"
+                    android:textSize="12sp"
                     android:padding="5dp"
                     android:inputType="textMultiLine"
                     android:imeOptions="actionDone"
+                    android:ems="10"
                     app:layout_constraintStart_toEndOf="@+id/lbl_View_Summary"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintBaseline_toBaselineOf="@+id/lbl_View_Summary"
@@ -167,17 +157,19 @@
                     android:layout_marginEnd="5dp"/>
 
             <TextView
+                    android:id="@+id/lbl_View_Comment"
                     android:text="@string/lbl_note_comment"
                     android:layout_width="67dp"
                     android:layout_height="wrap_content"
-                    android:id="@+id/lbl_View_Comment"
                     android:textStyle="bold" android:background="@color/colorWhite"
                     android:textSize="12sp" android:padding="5dp"
                     app:layout_constraintTop_toBottomOf="@+id/viewSummary"
                     app:layout_constraintStart_toStartOf="parent"
-                    android:layout_marginStart="5dp" android:layout_marginTop="5dp"/>
+                    android:layout_marginStart="5dp"
+                    android:layout_marginTop="5dp"/>
 
             <EditText
+                    android:id="@+id/viewComment"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@color/colorWhite"
@@ -187,8 +179,6 @@
                     android:hint="@string/hint_comment"
                     android:textSize="12sp"
                     android:gravity="start|top"
-                    android:ems="10"
-                    android:id="@+id/viewComment"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/lbl_View_Comment"
@@ -196,23 +186,26 @@
                     android:layout_marginStart="5dp"
                     android:layout_marginEnd="5dp" android:autofillHints=""/>
 
-            <TextView android:layout_width="67dp" android:layout_height="wrap_content"
-                      android:id="@+id/lbl_View_Hyperlink"
-                      android:text="@string/lbl_note_hyperlink"
-                      app:layout_constraintStart_toStartOf="parent"
-                      android:layout_marginStart="5dp"
-                      android:gravity="end"
-                      app:layout_constraintTop_toBottomOf="@+id/viewComment"
-                      android:layout_marginTop="15dp" android:padding="5dp"
-                      android:textStyle="bold"
-                      android:background="@color/colorWhite"
-                      android:textSize="12sp"/>
+            <TextView
+                    android:id="@+id/lbl_View_Hyperlink"
+                    android:layout_width="67dp"
+                    android:layout_height="wrap_content"
+                    android:text="@string/lbl_note_hyperlink"
+                    app:layout_constraintStart_toStartOf="parent"
+                    android:layout_marginStart="5dp"
+                    android:gravity="end"
+                    app:layout_constraintTop_toBottomOf="@+id/viewComment"
+                    android:layout_marginTop="15dp"
+                    android:padding="5dp"
+                    android:textStyle="bold"
+                    android:background="@color/colorWhite"
+                    android:textSize="12sp"/>
 
             <EditText
+                    android:id="@+id/viewHyperlink"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:ems="10"
-                    android:id="@+id/viewHyperlink"
                     android:autofillHints="@string/hint_hyperlink"
                     android:background="@color/colorWhite"
                     android:textSize="12sp"
@@ -226,6 +219,7 @@
                     android:layout_marginEnd="5dp"/>
 
             <TextView
+                    android:id="@+id/lbl_View_Quote"
                     android:text="@string/lbl_note_quote"
                     android:autofillHints="@string/hint_quote"
                     android:layout_width="67dp"
@@ -233,14 +227,16 @@
                     android:padding="5dp"
                     android:background="@color/colorWhite"
                     android:gravity="end"
-                    android:id="@+id/lbl_View_Quote" android:textStyle="bold" android:textSize="12sp"
+                    android:textStyle="bold"
+                    android:textSize="12sp"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/viewHyperlink" android:layout_marginStart="5dp"
+                    app:layout_constraintTop_toBottomOf="@+id/viewHyperlink"
+                    android:layout_marginStart="5dp"
                     android:layout_marginTop="15dp"/>
             <EditText
+                    android:id="@+id/viewQuote"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:id="@+id/viewQuote"
                     android:autofillHints="@string/hint_quote"
                     android:padding="5dp"
                     android:inputType="textMultiLine"
@@ -253,10 +249,10 @@
                     app:layout_constraintEnd_toEndOf="parent" android:layout_marginStart="5dp"
                     android:layout_marginEnd="5dp"/>
             <TextView
+                    android:id="@+id/lbl_View_Term"
                     android:text="@string/lbl_note_term"
                     android:layout_width="67dp"
                     android:layout_height="wrap_content"
-                    android:id="@+id/lbl_View_Term"
                     android:padding="5dp"
                     android:background="@color/colorWhite"
                     android:gravity="end"
@@ -266,9 +262,9 @@
                     android:layout_marginTop="5dp"
                     android:layout_marginStart="5dp" android:textStyle="bold"/>
             <EditText
+                    android:id="@+id/viewTerm"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:id="@+id/viewTerm"
                     android:hint="@string/hint_term"
                     android:autofillHints="@string/hint_term"
                     android:padding="5dp"
@@ -280,51 +276,55 @@
                     app:layout_constraintBaseline_toBaselineOf="@+id/lbl_View_Term"
                     app:layout_constraintStart_toEndOf="@+id/lbl_View_Term" android:layout_marginStart="5dp"
                     android:layout_marginEnd="5dp"/>
+
             <TableLayout
                     android:id="@+id/table_files"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
+                    android:shrinkColumns="0"
+                    android:stretchColumns="1"
                     android:background="@color/colorDkGray"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/viewTerm"
-
+                    android:padding="2dp"
                     android:layout_marginTop="15dp"
-                    android:layout_marginEnd="5dp" android:layout_marginStart="5dp">
+                    android:layout_marginEnd="5dp"
+                    android:layout_marginStart="5dp">
 
             </TableLayout>
 
             <TextView
+                    android:id="@+id/lbl_View_Source"
                     android:text="@string/lbl_note_source"
                     android:layout_width="67dp"
                     android:layout_height="wrap_content"
                     android:padding="5dp"
                     android:background="@color/colorWhite"
-                    android:id="@+id/lbl_View_Source" android:textStyle="bold" android:textSize="12sp"
+                    android:textStyle="bold" android:textSize="12sp"
                     app:layout_constraintTop_toBottomOf="@id/table_files"
-                    app:layout_constraintStart_toStartOf="parent" android:layout_marginStart="5dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    android:layout_marginStart="5dp"
                     android:layout_marginTop="15dp"/>
             <AutoCompleteTextView
                     android:id="@+id/viewSource"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:textSize="12sp"
-                    android:hint="@string/add_source"
-                    android:inputType="textMultiLine"
-                    android:imeOptions="actionDone"
+                    android:hint="@string/hint_source"
                     android:padding="5dp"
                     android:background="@color/colorWhite"
+                    app:layout_constraintStart_toEndOf="@id/lbl_View_Source"
                     android:layout_marginStart="5dp"
-                    android:layout_marginEnd="5dp"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintBaseline_toBaselineOf="@+id/lbl_View_Source"
-                    app:layout_constraintStart_toEndOf="@id/lbl_View_Source"/>
+                    android:textSize="12sp"
+                    android:layout_marginEnd="5dp"
+                    app:layout_constraintBaseline_toBaselineOf="@+id/lbl_View_Source"/>
             <TextView
+                    android:id="@+id/lbl_View_Authors"
                     android:text="@string/lbl_note_Authors"
                     android:layout_width="67dp"
                     android:layout_height="wrap_content"
-                    android:id="@+id/lbl_View_Authors"
                     android:padding="5dp"
                     android:background="@color/colorWhite"
                     android:textSize="12sp"
@@ -333,17 +333,199 @@
                     android:layout_marginTop="5dp"
                     android:layout_marginStart="5dp" android:textStyle="bold"/>
             <AutoCompleteTextView
+                    android:id="@+id/viewAuthors"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:id="@+id/viewAuthors" android:hint="@string/hint_authors"
+                    android:hint="@string/hint_authors"
                     android:padding="5dp"
-                    android:inputType="textMultiLine"
-                    android:imeOptions="actionDone"
                     android:background="@color/colorWhite"
                     android:textSize="12sp"
-                    app:layout_constraintStart_toEndOf="@id/lbl_View_Authors" app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/lbl_View_Authors"
+                    app:layout_constraintEnd_toEndOf="parent"
                     android:layout_marginStart="5dp" android:layout_marginEnd="5dp"
                     app:layout_constraintBaseline_toBaselineOf="@+id/lbl_View_Authors"/>
+            <TextView
+                    android:id="@+id/lbl_View_Date"
+                    android:text="@string/lbl_note_date"
+                    android:layout_width="87dp"
+                    android:layout_height="wrap_content"
+                    android:gravity="end"
+                    android:background="@color/colorWhite"
+                    android:padding="5dp"
+                    android:textSize="12sp" android:textStyle="bold"
+                    app:layout_constraintTop_toBottomOf="@id/viewAuthors"
+                    app:layout_constraintStart_toStartOf="parent"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginStart="15dp"/>
+            <EditText
+                    android:id="@+id/viewDate"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:background="@color/colorWhite"
+                    android:padding="5dp"
+                    android:inputType="date"
+                    android:imeOptions="actionDone"
+                    android:hint="@string/hint_date"
+                    android:autofillHints="@string/hint_date"
+                    android:ems="10"
+                    android:singleLine="true" android:textSize="12sp"
+                    app:layout_constraintStart_toEndOf="@+id/lbl_View_Date"
+                    app:layout_constraintBaseline_toBaselineOf="@+id/lbl_View_Date"
+                    android:layout_marginStart="5dp" />
+            <TextView
+                    android:id="@+id/lbl_View_Volume"
+                    android:text="@string/lbl_note_volume"
+                    android:layout_width="67dp"
+                    android:layout_height="wrap_content"
+                    android:gravity="end"
+                    android:background="@color/colorWhite"
+                    android:padding="5dp"
+                    android:textSize="12sp" android:textStyle="bold"
+                    app:layout_constraintTop_toBottomOf="@id/viewAuthors"
+                    app:layout_constraintStart_toEndOf="@id/viewDate"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginStart="5dp"/>
+            <EditText
+                    android:id="@+id/viewVolume"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:background="@color/colorWhite"
+                    android:inputType="text"
+                    android:imeOptions="actionDone"
+                    android:padding="5dp"
+                    android:hint="@string/hint_volume"
+                    android:autofillHints="@string/hint_volume"
+                    android:ems="10"
+                    android:singleLine="true" android:textSize="12sp"
+                    app:layout_constraintStart_toEndOf="@+id/lbl_View_Volume"
+                    app:layout_constraintBaseline_toBaselineOf="@+id/lbl_View_Date"
+                    android:layout_marginStart="5dp"/>
+            <TextView
+                    android:id="@+id/lbl_View_PgsParas"
+                    android:text="@string/lbl_note_pgs_paras"
+                    android:layout_width="87dp"
+                    android:layout_height="wrap_content"
+                    android:gravity="end"
+                    android:background="@color/colorWhite"
+                    android:padding="5dp"
+                    android:textSize="12sp" android:textStyle="bold"
+                    app:layout_constraintTop_toBottomOf="@id/viewDate"
+                    app:layout_constraintStart_toStartOf="parent"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginStart="15dp"/>
+            <EditText
+                    android:id="@+id/viewPgsParas"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:background="@color/colorWhite"
+                    android:padding="5dp"
+                    android:inputType="text"
+                    android:imeOptions="actionDone"
+                    android:hint="@string/hint_pgs_paras"
+                    android:autofillHints="@string/hint_pgs_paras"
+                    android:ems="10"
+                    android:singleLine="true" android:textSize="12sp"
+                    app:layout_constraintStart_toEndOf="@+id/lbl_View_PgsParas"
+                    app:layout_constraintBaseline_toBaselineOf="@+id/lbl_View_PgsParas"
+                    android:layout_marginStart="5dp"/>
+            <TextView
+                    android:id="@+id/lbl_View_Edition"
+                    android:text="@string/lbl_note_edition"
+                    android:layout_width="67dp"
+                    android:layout_height="wrap_content"
+                    android:gravity="end"
+                    android:background="@color/colorWhite"
+                    android:padding="5dp"
+                    android:textSize="12sp" android:textStyle="bold"
+                    app:layout_constraintTop_toBottomOf="@id/viewDate"
+                    app:layout_constraintStart_toEndOf="@id/viewPgsParas"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginStart="5dp"/>
+            <EditText
+                    android:id="@+id/viewEdition"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:background="@color/colorWhite"
+                    android:inputType="text"
+                    android:imeOptions="actionDone"
+                    android:padding="5dp"
+                    android:hint="@string/hint_edition"
+                    android:autofillHints="@string/hint_edition"
+                    android:ems="10"
+                    android:singleLine="true" android:textSize="12sp"
+                    app:layout_constraintStart_toEndOf="@+id/lbl_View_Edition"
+                    app:layout_constraintBaseline_toBaselineOf="@+id/lbl_View_PgsParas"
+                    android:layout_marginStart="5dp"/>
+            <TextView
+                    android:id="@+id/lbl_View_TimeStamp"
+                    android:text="@string/lbl_note_timestamp"
+                    android:layout_width="87dp"
+                    android:layout_height="wrap_content"
+                    android:gravity="end"
+                    android:background="@color/colorWhite"
+                    android:padding="5dp"
+                    android:textSize="12sp" android:textStyle="bold"
+                    app:layout_constraintTop_toBottomOf="@id/viewPgsParas"
+                    app:layout_constraintStart_toStartOf="parent"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginStart="15dp"/>
+            <EditText
+                    android:id="@+id/viewTimeStamp"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:background="@color/colorWhite"
+                    android:padding="5dp"
+                    android:inputType="text"
+                    android:imeOptions="actionDone"
+                    android:hint="@string/hint_timestamp"
+                    android:autofillHints="@string/hint_timestamp"
+                    android:ems="10"
+                    android:singleLine="true" android:textSize="12sp"
+                    app:layout_constraintStart_toEndOf="@+id/lbl_View_TimeStamp"
+                    app:layout_constraintBaseline_toBaselineOf="@+id/lbl_View_TimeStamp"
+                    android:layout_marginStart="5dp"/>
+            <TextView
+                    android:id="@+id/lbl_View_Issue"
+                    android:text="@string/lbl_note_issue"
+                    android:layout_width="67dp"
+                    android:layout_height="wrap_content"
+                    android:gravity="end"
+                    android:background="@color/colorWhite"
+                    android:padding="5dp"
+                    android:textSize="12sp" android:textStyle="bold"
+                    app:layout_constraintTop_toBottomOf="@id/viewPgsParas"
+                    app:layout_constraintStart_toEndOf="@id/viewTimeStamp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginStart="5dp"/>
+            <EditText
+                    android:id="@+id/viewIssue"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:background="@color/colorWhite"
+                    android:padding="5dp"
+                    android:inputType="text"
+                    android:imeOptions="actionDone"
+                    android:hint="@string/hint_issue"
+                    android:autofillHints="@string/hint_issue"
+                    android:ems="10"
+                    android:singleLine="true" android:textSize="12sp"
+                    app:layout_constraintStart_toEndOf="@+id/lbl_View_Issue"
+                    app:layout_constraintBaseline_toBaselineOf="@+id/lbl_View_Issue"
+                    android:layout_marginStart="5dp"/>
+            <TableLayout
+                    android:id="@+id/table_authors"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:stretchColumns="*"
+                    android:background="@color/colorDkGray"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/viewTimeStamp"
+                    android:padding="2dp"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginEnd="5dp"
+                    android:layout_marginStart="5dp"/>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>

@@ -44,6 +44,12 @@ public class ViewNote extends AppCompatActivity {
     TextView summary;
     TextView comment;
     TextView hyperlink;
+    TextView date;
+    TextView volume;
+    TextView edition;
+    TextView issue;
+    TextView pgs_paras;
+    TextView timeStamp;
 
     TableLayout tableLayout;
     Menu viewMenu;
@@ -75,6 +81,13 @@ public class ViewNote extends AppCompatActivity {
         hyperlink = findViewById(R.id.viewHyperlink);
         quote = findViewById(R.id.viewQuote);
         term = findViewById(R.id.viewTerm);
+        date = findViewById(R.id.viewDate);
+        volume = findViewById(R.id.viewVolume);
+        edition = findViewById(R.id.viewEdition);
+        issue = findViewById(R.id.viewIssue);
+        pgs_paras = findViewById(R.id.viewPgsParas);
+        timeStamp = findViewById(R.id.viewTimeStamp);
+
 
         tableLayout = findViewById(R.id.table_files);
 
@@ -135,8 +148,6 @@ public class ViewNote extends AppCompatActivity {
             if(noteFiles.size() > 0)
                 menuIntent.putParcelableArrayListExtra("NoteFiles", new ArrayList<>(noteFiles));
             startActivity(menuIntent);
-            Toast.makeText(this, "Edit Note for Delete clicked!", Toast.LENGTH_SHORT).show();
-
 
         }else if(item.getItemId() == R.id.mark_for_delete) {
             Toast.makeText(this, "Mark Note for Delete clicked!", Toast.LENGTH_SHORT).show();
@@ -245,6 +256,12 @@ public class ViewNote extends AppCompatActivity {
         authors.setText(noteDetails.get(3));
         summary.setText(noteDetails.get(1));
         comment.setText(noteDetails.get(14));
+        date.setText(DBQueryTools.concatenateDate(noteDetails.get(8), noteDetails.get(9), noteDetails.get(7)));
+        volume.setText(noteDetails.get(10));
+        edition.setText(noteDetails.get(11));
+        issue.setText(noteDetails.get(12));
+        pgs_paras.setText(noteDetails.get(15));
+        timeStamp.setText(noteDetails.get(16));
         if(noteDetails.get(13).isEmpty()){
             hyperlink.setText(noteDetails.get(13));
         }else {

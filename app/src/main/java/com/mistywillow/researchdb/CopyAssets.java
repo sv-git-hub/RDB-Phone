@@ -19,14 +19,6 @@ public class CopyAssets {
     public static void copyAssets(Context context, String folder, String filename) {
         AssetManager assetManager = context.getAssets();
         String checkForFile = "";
-        /*String[] files = null;
-        try {
-            files = assetManager.list("");
-        } catch (IOException e) {
-            Log.e("tag", "Failed to get asset file list.", e);
-        }
-        if (files != null){
-            for (String filename : files) {*/
 
                 checkFolderExists(context, folder);
 

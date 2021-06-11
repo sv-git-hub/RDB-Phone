@@ -1,27 +1,40 @@
 package com.mistywillow.researchdb;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.net.Uri;
 import android.view.Gravity;
+import android.view.View;
 import android.widget.*;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.appcompat.app.AppCompatActivity;
+
 
 public class BuildTableLayout {
 
     public static TableRow setupFilesTableRow(Context context, TableLayout table, String fileID, String fileName, boolean bold) {
-
         TableRow row = new TableRow(context);
         if(bold) {
-            //row.addView(setupRowTextView(fileID, true));
             row.addView(setupFilesAddRowButton(context, table));
             row.addView(addRowTextViewToTable(context, fileName, true));
-
         }
         if (!bold) {
             row.addView(setupDeleteRowButton(context, table));
             for(int r=1; r < 2; r++){
-                row.addView(addEditTextToTable(context, fileName));
+                //row.addView(addEditTextToTable(context, fileName));
+                row.addView(addRowTextViewToTable(context, fileName, false));
                 row.setClickable(true);
+                row.setOnClickListener(v ->{
+                    Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+                    intent.setType("*/*");
+                    FileChooser fileChooser = new FileChooser(intent);
+                    TextView child = (TextView) row.getChildAt(1);
+                    child.setText(fileChooser.getFilePath());
+                });
             }
         }
         return row;
@@ -123,8 +136,11 @@ public class BuildTableLayout {
     }
 
     public static TextView addRowTextViewToTable(Context context, String value, boolean bold){
+
         TextView tv = new TextView(context);
+        tv = new TextView(context);
         TableRow.LayoutParams trLayoutParams = new TableRow.LayoutParams();
+
         trLayoutParams.setMargins(3,3,3,3);
         tv.setText(String.valueOf(value));
         if(bold) tv.setTypeface(null, Typeface.BOLD);
@@ -133,6 +149,7 @@ public class BuildTableLayout {
         tv.setGravity(Gravity.CENTER);
         tv.setPadding(8,8,8,8);
         tv.setBackgroundColor(Color.WHITE);
+
         return tv;
     }
 

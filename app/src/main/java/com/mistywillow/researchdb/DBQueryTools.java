@@ -47,6 +47,28 @@ public class DBQueryTools {
         return str.toString().trim();
     }
 
+    public static String concatenateDate(String month, String day, String year){
+        StringBuilder sb = new StringBuilder();
+        if(!month.isEmpty()){
+            sb.append(month);
+        }
+        if(!day.isEmpty()){
+            if (!month.isEmpty()){
+                sb.append("/").append(day);
+            }else{
+                sb.append(day);
+            }
+        }
+        if(!year.isEmpty()){
+            if (month.isEmpty() && day.isEmpty() ){
+                sb.append(year);
+            }else{
+                sb.append("/").append(year);
+            }
+        }
+        return sb.toString();
+    }
+
         // CAPTURE METHODS FOR MAIN ACTIVITY ONLY - INCLUDES ""  (BLANK)
     public static List<String>spinnerTopicsList(Context context){
         rdb = ResearchDatabase.getInstance(context, "Apologetic.db");
