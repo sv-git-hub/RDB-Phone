@@ -21,11 +21,6 @@ public interface TopicsDao {
     Topics getTopic(int topicID);
     @Query("SELECT last_insert_rowid()")
     int lastTopicsPKID();
-    @Query("SELECT COUNT(*) FROM Topics WHERE TopicID = :topicID")
-    long countID(long topicID);
-    @Query("SELECT COUNT(*) FROM Topics WHERE Topic = :topic")
-    long countTopic(String topic);
-
     @RawQuery
     List<Integer> customSearchTopicsTable(SupportSQLiteQuery query);
 }

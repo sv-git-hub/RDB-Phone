@@ -1,6 +1,5 @@
 package com.mistywillow.researchdb.database.entities;
 
-import androidx.annotation.Nullable;
 import androidx.room.*;
 
 @Entity(tableName = "Notes", foreignKeys = {

@@ -1,9 +1,6 @@
 package com.mistywillow.researchdb.database;
 
-import androidx.room.Dao;
-import androidx.room.Insert;
-import androidx.room.Query;
-import androidx.room.RawQuery;
+import androidx.room.*;
 import androidx.sqlite.db.SimpleSQLiteQuery;
 import com.mistywillow.researchdb.NoteDetails;
 import com.mistywillow.researchdb.database.entities.Files;
@@ -18,6 +15,9 @@ public interface NotesDao {
 
     @Insert
     void addNote(Notes note);
+
+    @Update
+    void updateNote(Notes note);
 
     @Query("SELECT * FROM NOTES WHERE NoteID = :noteID")
     Notes getNote(int noteID);
@@ -57,4 +57,10 @@ public interface NotesDao {
             "LEFT JOIN Topics as tp ON n.TopicID = tp.TopicID " +
             "WHERE n.NoteID = :noteID")
     NoteDetails getNoteDetails(int noteID);
+
+    @Query("SELECT COUNT(*) FROM Notes WHERE QuestionID = :id")
+    int countQuestionByID(int id);
+
+    @Query("SELECT COUNT(*) FROM Notes WHERE QuestionID = :id")
+    int countTopicByID(int id);
 }

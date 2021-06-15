@@ -1,14 +1,10 @@
 package com.mistywillow.researchdb;
 
-import android.app.Activity;
 import android.content.Intent;
-import android.net.Uri;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
 import android.view.*;
 import android.widget.*;
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
@@ -21,9 +17,7 @@ import java.util.List;
 import java.util.Objects;
 
 public class EditNote extends AppCompatActivity {
-    private ResearchDatabase rdb;
 
-    private Notes updatedNote;
     private Notes orgNoteTableIDs;
 
     private List<String> viewNoteDetails;
@@ -61,7 +55,7 @@ public class EditNote extends AppCompatActivity {
         toolbar.setTitleTextColor(getColor(R.color.colorWhite));
         setSupportActionBar(toolbar);
 
-        rdb = ResearchDatabase.getInstance(this, "Apologetic.db");
+        ResearchDatabase rdb = ResearchDatabase.getInstance(this, "Apologetic.db");
 
         // AUTOCOMPLETE TEXT VIEWS
         sourceType = findViewById(R.id.viewType);
@@ -94,14 +88,11 @@ public class EditNote extends AppCompatActivity {
         assert viewBundle != null;
         int vNoteID = viewBundle.getInt("NoteID");
         nid = vNoteID;
-        updatedNote = rdb.getNotesDao().getNote(vNoteID);
+        orgNoteTableIDs = rdb.getNotesDao().getNote(vNoteID);
         viewNoteDetails = viewBundle.getStringArrayList("NoteDetails");
         List<Files> viewNoteFiles = viewBundle.getParcelableArrayList("NoteFiles");
 
-        Notes pkIDs = rdb.getNotesDao().getNote(nid);
-
         // CAPTURE DB INFORMATION FOR AUTO-COMPLETE TEXT VIEWS
-        captureNoteAndTableIDs(vNoteID);
         loadAutoCompleteTextViews(); // INCLUDES SOURCE TYPES and SOURCE TITLE
         setupOnClickActions();
 
@@ -131,12 +122,11 @@ public class EditNote extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if(item.getItemId() == R.id.clear){
-            //clearFields();
             Toast.makeText(this, String.valueOf(editMenu.size()), Toast.LENGTH_SHORT).show();
 
         }else if(item.getItemId() == R.id.update_note) {
             captureFieldsUponUpdate();
-            checkForUpdates(viewNoteDetails, updatedNoteDetails, nid);
+            startActivity(DBQueryTools.updateNote(this, orgNoteTableIDs, viewNoteDetails, updatedNoteDetails, nid));
             Toast.makeText(this, "Update Note clicked!", Toast.LENGTH_SHORT).show();
 
         }else if(item.getItemId() == R.id.edit_note){
@@ -165,10 +155,6 @@ public class EditNote extends AppCompatActivity {
 
     // CUSTOM METHODS
 
-    private void captureNoteAndTableIDs(int noteID){
-        orgNoteTableIDs = rdb.getNotesDao().getNote(noteID);
-    }
-
     private void loadAutoCompleteTextViews(){
         ArrayAdapter<String> sourceTypeAdapter = DBQueryTools.captureSourceTypes(this);
         sourceType.setThreshold(1);
@@ -189,6 +175,7 @@ public class EditNote extends AppCompatActivity {
     }
 
     private void captureFieldsUponUpdate(){
+        String[] parseDate = DBQueryTools.parseDate(date);
         updatedNoteDetails = new ArrayList<>();
         updatedNoteDetails.add(sourceType.getText().toString());    // 0: Type
         updatedNoteDetails.add(summary.getText().toString());       // 1: Summary
@@ -197,9 +184,12 @@ public class EditNote extends AppCompatActivity {
         updatedNoteDetails.add(question.getText().toString());      // 4: Question
         updatedNoteDetails.add(quote.getText().toString());         // 5: Quote
         updatedNoteDetails.add(term.getText().toString());          // 6: Term
-        updatedNoteDetails.add(viewNoteDetails.get(7));             // 7: Year
-        updatedNoteDetails.add(viewNoteDetails.get(8));             // 8: Month
-        updatedNoteDetails.add(viewNoteDetails.get(9));             // 9: Day
+        updatedNoteDetails.add(viewNoteDetails.get(7));                       // 7: Year
+        updatedNoteDetails.add(viewNoteDetails.get(8));                       // 8: Month
+        updatedNoteDetails.add(viewNoteDetails.get(9));                       // 9: Day
+/*        updatedNoteDetails.add(parseDate[2]);                       // 7: Year
+        updatedNoteDetails.add(parseDate[0]);                       // 8: Month
+        updatedNoteDetails.add(parseDate[1]);                       // 9: Day*/
         updatedNoteDetails.add(viewNoteDetails.get(10));            // 10: Volume
         updatedNoteDetails.add(viewNoteDetails.get(11));            // 11: Edition
         updatedNoteDetails.add(viewNoteDetails.get(12));            // 12: Issue
@@ -208,68 +198,6 @@ public class EditNote extends AppCompatActivity {
         updatedNoteDetails.add(viewNoteDetails.get(15));            // 15: Page
         updatedNoteDetails.add(viewNoteDetails.get(16));            // 16: TimeStamp
         updatedNoteDetails.add(topic.getText().toString());         // 17: Topic
-    }
-
-    private void checkForUpdates(List<String> original, List<String> update, int vNoteID){
-        // TYPE; TITLE; YEAR; MONTH; DAY; VOLUME; EDITION; ISSUE
-        if(!valuesAreDifferent(original.get(0), update.get(0)) ||
-                !valuesAreDifferent(original.get(7), update.get(7)) || !valuesAreDifferent(original.get(8), update.get(8)) ||
-                !valuesAreDifferent(original.get(9), update.get(9)) || !valuesAreDifferent(original.get(10), update.get(10)) ||
-                !valuesAreDifferent(original.get(11), update.get(11)) || !valuesAreDifferent(original.get(12), update.get(12))){
-            Sources src = new Sources(orgNoteTableIDs.getSourceID(), update.get(0),update.get(2), Integer.parseInt(update.get(7)),
-                    Integer.parseInt(update.get(8)), Integer.parseInt(update.get(9)), update.get(10), update.get(11), update.get(12));
-            rdb.getSourcesDao().updateSource(src);
-        }
-        // SUMMARY; COMMENT; PAGE; TIMESTAMP; HYPERLINK
-        if(!valuesAreDifferent(original.get(1), update.get(1)) || !valuesAreDifferent(original.get(14), update.get(14)) ||
-                !valuesAreDifferent(original.get(15), update.get(15)) || !valuesAreDifferent(original.get(16), update.get(16)) ||
-                !valuesAreDifferent(original.get(13), update.get(13))){
-
-            Comments cmts = rdb.getCommentsDao().getComment(orgNoteTableIDs.getCommentID());
-            cmts.setSummary(update.get(1));     // Summary
-            cmts.setComment(update.get(14));    // Comment
-            cmts.setPage(update.get(15));       // Page
-            cmts.setTimeStamp(update.get(16));  // TimeStamp
-            cmts.setHyperlink(update.get(13));  // Hyperlink
-            rdb.getCommentsDao().updateComment(cmts);
-        }
-
-        // QUESTION
-        if(!valuesAreDifferent(original.get(4), update.get(4))){
-            Questions questions = rdb.getQuestionsDao().getQuestion(updatedNote.getQuestionID());
-            questions.setQuestion(update.get(4));
-            rdb.getQuestionsDao().updateQuestion(questions);
-        }
-        // QUOTE
-        if(!valuesAreDifferent(original.get(5), update.get(5))){
-            Quotes quotes = new Quotes(orgNoteTableIDs.getQuoteID(), update.get(5));
-            rdb.getQuotesDao().updateQuote(quotes);
-        }
-        // TERM
-        if(!valuesAreDifferent(original.get(6), update.get(6))){
-            Terms terms = new Terms(orgNoteTableIDs.getTermID(), update.get(6));
-            rdb.getTermsDao().updateTerm(terms);
-        }
-        // TOPIC
-        if(!valuesAreDifferent(original.get(17), update.get(17))){
-            Topics topics = new Topics(orgNoteTableIDs.getTopicID(), update.get(17));
-            rdb.getTopicsDao().updateTopic(topics);
-        }
-            Intent u = new Intent(this, ViewNote.class);
-            u.putExtra("ID", vNoteID);
-            u.putExtra("Type", update.get(0));
-            u.putExtra("Summary", update.get(1));
-            u.putExtra("Source", update.get(2));
-            u.putExtra("Authors",update.get(3));
-            startActivity(u);
-    }
-
-    // EVALUATES NOTES AS OBJECTS
-    @SuppressWarnings("BooleanMethodIsAlwaysInverted")
-    private boolean valuesAreDifferent(String obj1, String obj2){
-        if(obj1 == null || obj1.isEmpty() || obj1.trim().isEmpty()){obj1 = "";}
-        if(obj2 == null || obj2.isEmpty() || obj2.trim().isEmpty()){obj2 = "";}
-        return obj1.equals(obj2);
     }
 
     private void populateFields() {

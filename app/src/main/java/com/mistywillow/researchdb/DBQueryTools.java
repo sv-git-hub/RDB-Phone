@@ -1,22 +1,23 @@
 package com.mistywillow.researchdb;
 
 import android.content.Context;
+import android.content.Intent;
 import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
+import androidx.appcompat.app.AppCompatActivity;
 import com.mistywillow.researchdb.database.ResearchDatabase;
 import com.mistywillow.researchdb.database.entities.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class DBQueryTools {
+public class DBQueryTools extends AppCompatActivity {
 
     private static ResearchDatabase rdb = null;
-
 
     public static String concatenateAuthor(Authors author){
         StringBuilder str = new StringBuilder();
@@ -180,6 +181,24 @@ public class DBQueryTools {
         return new ArrayAdapter<>(context, android.R.layout.simple_list_item_1, orgSummaries);
     }
 
+    public static String[] parseDate(TextView date){
+        String[] tempDate = date.getText().toString().split("/");
+        String[] returnDT = new String[3];
+        if(tempDate.length==0){
+            return new String[]{"", "", ""};
+        }else if(tempDate.length == 1){
+            returnDT[0] = tempDate[0];
+            returnDT[1] = "";
+            returnDT[2] = "";
+        }else if(tempDate.length == 2){
+            returnDT[0] = tempDate[0];
+            returnDT[1] = tempDate[1];
+            tempDate[2] = "";
+        }else{
+            return tempDate;
+        }
+        return returnDT;
+    }
 
     public static String captureAuthorNewOrOldSource(Context context, String sourceTitle){
         List<Authors> newAuthors;
@@ -206,4 +225,109 @@ public class DBQueryTools {
         return false;
     }
     private long countByString(){return 0;}
+
+    public void addNewNote(List<String> data, List<Files> files){
+
+    }
+
+    public static Intent updateNote(Context context, Notes orgNoteTableIDs, List<String> original, List<String> update, int vNoteID){
+        // NO SOURCE OR AUTHORS UPDATES. A NEW NOTE SHOULD BE REQUIRED.
+
+        // PARSE AND PREPARE DATE VALUES
+
+
+        // TYPE; TITLE; YEAR; MONTH; DAY; VOLUME; EDITION; ISSUE
+        if(!valuesAreDifferent(original.get(Globals.TYPE), update.get(Globals.TYPE)) ||
+                !valuesAreDifferent(original.get(Globals.YEAR), update.get(Globals.YEAR)) || !valuesAreDifferent(original.get(Globals.MONTH), update.get(Globals.MONTH)) ||
+                !valuesAreDifferent(original.get(Globals.DAY), update.get(Globals.DAY)) || !valuesAreDifferent(original.get(Globals.VOLUME), update.get(Globals.VOLUME)) ||
+                !valuesAreDifferent(original.get(Globals.EDITION), update.get(Globals.EDITION)) || !valuesAreDifferent(original.get(Globals.ISSUE), update.get(Globals.ISSUE))){
+            Sources src = new Sources(orgNoteTableIDs.getSourceID(), update.get(Globals.TYPE),update.get(Globals.SOURCE), Integer.parseInt(update.get(Globals.YEAR)),
+                    Integer.parseInt(update.get(Globals.MONTH)), Integer.parseInt(update.get(Globals.DAY)), update.get(Globals.VOLUME), update.get(Globals.EDITION),
+                    update.get(Globals.ISSUE));
+            rdb.getSourcesDao().updateSource(src);
+        }
+
+        // SUMMARY; COMMENT; PAGE; TIMESTAMP; HYPERLINK
+        if(!valuesAreDifferent(original.get(Globals.SUMMARY), update.get(Globals.SUMMARY)) || !valuesAreDifferent(original.get(Globals.COMMENT), update.get(Globals.COMMENT)) ||
+                !valuesAreDifferent(original.get(Globals.PAGE), update.get(Globals.PAGE)) || !valuesAreDifferent(original.get(Globals.TIMESTAMP), update.get(Globals.TIMESTAMP)) ||
+                !valuesAreDifferent(original.get(Globals.HYPERLINK), update.get(Globals.HYPERLINK))){
+
+            Comments cmts = rdb.getCommentsDao().getComment(orgNoteTableIDs.getCommentID());
+            cmts.setSummary(update.get(Globals.SUMMARY));     // Summary
+            cmts.setComment(update.get(Globals.COMMENT));    // Comment
+            cmts.setPage(update.get(Globals.PAGE));       // Page
+            cmts.setTimeStamp(update.get(Globals.TIMESTAMP));  // TimeStamp
+            cmts.setHyperlink(update.get(Globals.HYPERLINK));  // Hyperlink
+            rdb.getCommentsDao().updateComment(cmts);
+        }
+
+        // QUESTION
+        if(!valuesAreDifferent(original.get(Globals.QUESTION), update.get(Globals.QUESTION))){
+            Questions questions = rdb.getQuestionsDao().getQuestion(orgNoteTableIDs.getQuestionID());
+            Questions deleteThis = null;
+            int orgQuestionID = orgNoteTableIDs.getQuestionID();
+            int orgQuestionIDCount = rdb.getNotesDao().countQuestionByID(orgNoteTableIDs.getQuestionID());
+            int newQuestionCount = rdb.getQuestionsDao().getCountByValue(update.get(Globals.QUESTION));
+
+            questions.setQuestion(update.get(Globals.QUESTION));
+
+            // since the original question is a single instance only used by this note, replace the note and keep the ID
+            if(newQuestionCount == 0 && orgQuestionIDCount == 1) {
+                rdb.getQuestionsDao().updateQuestion(questions);}
+            // since the original question is used my other notes, and the new doesn't exist, add it and capture the new QuestionID
+            else if(newQuestionCount == 0 && orgQuestionIDCount > 1){
+                rdb.getQuestionsDao().addQuestion(questions);
+                Notes thisNote = rdb.getNotesDao().getNote(vNoteID);
+                thisNote.setQuestionID(rdb.getQuestionsDao().lastQuestionPKID());
+                rdb.getNotesDao().updateNote(thisNote);
+            }
+            // Multiples of the new question exist, update the notes table for the note only
+            else if(newQuestionCount > 0){
+                orgNoteTableIDs.setQuestionID(rdb.getQuestionsDao().lastQuestionPKID());
+                // If the current value is the only existing, delete it.
+                if(orgQuestionIDCount == 1)
+                    deleteThis = rdb.getQuestionsDao().getQuestion(orgQuestionID);
+                    rdb.getQuestionsDao().deleteQuestion(deleteThis);
+            }
+
+
+
+
+
+
+        }
+        // QUOTE
+        if(!valuesAreDifferent(original.get(Globals.QUOTE), update.get(Globals.QUOTE))){
+            Quotes quotes = new Quotes(orgNoteTableIDs.getQuoteID(), update.get(5));
+            rdb.getQuotesDao().updateQuote(quotes);
+        }
+        // TERM
+        if(!valuesAreDifferent(original.get(Globals.TERM), update.get(Globals.TERM))){
+            Terms terms = new Terms(orgNoteTableIDs.getTermID(), update.get(6));
+            rdb.getTermsDao().updateTerm(terms);
+        }
+        // TOPIC
+        if(!valuesAreDifferent(original.get(Globals.TOPIC), update.get(Globals.TOPIC))){
+            Topics topics = new Topics(orgNoteTableIDs.getTopicID(), update.get(17));
+            rdb.getTopicsDao().updateTopic(topics);
+        }
+
+        Intent u = new Intent(context, ViewNote.class);
+        u.putExtra("ID", vNoteID);
+        u.putExtra("Type", update.get(0));
+        u.putExtra("Summary", update.get(1));
+        u.putExtra("Source", update.get(2));
+        u.putExtra("Authors",update.get(3));
+        return u;
+    }
+
+    // EVALUATES NOTES AS OBJECTS
+    @SuppressWarnings("BooleanMethodIsAlwaysInverted")
+    private static boolean valuesAreDifferent(String obj1, String obj2){
+        if(obj1 == null || obj1.isEmpty() || obj1.trim().isEmpty()){obj1 = "";}
+        if(obj2 == null || obj2.isEmpty() || obj2.trim().isEmpty()){obj2 = "";}
+        return obj1.equals(obj2);
+    }
+
+
 }

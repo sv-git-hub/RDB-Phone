@@ -9,6 +9,8 @@ import android.text.Html;
 import android.text.TextWatcher;
 import android.text.method.LinkMovementMethod;
 import android.view.*;
+import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.webkit.MimeTypeMap;
 import android.widget.*;
 import androidx.annotation.NonNull;
@@ -107,19 +109,26 @@ public class AddNote extends AppCompatActivity {
     }
 
     private void setupOnClickActions() {
+
         sourceTitle.setOnFocusChangeListener((v, hasFocus) -> {
             if(!hasFocus){
                 author.setText(DBQueryTools.captureAuthorNewOrOldSource(getApplicationContext(), sourceTitle.getText().toString()));
             }
             if(author.getText().toString().equals("Select an Author or Add new below")){
                 Toast.makeText(this, "TODO: New Author Needed or Selected.", Toast.LENGTH_SHORT).show();
+
             }
         });
         sourceTitle.setOnKeyListener(new View.OnKeyListener() {
-            @Override
+           @Override
             public boolean onKey(View v, int keyCode, KeyEvent event) {
-                return false;
-            }
+               if (event.getKeyCode() == KeyEvent.KEYCODE_ENTER || keyCode == EditorInfo.IME_ACTION_DONE)
+                   author.setText(DBQueryTools.captureAuthorNewOrOldSource(getApplicationContext(), sourceTitle.getText().toString()));
+               InputMethodManager imm = (InputMethodManager)getSystemService(INPUT_METHOD_SERVICE);
+               imm.hideSoftInputFromWindow(sourceTitle.getWindowToken(), 0);
+               return true;
+           }
+
         });
     }
 
