@@ -19,6 +19,8 @@ public interface TopicsDao {
     List<Topics> getTopics();
     @Query("SELECT * FROM Topics WHERE TopicID = :topicID")
     Topics getTopic(int topicID);
+    @Query("Select topicID FROM Topics WHERE Topic = :topic")
+    int getTopicID(String topic);
     @Query("SELECT last_insert_rowid()")
     int lastTopicsPKID();
     @RawQuery

@@ -106,6 +106,14 @@ public class EditNote extends AppCompatActivity {
     }
 
     private void setupOnClickActions() {
+        sourceTitle.setOnFocusChangeListener((v, hasFocus) -> {
+            if(!hasFocus){
+                author.setText(DBQueryTools.captureAuthorNewOrOldSource(getApplicationContext(), sourceTitle.getText().toString()));
+            }
+            if(author.getText().toString().equals("Select an Author or Add new below")){
+                Toast.makeText(this, "TODO: New Author Needed or Selected.", Toast.LENGTH_SHORT).show();
+            }
+        });
 
     }
 
@@ -184,12 +192,12 @@ public class EditNote extends AppCompatActivity {
         updatedNoteDetails.add(question.getText().toString());      // 4: Question
         updatedNoteDetails.add(quote.getText().toString());         // 5: Quote
         updatedNoteDetails.add(term.getText().toString());          // 6: Term
-        updatedNoteDetails.add(viewNoteDetails.get(7));                       // 7: Year
+/*        updatedNoteDetails.add(viewNoteDetails.get(7));                       // 7: Year
         updatedNoteDetails.add(viewNoteDetails.get(8));                       // 8: Month
-        updatedNoteDetails.add(viewNoteDetails.get(9));                       // 9: Day
-/*        updatedNoteDetails.add(parseDate[2]);                       // 7: Year
-        updatedNoteDetails.add(parseDate[0]);                       // 8: Month
-        updatedNoteDetails.add(parseDate[1]);                       // 9: Day*/
+        updatedNoteDetails.add(viewNoteDetails.get(9));                       // 9: Day*/
+        updatedNoteDetails.add(parseDate[0]);                       // 7: Year
+        updatedNoteDetails.add(parseDate[1]);                       // 8: Month
+        updatedNoteDetails.add(parseDate[2]);                       // 9: Day
         updatedNoteDetails.add(viewNoteDetails.get(10));            // 10: Volume
         updatedNoteDetails.add(viewNoteDetails.get(11));            // 11: Edition
         updatedNoteDetails.add(viewNoteDetails.get(12));            // 12: Issue
@@ -201,25 +209,25 @@ public class EditNote extends AppCompatActivity {
     }
 
     private void populateFields() {
-        sourceType.setText(viewNoteDetails.get(0));
-        summary.setText(viewNoteDetails.get(1));
-        sourceTitle.setText(viewNoteDetails.get(2));
-        author.setText(viewNoteDetails.get(3));
-        question.setText(viewNoteDetails.get(4));
-        quote.setText(viewNoteDetails.get(5));
-        term.setText(viewNoteDetails.get(6));
-        comment.setText(viewNoteDetails.get(14));
-        topic.setText(viewNoteDetails.get(17));
-        date.setText(DBQueryTools.concatenateDate(viewNoteDetails.get(8), viewNoteDetails.get(9), viewNoteDetails.get(7)));
-        volume.setText(viewNoteDetails.get(10));
-        edition.setText(viewNoteDetails.get(11));
-        issue.setText(viewNoteDetails.get(12));
-        pgs_paras.setText(viewNoteDetails.get(15));
-        timeStamp.setText(viewNoteDetails.get(16));
+        sourceType.setText(viewNoteDetails.get(Globals.TYPE));
+        topic.setText(viewNoteDetails.get(Globals.TOPIC));
+        summary.setText(viewNoteDetails.get(Globals.SUMMARY));
+        question.setText(viewNoteDetails.get(Globals.QUESTION));
+        quote.setText(viewNoteDetails.get(Globals.QUOTE));
+        term.setText(viewNoteDetails.get(Globals.TERM));
+        sourceTitle.setText(viewNoteDetails.get(Globals.SOURCE));
+        author.setText(viewNoteDetails.get(Globals.AUTHORS));
+        comment.setText(viewNoteDetails.get(Globals.COMMENT));
+        date.setText(DBQueryTools.concatenateDate(viewNoteDetails.get(Globals.MONTH), viewNoteDetails.get(Globals.DAY), viewNoteDetails.get(Globals.YEAR)));
+        volume.setText(viewNoteDetails.get(Globals.VOLUME));
+        edition.setText(viewNoteDetails.get(Globals.EDITION));
+        issue.setText(viewNoteDetails.get(Globals.ISSUE));
+        pgs_paras.setText(viewNoteDetails.get(Globals.PAGE));
+        timeStamp.setText(viewNoteDetails.get(Globals.TIMESTAMP));
         if(viewNoteDetails.get(13).isEmpty()){
-            hyperlink.setText(viewNoteDetails.get(13));
+            hyperlink.setText(viewNoteDetails.get(Globals.HYPERLINK));
         }else {
-            hyperlink.setText(Html.fromHtml(buildHyperlink(viewNoteDetails.get(13)), 0));
+            hyperlink.setText(Html.fromHtml(buildHyperlink(viewNoteDetails.get(Globals.HYPERLINK)), 0));
             hyperlink.setMovementMethod(LinkMovementMethod.getInstance());
         }
     }

@@ -56,6 +56,13 @@
     <string name="lbl_note_issue">Issue:</string>
     <string name="lbl_note_pgs_paras">Pg/Para(s):</string>
     <string name="lbl_note_timestamp">TimeStamp:</string>
+    <string name="lbl_tab_quote_term">Quote and Term</string>
+
+    <!-- FILE RELATED -->
+    <string name="lbl_tab_files">File(s)</string>
+    <string name="lbl_column_filename">Filename</string>
+    <string name="lbl_column_filepath">Filepath</string>
+    <string name="lbl_column_file_id">FileID</string>
 
     <!-- HINTS -->
     <string name="hint_comment">Comment</string>
@@ -76,23 +83,13 @@
     <string name="hint_timestamp">TimeStamp</string>
 
 
-    <string name="lbl_tab_quote_term">Quote and Term</string>
-    <string name="lbl_tab_files">File(s)</string>
-    <string name="lbl_column_filename">Filename</string>
-    <string name="lbl_column_filepath">Filepath</string>
-    <string name="lbl_column_file_id">FileID</string>
-
-
-
-
-
-
-
-
-
     <string name="add_topic">Add or Select a Topic</string>
     <string name="add_source">Add or Select a Source</string>
     <string name="add_question">Add or Select a Question</string>
+
+    <!-- POPUP -->
+    <string name="lbl_ok">OK</string>
+    <string name="lbl_cancel">Cancel</string>
 
     <!-- Buttons -->
     <string name="btn_add_author">Add Author</string>

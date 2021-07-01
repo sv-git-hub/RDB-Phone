@@ -8,12 +8,13 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import com.mistywillow.researchdb.database.ResearchDatabase;
 import com.mistywillow.researchdb.database.entities.*;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+
+import java.util.*;
 
 public class DBQueryTools extends AppCompatActivity {
 
@@ -50,18 +51,18 @@ public class DBQueryTools extends AppCompatActivity {
 
     public static String concatenateDate(String month, String day, String year){
         StringBuilder sb = new StringBuilder();
-        if(!month.isEmpty()){
+        if(!month.isEmpty() && !month.equals("0")){
             sb.append(month);
         }
-        if(!day.isEmpty()){
-            if (!month.isEmpty()){
+        if(!day.isEmpty() && !day.equals("0")){
+            if (!month.isEmpty() && !month.equals("0")){
                 sb.append("/").append(day);
             }else{
                 sb.append(day);
             }
         }
         if(!year.isEmpty()){
-            if (month.isEmpty() && day.isEmpty() ){
+            if ((month.isEmpty() || month.equals("0")) && (day.isEmpty() || day.equals("0"))){
                 sb.append(year);
             }else{
                 sb.append("/").append(year);
@@ -185,17 +186,19 @@ public class DBQueryTools extends AppCompatActivity {
         String[] tempDate = date.getText().toString().split("/");
         String[] returnDT = new String[3];
         if(tempDate.length==0){
-            return new String[]{"", "", ""};
+            return new String[]{"0", "0", "0"};
         }else if(tempDate.length == 1){
-            returnDT[0] = tempDate[0];
-            returnDT[1] = "";
-            returnDT[2] = "";
+            returnDT[0] = tempDate[0]; // Year
+            returnDT[1] = "0";
+            returnDT[2] = "0";
         }else if(tempDate.length == 2){
-            returnDT[0] = tempDate[0];
-            returnDT[1] = tempDate[1];
-            tempDate[2] = "";
+            returnDT[0] = tempDate[0]; // Year
+            returnDT[1] = tempDate[1]; // Month
+            tempDate[2] = "0";
         }else{
-            return tempDate;
+            returnDT[0] = tempDate[2]; // Year
+            returnDT[1] = tempDate[0]; // Month
+            returnDT[2] = tempDate[1]; // Day
         }
         return returnDT;
     }
@@ -226,7 +229,27 @@ public class DBQueryTools extends AppCompatActivity {
     }
     private long countByString(){return 0;}
 
-    public void addNewNote(List<String> data, List<Files> files){
+    public static void addNewNote(Context context, List<String> data, List<Files> files){
+
+        rdb = ResearchDatabase.getInstance(context, "Apologetic.db");
+        int noteID =0, srcID =0, cmtID =0, queID =0, quo =0, terID =0, topID =0;
+
+        // ENTER REQUIRED FIELDS
+
+
+        // CHECK FOR EXISTING IDs
+        topID = rdb.getTopicsDao().getTopicID(data.get(Globals.TOPIC));
+        Toast.makeText(context, topID, Toast.LENGTH_SHORT).show();
+
+        // Source and Author
+        /*Sources src = new Sources(data.get(Globals.TYPE),data.get(Globals.SOURCE), Integer.parseInt(data.get(Globals.YEAR)),
+                Integer.parseInt(data.get(Globals.MONTH)), Integer.parseInt(data.get(Globals.DAY)), data.get(Globals.VOLUME), data.get(Globals.EDITION),
+                data.get(Globals.ISSUE));
+        rdb.getSourcesDao().addSource(src);
+        srcID = rdb.getSourcesDao().lastSourcePKID();*/
+
+        // Table Files
+
 
     }
 
@@ -237,6 +260,7 @@ public class DBQueryTools extends AppCompatActivity {
 
 
         // TYPE; TITLE; YEAR; MONTH; DAY; VOLUME; EDITION; ISSUE
+
         if(!valuesAreDifferent(original.get(Globals.TYPE), update.get(Globals.TYPE)) ||
                 !valuesAreDifferent(original.get(Globals.YEAR), update.get(Globals.YEAR)) || !valuesAreDifferent(original.get(Globals.MONTH), update.get(Globals.MONTH)) ||
                 !valuesAreDifferent(original.get(Globals.DAY), update.get(Globals.DAY)) || !valuesAreDifferent(original.get(Globals.VOLUME), update.get(Globals.VOLUME)) ||

@@ -247,25 +247,25 @@ public class ViewNote extends AppCompatActivity {
     }
 
     private void populateFields() {
-        sourceType.setText(noteDetails.get(0));
-        topic.setText(noteDetails.get(17));
-        question.setText(noteDetails.get(4));
-        quote.setText(noteDetails.get(5));
-        term.setText(noteDetails.get(6));
-        source.setText(noteDetails.get(2));
-        authors.setText(noteDetails.get(3));
-        summary.setText(noteDetails.get(1));
-        comment.setText(noteDetails.get(14));
-        date.setText(DBQueryTools.concatenateDate(noteDetails.get(8), noteDetails.get(9), noteDetails.get(7)));
-        volume.setText(noteDetails.get(10));
-        edition.setText(noteDetails.get(11));
-        issue.setText(noteDetails.get(12));
-        pgs_paras.setText(noteDetails.get(15));
-        timeStamp.setText(noteDetails.get(16));
+        sourceType.setText(noteDetails.get(Globals.TYPE));
+        topic.setText(noteDetails.get(Globals.TOPIC));
+        question.setText(noteDetails.get(Globals.QUESTION));
+        summary.setText(noteDetails.get(Globals.SUMMARY));
+        quote.setText(noteDetails.get(Globals.QUOTE));
+        term.setText(noteDetails.get(Globals.TERM));
+        source.setText(noteDetails.get(Globals.SOURCE));
+        authors.setText(noteDetails.get(Globals.AUTHORS));
+        comment.setText(noteDetails.get(Globals.COMMENT));
+        date.setText(DBQueryTools.concatenateDate(noteDetails.get(Globals.MONTH), noteDetails.get(Globals.DAY), noteDetails.get(Globals.YEAR)));
+        volume.setText(noteDetails.get(Globals.VOLUME));
+        edition.setText(noteDetails.get(Globals.EDITION));
+        issue.setText(noteDetails.get(Globals.ISSUE));
+        pgs_paras.setText(noteDetails.get(Globals.PAGE));
+        timeStamp.setText(noteDetails.get(Globals.TIMESTAMP));
         if(noteDetails.get(13).isEmpty()){
-            hyperlink.setText(noteDetails.get(13));
+            hyperlink.setText(noteDetails.get(Globals.HYPERLINK));
         }else {
-            hyperlink.setText(Html.fromHtml(buildHyperlink(noteDetails.get(13)), 0));
+            hyperlink.setText(Html.fromHtml(buildHyperlink(noteDetails.get(Globals.HYPERLINK)), 0));
             hyperlink.setMovementMethod(LinkMovementMethod.getInstance());
         }
     }

@@ -32,6 +32,7 @@ public class BuildTableLayout {
                     Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
                     intent.setType("*/*");
                     FileChooser fileChooser = new FileChooser(intent);
+                    if(fileChooser==null)Toast.makeText(null, "FileChooser is Null", Toast.LENGTH_SHORT).show();
                     TextView child = (TextView) row.getChildAt(1);
                     child.setText(fileChooser.getFilePath());
                 });

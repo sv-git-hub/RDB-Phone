@@ -14,6 +14,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.webkit.MimeTypeMap;
 import android.widget.*;
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import androidx.appcompat.widget.Toolbar;
@@ -21,6 +22,7 @@ import com.mistywillow.researchdb.database.ResearchDatabase;
 import com.mistywillow.researchdb.database.entities.*;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -32,21 +34,7 @@ public class AddNote extends AppCompatActivity {
     private int vNoteID;
 
     private List<String> viewNoteDetails;
-    private List<String> orgNoteDetails;
-    private List<Files> viewNoteFiles;
-    private List<Files> orgNoteFiles;
-    private List<String> addTypes;
 
-    private List<String> orgQuestions;
-    private List<String> orgTopics;
-    private List<String> orgSourceTypes;
-    private List<String> orgSourceTitles;
-    private List<String> orgAuthors;
-
-    private List<Sources> sources;
-    private List<Authors> authors;
-    private List<Topics> topics;
-    private List<Questions> questions;
 
     private TextView quote;
     private TextView term;
@@ -151,12 +139,21 @@ public class AddNote extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         Bundle bundle;
         Intent menuIntent;
-
         if(item.getItemId() == R.id.clear){
             //clearFields();
             Toast.makeText(this, String.valueOf(editMenu.size()), Toast.LENGTH_SHORT).show();
         }else if(item.getItemId() == R.id.update_note) {
-            Toast.makeText(this, "Update Note clicked!", Toast.LENGTH_SHORT).show();
+
+            captureNoteDetails();
+            DBQueryTools.addNewNote(this, viewNoteDetails, null);
+
+            if (!requiredFields())
+                return false;
+
+
+
+            //startActivity(DBQueryTools.addNewNote(this, captureNoteDetails(), captureFiles()));
+            Toast.makeText(this, "New Note Added", Toast.LENGTH_SHORT).show();
         }else if(item.getItemId() == R.id.edit_note){
             Toast.makeText(this, "Edit Note for Delete clicked!", Toast.LENGTH_SHORT).show();
         }else if(item.getItemId() == R.id.mark_for_delete) {
@@ -173,6 +170,8 @@ public class AddNote extends AppCompatActivity {
             //closeApplication();
         }else if(item.getItemId() == android.R.id.home)
             onBackPressed();
+
+
         return super.onOptionsItemSelected(item);
     }
     private void loadAutoCompleteTextViews(){
@@ -200,104 +199,80 @@ public class AddNote extends AppCompatActivity {
         question.setAdapter(acQuestionAdapt);
     }
 
+    private List<String> captureNoteDetails(){
+        String[] parseDate = DBQueryTools.parseDate(date);
+        viewNoteDetails = new ArrayList<>();
+        viewNoteDetails.add(sourceType.getText().toString());    // 0: Type
+        viewNoteDetails.add(summary.getText().toString());       // 1: Summary
+        viewNoteDetails.add(sourceTitle.getText().toString());   // 2: Source
+        viewNoteDetails.add(author.getText().toString());        // 3: Author(s)
+        viewNoteDetails.add(question.getText().toString());      // 4: Question
+        viewNoteDetails.add(quote.getText().toString());         // 5: Quote
+        viewNoteDetails.add(term.getText().toString());          // 6: Term
+        /*viewNoteDetails.add(viewNoteDetails.get(Globals.YEAR));                       // 7: Year
+        viewNoteDetails.add(viewNoteDetails.get(Globals.MONTH));                       // 8: Month
+        viewNoteDetails.add(viewNoteDetails.get(Globals.DAY));                       // 9: Day*/
+        viewNoteDetails.add(parseDate[2]);                       // 7: Year
+        viewNoteDetails.add(parseDate[0]);                       // 8: Month
+        viewNoteDetails.add(parseDate[1]);                       // 9: Day
+        viewNoteDetails.add(volume.getText().toString());        // 10: Volume
+        viewNoteDetails.add(edition.getText().toString());       // 11: Edition
+        viewNoteDetails.add(issue.getText().toString());         // 12: Issue
+        viewNoteDetails.add(hyperlink.getText().toString());     // 13: Hyperlink
+        viewNoteDetails.add(comment.getText().toString());       // 14: Comment
+        viewNoteDetails.add(pgs_paras.getText().toString());     // 15: Page
+        viewNoteDetails.add(timeStamp.getText().toString());     // 16: TimeStamp
+        viewNoteDetails.add(topic.getText().toString());         // 17: Topic
 
-    private void populateFields() {
-        //sourceType.setText(viewNoteDetails.get(0));
-        topic.setText(viewNoteDetails.get(17));
-        question.setText(viewNoteDetails.get(4));
-        quote.setText(viewNoteDetails.get(5));
-        term.setText(viewNoteDetails.get(6));
-        sourceTitle.setText(viewNoteDetails.get(2));
-        author.setText(viewNoteDetails.get(3));
-        summary.setText(viewNoteDetails.get(1));
-        comment.setText(viewNoteDetails.get(14));
-        if(viewNoteDetails.get(13).isEmpty()){
-            hyperlink.setText(viewNoteDetails.get(13));
-        }else {
-            hyperlink.setText(Html.fromHtml(buildHyperlink(viewNoteDetails.get(13)), 0));
-            hyperlink.setMovementMethod(LinkMovementMethod.getInstance());
-        }
+        return viewNoteDetails;
     }
 
-/*    private void populateFileData(List<Files> files){
-        tableLayoutFiles.addView(BuildTableLayout.setupFilesTableRow(this,tableLayoutFiles,"FileID", "FileName",true));
-        if(files != null){
-            if(files.size() > 0){
-                for (Files f: files) {
-                    String fName = f.getFileName();
-                    tableLayoutFiles.addView(BuildTableLayout.setupFilesTableRow(this, tableLayoutFiles,"", fName,false));
-                }
+    private List<Files> captureFiles(){
+        List<Files> files = rdb.getFilesDao().getFiles();
+        return files;
+    }
+
+    private boolean requiredFields(){
+        String msg = "";
+
+        if (topic.getText().toString().isEmpty()){
+            msg = "Please select or enter a topic.";
+        }else {
+            if (sourceTitle.getText().toString().isEmpty()) {
+                msg = "Please select an existing source or enter a title for a new source.";
+
+            } else if (author.getText().toString().isEmpty()) {
+                msg = "Please select an existing author or organization, or add a new author or organization.";
+
+            } else if (sourceType.getText().toString().isEmpty()) {
+                msg = "Please select a source type.";
+
+            } else if (sourceType.getText().toString().equals("Question") && (question.getText().toString().isEmpty())) {
+                msg = "Please enter or select a question because 'Question' was selected as a source. A comment should expand on the meaning.";
+
+            } else if (sourceType.getText().toString().equals("Quote") && (quote.getText().toString().isEmpty())) {
+                msg = "Please enter a quote because 'Quote' was selected as a source. A comment should expand on the meaning.";
+
+            } else if (sourceType.getText().toString().equals("Term") && (term.getText().toString().isEmpty())) {
+                msg = "Please enter the term and definition. Expand within comments of other sources of interpretation.";
+
+            } else if ((sourceType.getText().toString().equals("Video") || sourceType.getText().toString().equals("Audio")) && timeStamp.getText().toString().isEmpty()) {
+                msg = "Please enter a TimeStamp value for an audio or video source.";
+
+            } else if (comment.getText().toString().isEmpty()) {
+                msg = "Please enter a comment. Comments are specific details related to the topic and summary.";
+
+            } else if (summary.getText().toString().isEmpty()) {
+                msg = "Please enter a summary point. This expands upon your Topic entry or selection.";
+
+            } else {
+                return true;
             }
         }
-    }*/
-
-/*    private TableRow setupTableRow(String fileID, String fileName, boolean bold) {
-
-        TableRow row = new TableRow(this);
-        row.addView(setupRowTextView(fileID, bold));
-        row.addView(setupRowTextView(fileName, bold));
-        row.setClickable(true);
-        if (!bold) {
-            row.setOnClickListener(v -> {
-
-                TableRow tablerow = (TableRow) v;
-                TextView sample = (TextView) tablerow.getChildAt(1);
-                String result = sample.getText().toString();
-
-                MimeTypeMap myMime = MimeTypeMap.getSingleton();
-                String mimeType = myMime.getMimeTypeFromExtension(getFileExtension(result));
-
-                checkFolderExists(this, "note_files");
-
-                File filePaths = new File(getFilesDir().toString() + "/note_files/");
-                File newFile = new File(filePaths, result);
-
-                if(!newFile.exists()){
-                    Uri contentUri = getUriForFile(getApplicationContext(), "com.mistywillow.fileprovider", newFile);
-                    openFile(contentUri, mimeType);
-                }
-
-
-            });
-        }
-        return row;
+        PopupDialog.AlertMessage(AddNote.this, "Required Fields", msg);
+        //PopupDialog.AlertInputBox(AddNote.this, "Required Input", "Please enter some input for testing.");
+        return false;
     }
 
-    private TextView setupRowTextView(String value, boolean bold){
-        TextView tv = new TextView(this);
-        TableRow.LayoutParams trLayoutParams = new TableRow.LayoutParams();
-        trLayoutParams.setMargins(3,3,3,3);
-        tv.setText(String.valueOf(value));
-        if(bold) tv.setTypeface(null, Typeface.BOLD);
-        tv.setLayoutParams(trLayoutParams);
-        tv.setTextSize(12);
-        tv.setGravity(Gravity.CENTER);
-        tv.setPadding(8,8,8,8);
-        tv.setBackgroundColor(getColor(R.color.colorWhite));
-        return tv;
-    }
 
-    private void openFile(Uri uri, String mime){
-        Intent intent = new Intent(Intent.ACTION_VIEW);
-        intent.setDataAndType(uri,mime);
-        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-        startActivityForResult(intent, 2);
-    }
-
-    public static void checkFolderExists(Context context, String folder){
-        File location = new File(context.getFilesDir() + "/" + folder);
-        if(!location.exists())
-            location.mkdir();
-    }
-
-    private String getFileExtension(String fileName){
-        String[] ext = fileName.split("[.]");
-        return ext[ext.length-1];
-    }*/
-
-    private String buildHyperlink(String link){
-        StringBuilder sb = new StringBuilder();
-        sb.append("<a href=\"").append(link).append("\">").append(link).append("</a> ");
-        return sb.toString();
-    }
 }
