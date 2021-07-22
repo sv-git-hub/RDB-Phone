@@ -183,7 +183,7 @@ public class EditNote extends AppCompatActivity {
     }
 
     private void captureFieldsUponUpdate(){
-        String[] parseDate = DBQueryTools.parseDate(date);
+        String[] parseDate = DateTimestampManager.parseDate(date);
         updatedNoteDetails = new ArrayList<>();
         updatedNoteDetails.add(sourceType.getText().toString());    // 0: Type
         updatedNoteDetails.add(summary.getText().toString());       // 1: Summary

@@ -182,27 +182,6 @@ public class DBQueryTools extends AppCompatActivity {
         return new ArrayAdapter<>(context, android.R.layout.simple_list_item_1, orgSummaries);
     }
 
-    public static String[] parseDate(TextView date){
-        String[] tempDate = date.getText().toString().split("/");
-        String[] returnDT = new String[3];
-        if(tempDate.length==0){
-            return new String[]{"0", "0", "0"};
-        }else if(tempDate.length == 1){
-            returnDT[0] = tempDate[0]; // Year
-            returnDT[1] = "0";
-            returnDT[2] = "0";
-        }else if(tempDate.length == 2){
-            returnDT[0] = tempDate[0]; // Year
-            returnDT[1] = tempDate[1]; // Month
-            tempDate[2] = "0";
-        }else{
-            returnDT[0] = tempDate[2]; // Year
-            returnDT[1] = tempDate[0]; // Month
-            returnDT[2] = tempDate[1]; // Day
-        }
-        return returnDT;
-    }
-
     public static String captureAuthorNewOrOldSource(Context context, String sourceTitle){
         List<Authors> newAuthors;
         List<Sources> newSource = rdb.getSourcesDao().getSourceByTitle(sourceTitle);

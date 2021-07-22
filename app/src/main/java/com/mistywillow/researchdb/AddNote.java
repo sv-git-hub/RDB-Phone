@@ -200,7 +200,7 @@ public class AddNote extends AppCompatActivity {
     }
 
     private List<String> captureNoteDetails(){
-        String[] parseDate = DBQueryTools.parseDate(date);
+        String[] parseDate = DateTimestampManager.parseDate(date);
         viewNoteDetails = new ArrayList<>();
         viewNoteDetails.add(sourceType.getText().toString());    // 0: Type
         viewNoteDetails.add(summary.getText().toString());       // 1: Summary
