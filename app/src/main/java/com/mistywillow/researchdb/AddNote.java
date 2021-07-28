@@ -36,19 +36,19 @@ public class AddNote extends AppCompatActivity {
     private List<String> viewNoteDetails;
 
 
-    private TextView quote;
-    private TextView term;
-    private TextView comment;
-    private TextView hyperlink;
-    private TextView date;
-    private TextView volume;
-    private TextView edition;
-    private TextView issue;
-    private TextView pgs_paras;
-    private TextView timeStamp;
+    private EditText quote;
+    private EditText term;
+    private EditText comment;
+    private EditText hyperlink;
+    private EditText date;
+    private EditText volume;
+    private EditText edition;
+    private EditText issue;
+    private EditText pgs_paras;
+    private EditText timeStamp;
 
     //AutoCompleteTextView sourceType;
-    AutoCompleteTextView sourceType;
+    Spinner sourceType;
     AutoCompleteTextView sourceTitle;
     AutoCompleteTextView author;
     AutoCompleteTextView topic;
@@ -76,11 +76,17 @@ public class AddNote extends AppCompatActivity {
         question = findViewById(R.id.viewQuestion);
         summary = findViewById(R.id.viewSummary);
 
-        // REGULAR TEXT VIEWS
+        // REGULAR EDITTEXT
         comment = findViewById(R.id.viewComment);
         hyperlink = findViewById(R.id.viewHyperlink);
         quote = findViewById(R.id.viewQuote);
         term = findViewById(R.id.viewTerm);
+        date = findViewById(R.id.viewDate);
+        timeStamp = findViewById(R.id.viewTimeStamp);
+        pgs_paras = findViewById(R.id.viewPgsParas);
+        volume = findViewById(R.id.viewVolume);
+        edition = findViewById(R.id.viewEdition);
+        issue = findViewById(R.id.viewIssue);
 
         tableLayoutFiles = findViewById(R.id.table_files);
         tableLayoutFiles.addView(BuildTableLayout.setupFilesTableRow(this,tableLayoutFiles,"FileID", "FileName",true));
@@ -88,6 +94,7 @@ public class AddNote extends AppCompatActivity {
         tableLayoutAuthors.addView(BuildTableLayout.setupAuthorsTableRow(this,tableLayoutAuthors,"Organization/First", "Middle", "Last", "Suffix", true));
 
         // CAPTURE DB INFORMATION FOR AUTO-COMPLETE TEXT VIEWS
+        loadSpinner();
         loadAutoCompleteTextViews();
         setupOnClickActions();
 
@@ -110,7 +117,7 @@ public class AddNote extends AppCompatActivity {
         sourceTitle.setOnKeyListener(new View.OnKeyListener() {
            @Override
             public boolean onKey(View v, int keyCode, KeyEvent event) {
-               if (event.getKeyCode() == KeyEvent.KEYCODE_ENTER || keyCode == EditorInfo.IME_ACTION_DONE)
+               if (event.getKeyCode() == KeyEvent.KEYCODE_ENTER || keyCode == EditorInfo.IME_ACTION_DONE || event.getKeyCode() == KeyEvent.KEYCODE_TAB)
                    author.setText(DBQueryTools.captureAuthorNewOrOldSource(getApplicationContext(), sourceTitle.getText().toString()));
                InputMethodManager imm = (InputMethodManager)getSystemService(INPUT_METHOD_SERVICE);
                imm.hideSoftInputFromWindow(sourceTitle.getWindowToken(), 0);
@@ -118,6 +125,30 @@ public class AddNote extends AppCompatActivity {
            }
 
         });
+        date.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (!hasFocus)
+                    DateTimestampManager.validateDate(AddNote.this, date.getText().toString());
+            }
+        });
+
+        timeStamp.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (!hasFocus)
+                    DateTimestampManager.validateSearchTimeStamp(AddNote.this, timeStamp.getText().toString());
+            }
+        });
+
+        topic.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (!hasFocus)
+                    DateTimestampManager.validateTopic(AddNote.this, topic.getText().toString());
+            }
+        });
+
     }
 
     private void setupMenuOptions() {
@@ -142,13 +173,16 @@ public class AddNote extends AppCompatActivity {
         if(item.getItemId() == R.id.clear){
             //clearFields();
             Toast.makeText(this, String.valueOf(editMenu.size()), Toast.LENGTH_SHORT).show();
+
         }else if(item.getItemId() == R.id.update_note) {
 
+            if (!requiredFields()) {
+                return false;
+            }
             captureNoteDetails();
             DBQueryTools.addNewNote(this, viewNoteDetails, null);
 
-            if (!requiredFields())
-                return false;
+
 
 
 
@@ -174,10 +208,13 @@ public class AddNote extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
-    private void loadAutoCompleteTextViews(){
-        ArrayAdapter<String> sourceTypeAdapter = DBQueryTools.captureSourceTypes(this);
-        sourceType.setAdapter(sourceTypeAdapter);
 
+    private void loadSpinner(){
+        ArrayAdapter<String> sourceTypeAdapter = DBQueryTools.captureSourceTypes(this, "custom");
+        sourceType.setAdapter(sourceTypeAdapter);
+    }
+
+    private void loadAutoCompleteTextViews(){
         ArrayAdapter<String> sourceTitleAdapter = DBQueryTools.captureDBSources(this);
         sourceTitle.setThreshold(1);
         sourceTitle.setAdapter(sourceTitleAdapter);
@@ -200,9 +237,9 @@ public class AddNote extends AppCompatActivity {
     }
 
     private List<String> captureNoteDetails(){
-        String[] parseDate = DateTimestampManager.parseDate(date);
+        String[] parseDate= DateTimestampManager.parseDate(date);
         viewNoteDetails = new ArrayList<>();
-        viewNoteDetails.add(sourceType.getText().toString());    // 0: Type
+        viewNoteDetails.add(sourceType.toString());    // 0: Type
         viewNoteDetails.add(summary.getText().toString());       // 1: Summary
         viewNoteDetails.add(sourceTitle.getText().toString());   // 2: Source
         viewNoteDetails.add(author.getText().toString());        // 3: Author(s)
@@ -244,19 +281,19 @@ public class AddNote extends AppCompatActivity {
             } else if (author.getText().toString().isEmpty()) {
                 msg = "Please select an existing author or organization, or add a new author or organization.";
 
-            } else if (sourceType.getText().toString().isEmpty()) {
+            } else if (sourceType.toString().isEmpty()) {
                 msg = "Please select a source type.";
 
-            } else if (sourceType.getText().toString().equals("Question") && (question.getText().toString().isEmpty())) {
+            } else if (sourceType.toString().equals("Question") && (question.getText().toString().isEmpty())) {
                 msg = "Please enter or select a question because 'Question' was selected as a source. A comment should expand on the meaning.";
 
-            } else if (sourceType.getText().toString().equals("Quote") && (quote.getText().toString().isEmpty())) {
+            } else if (sourceType.toString().equals("Quote") && (quote.getText().toString().isEmpty())) {
                 msg = "Please enter a quote because 'Quote' was selected as a source. A comment should expand on the meaning.";
 
-            } else if (sourceType.getText().toString().equals("Term") && (term.getText().toString().isEmpty())) {
+            } else if (sourceType.toString().equals("Term") && (term.getText().toString().isEmpty())) {
                 msg = "Please enter the term and definition. Expand within comments of other sources of interpretation.";
 
-            } else if ((sourceType.getText().toString().equals("Video") || sourceType.getText().toString().equals("Audio")) && timeStamp.getText().toString().isEmpty()) {
+            } else if ((sourceType.toString().equals("Video") || sourceType.toString().equals("Audio")) && timeStamp.getText().toString().isEmpty()) {
                 msg = "Please enter a TimeStamp value for an audio or video source.";
 
             } else if (comment.getText().toString().isEmpty()) {

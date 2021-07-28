@@ -164,7 +164,7 @@ public class EditNote extends AppCompatActivity {
     // CUSTOM METHODS
 
     private void loadAutoCompleteTextViews(){
-        ArrayAdapter<String> sourceTypeAdapter = DBQueryTools.captureSourceTypes(this);
+        ArrayAdapter<String> sourceTypeAdapter = DBQueryTools.captureSourceTypes(this, "simple");
         sourceType.setThreshold(1);
         sourceType.setInputType(0);
         sourceType.setAdapter(sourceTypeAdapter);
@@ -192,9 +192,6 @@ public class EditNote extends AppCompatActivity {
         updatedNoteDetails.add(question.getText().toString());      // 4: Question
         updatedNoteDetails.add(quote.getText().toString());         // 5: Quote
         updatedNoteDetails.add(term.getText().toString());          // 6: Term
-/*        updatedNoteDetails.add(viewNoteDetails.get(7));                       // 7: Year
-        updatedNoteDetails.add(viewNoteDetails.get(8));                       // 8: Month
-        updatedNoteDetails.add(viewNoteDetails.get(9));                       // 9: Day*/
         updatedNoteDetails.add(parseDate[0]);                       // 7: Year
         updatedNoteDetails.add(parseDate[1]);                       // 8: Month
         updatedNoteDetails.add(parseDate[2]);                       // 9: Day

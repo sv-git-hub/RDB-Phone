@@ -75,12 +75,13 @@
     <string name="hint_quote">Quote</string>
     <string name="hint_summary">Summary</string>
     <string name="hint_hyperlink">File Path/Hyperlink</string>
-    <string name="hint_date">Date</string>
+    <string name="hint_date">mm/dd/yyyy</string>
+    <string name="autoHint_date">yyyy, mm/yyyy, mm/dd/yyyy</string>
     <string name="hint_volume">Volume</string>
     <string name="hint_edition">Edition</string>
     <string name="hint_issue">Issue</string>
     <string name="hint_pgs_paras">Pg(s)/Para(s)</string>
-    <string name="hint_timestamp">TimeStamp</string>
+    <string name="hint_timestamp">hh:mm:ss</string>
 
 
     <string name="add_topic">Add or Select a Topic</string>

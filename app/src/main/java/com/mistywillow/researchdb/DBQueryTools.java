@@ -96,9 +96,12 @@ public class DBQueryTools extends AppCompatActivity {
     }
 
         // CAPTURE METHODS FOR LOADING SPINNERS IN EditNote and AddNote classes
-    public static ArrayAdapter<String>captureSourceTypes(Context context){
-        List<String> orgSourceTypes = new ArrayList<>(Arrays.asList("Article", "Audio", "Book", "Journal", "Periodical", "Question", "Quote", "Term", "Video", "Website", "Other"));
-        return new ArrayAdapter<>(context, android.R.layout.simple_list_item_1, orgSourceTypes);
+    public static ArrayAdapter<String>captureSourceTypes(Context context, String layout){
+        List<String> orgSourceTypes = new ArrayList<>(Arrays.asList("","Article", "Audio", "Book", "Journal", "Periodical", "Question", "Quote", "Term", "Video", "Website", "Other"));
+        if(layout=="simple")
+            return new ArrayAdapter<>(context, android.R.layout.simple_list_item_1, orgSourceTypes);
+        else
+            return new ArrayAdapter<>(context, R.layout.custom_type_spinner, orgSourceTypes);
     }
     public static ArrayAdapter<String> captureDBSources(Context context){
         rdb = ResearchDatabase.getInstance(context, "Apologetic.db");
@@ -194,7 +197,7 @@ public class DBQueryTools extends AppCompatActivity {
             newAuthors = rdb.getAuthorBySourceDao().getAuthorsForSource(newSource.get(0).getSourceID());
         }else{
             Toast.makeText( context, "New Source", Toast.LENGTH_SHORT).show();
-            return "Select an Author or Add new below";
+            return "Select an author and or add new authors in the table below";
         }
         return DBQueryTools.concatenateAuthors(newAuthors);
     }
@@ -206,6 +209,7 @@ public class DBQueryTools extends AppCompatActivity {
     public static boolean checkForDuplicate(String data, String table, String column){
         return false;
     }
+
     private long countByString(){return 0;}
 
     public static void addNewNote(Context context, List<String> data, List<Files> files){
@@ -218,14 +222,27 @@ public class DBQueryTools extends AppCompatActivity {
 
         // CHECK FOR EXISTING IDs
         topID = rdb.getTopicsDao().getTopicID(data.get(Globals.TOPIC));
-        Toast.makeText(context, topID, Toast.LENGTH_SHORT).show();
+        if(topID == 0) PopupDialog.AlertMessage (context, "Error: No Topic Available", String.valueOf(topID));
 
+        // TYPE; TITLE; YEAR; MONTH; DAY; VOLUME; EDITION; ISSUE
         // Source and Author
         /*Sources src = new Sources(data.get(Globals.TYPE),data.get(Globals.SOURCE), Integer.parseInt(data.get(Globals.YEAR)),
                 Integer.parseInt(data.get(Globals.MONTH)), Integer.parseInt(data.get(Globals.DAY)), data.get(Globals.VOLUME), data.get(Globals.EDITION),
                 data.get(Globals.ISSUE));
         rdb.getSourcesDao().addSource(src);
         srcID = rdb.getSourcesDao().lastSourcePKID();*/
+
+        // SUMMARY; COMMENT; PAGE; TIMESTAMP; HYPERLINK
+
+        // QUESTION
+
+        // QUOTE
+
+        // TERM
+
+        // TOPIC
+
+        // INTENT
 
         // Table Files
 
