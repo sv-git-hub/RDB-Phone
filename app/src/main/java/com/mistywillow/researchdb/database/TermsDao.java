@@ -9,7 +9,7 @@ import java.util.List;
 @Dao
 public interface TermsDao {
     @Insert
-    void addTerm(Terms term);
+    long addTerm(Terms term);
     @Update
     void updateTerm(Terms term);
     @Delete
@@ -19,6 +19,8 @@ public interface TermsDao {
     List<Terms> getTerms();
     @Query("SELECT * FROM Terms WHERE TermID = :termID")
     Terms getTerm(int termID);
+    @Query("SELECT TermID FROM Terms WHERE Term = :term")
+    int getTermByValue(String term);
     @Query("SELECT last_insert_rowid()")
     int lastTermsPKID();
 

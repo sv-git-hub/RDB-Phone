@@ -9,7 +9,7 @@ import java.util.List;
 @Dao
 public interface TopicsDao {
     @Insert
-    void addTopic(Topics topic);
+    long addTopic(Topics topic);
     @Update
     void updateTopic(Topics topic);
     @Delete

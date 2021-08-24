@@ -1,40 +1,24 @@
 package com.mistywillow.researchdb;
 
-import android.content.Context;
+import android.app.Activity;
 import android.content.Intent;
-import android.graphics.Typeface;
-import android.net.Uri;
-import android.text.Editable;
-import android.text.Html;
-import android.text.TextWatcher;
-import android.text.method.LinkMovementMethod;
 import android.view.*;
-import android.view.inputmethod.EditorInfo;
-import android.view.inputmethod.InputMethodManager;
-import android.webkit.MimeTypeMap;
 import android.widget.*;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import androidx.appcompat.widget.Toolbar;
 import com.mistywillow.researchdb.database.ResearchDatabase;
 import com.mistywillow.researchdb.database.entities.*;
-
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-import static androidx.core.content.FileProvider.getUriForFile;
-
 public class AddNote extends AppCompatActivity {
-    private Toolbar toolbar;
     private ResearchDatabase rdb;
-    private int vNoteID;
-
-    private List<String> viewNoteDetails;
-
+    ActivityResultLauncher<Intent> intentLauncher;
 
     private EditText quote;
     private EditText term;
@@ -50,21 +34,28 @@ public class AddNote extends AppCompatActivity {
     //AutoCompleteTextView sourceType;
     Spinner sourceType;
     AutoCompleteTextView sourceTitle;
-    AutoCompleteTextView author;
+    //AutoCompleteTextView author;
     AutoCompleteTextView topic;
     AutoCompleteTextView question;
     AutoCompleteTextView summary;
 
-    TableLayout tableLayoutFiles;
-    TableLayout tableLayoutAuthors;
-    Menu editMenu;
+    private TextView author;
+
+    private TableLayout tableLayoutFiles;
+    private TableLayout tableLayoutAuthors;
+    private Menu editMenu;
+
+    private int selectedSourceID;
+
+    private List<String> newNoteDetails;
+    private List<Integer> newSourcesAuthorIDs;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_note);
 
-        toolbar = findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         toolbar.setTitleTextColor(getColor(R.color.colorWhite));
         setSupportActionBar(toolbar);
 
@@ -93,6 +84,24 @@ public class AddNote extends AppCompatActivity {
         tableLayoutAuthors = findViewById(R.id.table_authors);
         tableLayoutAuthors.addView(BuildTableLayout.setupAuthorsTableRow(this,tableLayoutAuthors,"Organization/First", "Middle", "Last", "Suffix", true));
 
+        //ARRAYS, LISTS, ETC.
+        selectedSourceID = 0;
+        newSourcesAuthorIDs = new ArrayList<>();
+
+        // GET DATABASE INSTANCE
+        rdb = ResearchDatabase.getInstance(this, GlobalVariables.DATABASE);
+        intentLauncher = registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult(),
+                result ->{
+                    if(result.getResultCode() == Activity.RESULT_OK) {
+                        Sources src = result.getData().getParcelableExtra("source");
+                        setSourceDetails(src);
+                        selectedSourceID = src.getSourceID();
+                    }
+
+                }
+        );
+
         // CAPTURE DB INFORMATION FOR AUTO-COMPLETE TEXT VIEWS
         loadSpinner();
         loadAutoCompleteTextViews();
@@ -104,27 +113,24 @@ public class AddNote extends AppCompatActivity {
     }
 
     private void setupOnClickActions() {
-
-        sourceTitle.setOnFocusChangeListener((v, hasFocus) -> {
-            if(!hasFocus){
-                author.setText(DBQueryTools.captureAuthorNewOrOldSource(getApplicationContext(), sourceTitle.getText().toString()));
-            }
-            if(author.getText().toString().equals("Select an Author or Add new below")){
-                Toast.makeText(this, "TODO: New Author Needed or Selected.", Toast.LENGTH_SHORT).show();
-
+        sourceTitle.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                populateSourceDetails(DBQueryTools.getSourcesByTitle(sourceTitle.getText().toString()));
             }
         });
-        sourceTitle.setOnKeyListener(new View.OnKeyListener() {
-           @Override
-            public boolean onKey(View v, int keyCode, KeyEvent event) {
-               if (event.getKeyCode() == KeyEvent.KEYCODE_ENTER || keyCode == EditorInfo.IME_ACTION_DONE || event.getKeyCode() == KeyEvent.KEYCODE_TAB)
-                   author.setText(DBQueryTools.captureAuthorNewOrOldSource(getApplicationContext(), sourceTitle.getText().toString()));
-               InputMethodManager imm = (InputMethodManager)getSystemService(INPUT_METHOD_SERVICE);
-               imm.hideSoftInputFromWindow(sourceTitle.getWindowToken(), 0);
-               return true;
-           }
 
+        tableLayoutAuthors.addOnLayoutChangeListener(new View.OnLayoutChangeListener() {
+            @Override
+            public void onLayoutChange(View v, int left, int top, int right, int bottom, int oldLeft, int oldTop, int oldRight, int oldBottom) {
+                if (tableLayoutAuthors.getChildCount() > 1)
+                    author.setText(R.string.add_author_phrase);
+                else if (tableLayoutAuthors.getChildCount() == 1 && bottom < oldBottom && !sourceTitle.hasFocus() && !sourceTitle.getText().toString().equals("")) {
+                    populateSourceDetails(DBQueryTools.getSourcesByTitle(sourceTitle.getText().toString()));
+                }
+            }
         });
+
         date.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
@@ -148,7 +154,6 @@ public class AddNote extends AppCompatActivity {
                     DateTimestampManager.validateTopic(AddNote.this, topic.getText().toString());
             }
         });
-
     }
 
     private void setupMenuOptions() {
@@ -168,26 +173,55 @@ public class AddNote extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        Bundle bundle;
-        Intent menuIntent;
         if(item.getItemId() == R.id.clear){
             //clearFields();
             Toast.makeText(this, String.valueOf(editMenu.size()), Toast.LENGTH_SHORT).show();
 
         }else if(item.getItemId() == R.id.update_note) {
-
+            int srcID = 0;
             if (!requiredFields()) {
                 return false;
             }
             captureNoteDetails();
-            DBQueryTools.addNewNote(this, viewNoteDetails, null);
 
+            if (author.getText().toString().equals("For new sources add new/existing author(s) below")) {
 
+                List<Authors> ta = DBQueryTools.captureAuthorsTable(tableLayoutAuthors);
+                for (Authors authors : ta) {
+                    int found = DBQueryTools.findAuthor(authors);
+                    if (found == 0) {
+                        newSourcesAuthorIDs.add(DBQueryTools.addNewAuthor(authors));
+                    } else if (found > 0) {
+                        newSourcesAuthorIDs.add(found);
+                    }
+                }
+            }
+            if (selectedSourceID > 0)
+                srcID = selectedSourceID;
+            else{
+                srcID = DBQueryTools.addNewSource(new Sources(0, newNoteDetails.get(Globals.TYPE),
+                        newNoteDetails.get(Globals.SOURCE), Integer.parseInt(newNoteDetails.get(Globals.YEAR)), Integer.parseInt(newNoteDetails.get(Globals.MONTH)),
+                        Integer.parseInt(newNoteDetails.get(Globals.DAY)), newNoteDetails.get(Globals.VOLUME),
+                        newNoteDetails.get(Globals.EDITION), newNoteDetails.get(Globals.ISSUE)));
+            }
+            List<Integer> newNoteIDs = new ArrayList<>();
+            newNoteIDs.add(0);
+            newNoteIDs.add(srcID);                                      // Source
+            newNoteIDs.add(DBQueryTools.getCommentID(newNoteDetails));  // Comment
+            newNoteIDs.add(DBQueryTools.getQuestionID(newNoteDetails)); // Question
+            newNoteIDs.add(DBQueryTools.getQuoteID(newNoteDetails));    // Quote
+            newNoteIDs.add(DBQueryTools.getTermID(newNoteDetails));     // Term
+            newNoteIDs.add(DBQueryTools.getTopicID(newNoteDetails));    // Topic
+            newNoteIDs.add(0);                                          // Delete
 
+            if(!newSourcesAuthorIDs.isEmpty()){
+                for(int aID : newSourcesAuthorIDs){
+                    rdb.getAuthorBySourceDao().insert(new AuthorBySource(aID,srcID));
+                }
+            }
 
+            startActivity(DBQueryTools.addNewNote(this, newNoteIDs));
 
-            //startActivity(DBQueryTools.addNewNote(this, captureNoteDetails(), captureFiles()));
-            Toast.makeText(this, "New Note Added", Toast.LENGTH_SHORT).show();
         }else if(item.getItemId() == R.id.edit_note){
             Toast.makeText(this, "Edit Note for Delete clicked!", Toast.LENGTH_SHORT).show();
         }else if(item.getItemId() == R.id.mark_for_delete) {
@@ -218,10 +252,10 @@ public class AddNote extends AppCompatActivity {
         ArrayAdapter<String> sourceTitleAdapter = DBQueryTools.captureDBSources(this);
         sourceTitle.setThreshold(1);
         sourceTitle.setAdapter(sourceTitleAdapter);
-
+/*
         ArrayAdapter<String> authorsAdapter = DBQueryTools.captureDBAuthors(this);
         author.setThreshold(1);
-        author.setAdapter(authorsAdapter);
+        author.setAdapter(authorsAdapter);*/
 
         ArrayAdapter<String> summaryAdapter = DBQueryTools.captureSummaries(this);
         summary.setThreshold(1);
@@ -238,39 +272,88 @@ public class AddNote extends AppCompatActivity {
 
     private List<String> captureNoteDetails(){
         String[] parseDate= DateTimestampManager.parseDate(date);
-        viewNoteDetails = new ArrayList<>();
-        viewNoteDetails.add(sourceType.toString());    // 0: Type
-        viewNoteDetails.add(summary.getText().toString());       // 1: Summary
-        viewNoteDetails.add(sourceTitle.getText().toString());   // 2: Source
-        viewNoteDetails.add(author.getText().toString());        // 3: Author(s)
-        viewNoteDetails.add(question.getText().toString());      // 4: Question
-        viewNoteDetails.add(quote.getText().toString());         // 5: Quote
-        viewNoteDetails.add(term.getText().toString());          // 6: Term
-        /*viewNoteDetails.add(viewNoteDetails.get(Globals.YEAR));                       // 7: Year
-        viewNoteDetails.add(viewNoteDetails.get(Globals.MONTH));                       // 8: Month
-        viewNoteDetails.add(viewNoteDetails.get(Globals.DAY));                       // 9: Day*/
-        viewNoteDetails.add(parseDate[2]);                       // 7: Year
-        viewNoteDetails.add(parseDate[0]);                       // 8: Month
-        viewNoteDetails.add(parseDate[1]);                       // 9: Day
-        viewNoteDetails.add(volume.getText().toString());        // 10: Volume
-        viewNoteDetails.add(edition.getText().toString());       // 11: Edition
-        viewNoteDetails.add(issue.getText().toString());         // 12: Issue
-        viewNoteDetails.add(hyperlink.getText().toString());     // 13: Hyperlink
-        viewNoteDetails.add(comment.getText().toString());       // 14: Comment
-        viewNoteDetails.add(pgs_paras.getText().toString());     // 15: Page
-        viewNoteDetails.add(timeStamp.getText().toString());     // 16: TimeStamp
-        viewNoteDetails.add(topic.getText().toString());         // 17: Topic
+        newNoteDetails = new ArrayList<>();
+        newNoteDetails.add(sourceType.toString());              // 0: Type
+        newNoteDetails.add(summary.getText().toString());       // 1: Summary
+        newNoteDetails.add(sourceTitle.getText().toString());   // 2: Source
+        newNoteDetails.add(author.getText().toString());        // 3: Author(s)
+        newNoteDetails.add(question.getText().toString());      // 4: Question
+        newNoteDetails.add(quote.getText().toString());         // 5: Quote
+        newNoteDetails.add(term.getText().toString());          // 6: Term
+        newNoteDetails.add(parseDate[2]);                       // 7: Year
+        newNoteDetails.add(parseDate[0]);                       // 8: Month
+        newNoteDetails.add(parseDate[1]);                       // 9: Day
+        newNoteDetails.add(volume.getText().toString());        // 10: Volume
+        newNoteDetails.add(edition.getText().toString());       // 11: Edition
+        newNoteDetails.add(issue.getText().toString());         // 12: Issue
+        newNoteDetails.add(hyperlink.getText().toString());     // 13: Hyperlink
+        newNoteDetails.add(comment.getText().toString());       // 14: Comment
+        newNoteDetails.add(pgs_paras.getText().toString());     // 15: Page
+        newNoteDetails.add(timeStamp.getText().toString());     // 16: TimeStamp
+        newNoteDetails.add(topic.getText().toString());         // 17: Topic
 
-        return viewNoteDetails;
+        return newNoteDetails;
+    }
+
+    private void populateSourceDetails(List<Sources> sources) {
+        if(sources.get(0).getTitle().equals("The Case for Christianity"))
+            sources.add(new Sources(43, "Book", "The Case for Christianity", 2021, 0, 0, "", "", ""));
+
+        if (sources.size() == 0) {
+            author.setText(R.string.add_author_phrase);
+            selectedSourceID = 0;
+
+        } else if (sources.size() > 1){
+            // sourceID is returned by the intentLauncher.startActivityForResult
+            getCorrectAuthors(sources);
+
+        } else {
+            author.setText(DBQueryTools.captureAuthorNewOrOldSource(sources.get(0)));
+            setSourceDetails(sources.get(0));
+            selectedSourceID = sources.get(0).getSourceID();
+        }
+
+
+    }
+
+    private void getCorrectAuthors(List<Sources> sources) {
+        sources.add(new Sources(0, "", "", 2021, 0, 0, "", "", ""));
+        Intent a = new Intent(AddNote.this, AuthorPopup.class);
+        a.putParcelableArrayListExtra("sources", new ArrayList<>(sources));
+        intentLauncher.launch(a);
+    }
+
+    private void setCorrectSourceAuthor(Sources sourceAuthor){
+        author.setText(DBQueryTools.concatenateAuthors(DBQueryTools.getAuthorsBySourceID(sourceAuthor.getSourceID())));
+    }
+
+    private void setSourceDetails(Sources src){
+        if(src.getSourceID()!=0) {
+            setCorrectSourceAuthor(src);
+            date.setText(DBQueryTools.concatenateDate(String.valueOf(src.getMonth()), String.valueOf(src.getDay()), String.valueOf(src.getYear())));
+            volume.setText(src.getVolume());
+            edition.setText(src.getEdition());
+            issue.setText(src.getIssue());
+        }else{
+            setZeroSourceDetails();
+        }
+    }
+
+    private void setZeroSourceDetails(){
+        author.setText(R.string.add_author_phrase);
+        date.setText("");
+        volume.setText("");
+        edition.setText("");
+        issue.setText("");
     }
 
     private List<Files> captureFiles(){
-        List<Files> files = rdb.getFilesDao().getFiles();
+        List<Files> files = new ArrayList<>();
         return files;
     }
 
     private boolean requiredFields(){
-        String msg = "";
+        String msg;
 
         if (topic.getText().toString().isEmpty()){
             msg = "Please select or enter a topic.";
@@ -306,10 +389,8 @@ public class AddNote extends AppCompatActivity {
                 return true;
             }
         }
-        PopupDialog.AlertMessage(AddNote.this, "Required Fields", msg);
-        //PopupDialog.AlertInputBox(AddNote.this, "Required Input", "Please enter some input for testing.");
+        PopupDialog.AlertMessage(AddNote.this, "Required Field", msg);
         return false;
     }
-
 
 }

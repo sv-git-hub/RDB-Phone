@@ -1,12 +1,15 @@
 package com.mistywillow.researchdb.database.entities;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
 @Entity(tableName = "Sources")
-public class Sources {
+public class Sources implements Parcelable{
 
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "SourceID")
@@ -15,8 +18,8 @@ public class Sources {
     private String sourceType;
     @ColumnInfo(name = "Title")
     private String title;
-    @ColumnInfo(name = "Year", defaultValue = "")
     @Nullable
+    @ColumnInfo(name = "Year", defaultValue = "")
     private int year;
     @ColumnInfo(name = "Month", defaultValue = "")
     @Nullable
@@ -42,6 +45,30 @@ public class Sources {
         this.edition = edition;
         this.issue = issue;
     }
+
+    protected Sources(Parcel in) {
+        sourceID = in.readInt();
+        sourceType = in.readString();
+        title = in.readString();
+        year = in.readInt();
+        month = in.readInt();
+        day = in.readInt();
+        volume = in.readString();
+        edition = in.readString();
+        issue = in.readString();
+    }
+
+    public static final Creator<Sources> CREATOR = new Creator<Sources>() {
+        @Override
+        public Sources createFromParcel(Parcel in) {
+            return new Sources(in);
+        }
+
+        @Override
+        public Sources[] newArray(int size) {
+            return new Sources[size];
+        }
+    };
 
     public int getSourceID() {
         return sourceID;
@@ -115,4 +142,22 @@ public class Sources {
         this.issue = issue;
     }
 
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(sourceID);
+        dest.writeString(sourceType);
+        dest.writeString(title);
+        dest.writeInt(year);
+        dest.writeInt(month);
+        dest.writeInt(day);
+        dest.writeString(volume);
+        dest.writeString(edition);
+        dest.writeString(issue);
+
+    }
 }

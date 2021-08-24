@@ -9,7 +9,7 @@ import java.util.List;
 @Dao
 public interface FilesDao {
     @Insert
-    void addFile(Files file);
+    long addFile(Files file);
     @Update
     void updateFile(Files file);
     @Delete

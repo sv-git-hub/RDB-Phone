@@ -58,6 +58,9 @@ public interface NotesDao {
             "WHERE n.NoteID = :noteID")
     NoteDetails getNoteDetails(int noteID);
 
+    @Query("SELECT last_insert_rowid()")
+    int lastNotePKID();
+
     @Query("SELECT COUNT(*) FROM Notes WHERE QuestionID = :id")
     int countQuestionByID(int id);
 

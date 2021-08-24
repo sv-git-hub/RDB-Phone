@@ -14,7 +14,7 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 
 
-public class BuildTableLayout {
+public class BuildTableLayout extends AppCompatActivity{
 
     public static TableRow setupFilesTableRow(Context context, TableLayout table, String fileID, String fileName, boolean bold) {
         TableRow row = new TableRow(context);
@@ -84,10 +84,11 @@ public class BuildTableLayout {
         btnAddRow.setTypeface(Typeface.DEFAULT,Typeface.BOLD);
         btnAddRow.setGravity(Gravity.CENTER);
         btnAddRow.setPadding(5,5,5,5);
-        btnAddRow.setOnClickListener(v -> table.addView(setupAuthorsTableRow(context, table, "", "", "", "", false)));
+        btnAddRow.setOnClickListener(v -> {
+            table.addView(setupAuthorsTableRow(context, table, "", "", "", "", false));
+        });
         return btnAddRow;
     }
-
 
     public static Button setupDeleteRowButton(Context context, TableLayout table){
         Button btnDeleteAuthor = new Button(context);
@@ -99,7 +100,9 @@ public class BuildTableLayout {
         btnDeleteAuthor.setTypeface(Typeface.DEFAULT,Typeface.BOLD);
         btnDeleteAuthor.setGravity(Gravity.CENTER);
         btnDeleteAuthor.setPadding(5,5,5,5);
-        btnDeleteAuthor.setOnClickListener(v -> deleteTableRows(table));
+        btnDeleteAuthor.setOnClickListener(v -> {
+            deleteTableRows(table);
+        });
         return btnDeleteAuthor;
     }
 
@@ -138,7 +141,7 @@ public class BuildTableLayout {
 
     public static TextView addRowTextViewToTable(Context context, String value, boolean bold){
 
-        TextView tv = new TextView(context);
+        TextView tv;
         tv = new TextView(context);
         TableRow.LayoutParams trLayoutParams = new TableRow.LayoutParams();
 

@@ -55,7 +55,7 @@ public class EditNote extends AppCompatActivity {
         toolbar.setTitleTextColor(getColor(R.color.colorWhite));
         setSupportActionBar(toolbar);
 
-        ResearchDatabase rdb = ResearchDatabase.getInstance(this, "Apologetic.db");
+        ResearchDatabase rdb = ResearchDatabase.getInstance(this, GlobalVariables.DATABASE);
 
         // AUTOCOMPLETE TEXT VIEWS
         sourceType = findViewById(R.id.viewType);
@@ -85,7 +85,6 @@ public class EditNote extends AppCompatActivity {
         Intent viewDetails = getIntent();
         Bundle viewBundle = viewDetails.getExtras();
 
-        assert viewBundle != null;
         int vNoteID = viewBundle.getInt("NoteID");
         nid = vNoteID;
         orgNoteTableIDs = rdb.getNotesDao().getNote(vNoteID);
@@ -108,7 +107,7 @@ public class EditNote extends AppCompatActivity {
     private void setupOnClickActions() {
         sourceTitle.setOnFocusChangeListener((v, hasFocus) -> {
             if(!hasFocus){
-                author.setText(DBQueryTools.captureAuthorNewOrOldSource(getApplicationContext(), sourceTitle.getText().toString()));
+                author.setText(DBQueryTools.concatenateAuthors(DBQueryTools.getAuthorsBySourceID(orgNoteTableIDs.getSourceID())));
             }
             if(author.getText().toString().equals("Select an Author or Add new below")){
                 Toast.makeText(this, "TODO: New Author Needed or Selected.", Toast.LENGTH_SHORT).show();

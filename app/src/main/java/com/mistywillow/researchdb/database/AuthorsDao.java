@@ -9,7 +9,7 @@ import java.util.List;
 @Dao
 public interface AuthorsDao {
     @Insert
-    void addAuthor(Authors author);
+    long addAuthor(Authors author);
     @Update
     void updateAuthor(Authors author);
     @Delete

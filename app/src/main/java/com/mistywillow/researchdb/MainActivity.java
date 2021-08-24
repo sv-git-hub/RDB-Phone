@@ -44,11 +44,11 @@ public class MainActivity extends AppCompatActivity {
         this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 
             // GET ASSETS
-            CopyAssets.copyAssets(this, "user_log", "userInfo.txt");
+            //CopyAssets.copyAssets(this, "user_log", "userInfo.txt");
             //CopyAssets.copyAssets(this, "databases", "Apologetic.db");
 
             // MY DATABASE:
-            researchDatabase = ResearchDatabase.getInstance(this, "Apologetic.db");
+            researchDatabase = ResearchDatabase.getInstance(this, GlobalVariables.DATABASE);
 
             // TOPIC LIST
             ArrayAdapter<String> topicAdapter = new ArrayAdapter<>(this, R.layout.custom_topic_spinner, DBQueryTools.spinnerTopicsList(this));
@@ -162,7 +162,6 @@ public class MainActivity extends AppCompatActivity {
 
 
         }else if(item.getItemId() == R.id.add_note) {
-            Toast.makeText(this, "Add Note clicked!", Toast.LENGTH_SHORT).show();
             Intent launchAdd = new Intent(this, AddNote.class);
             startActivity(launchAdd);
 
@@ -223,7 +222,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void loadNotes(List<SourcesTable> sourcesTable){
         rListNotes.setLayoutManager(new LinearLayoutManager(MainActivity.this));
-        rListNotes.setAdapter(new NoteAdapter(MainActivity.this, researchDatabase, sourcesTable));
+        rListNotes.setAdapter(new NoteAdapter(MainActivity.this, sourcesTable));
         mainMenu.findItem(R.id.clear).setEnabled(true);
         mainMenu.findItem(R.id.note_export).setEnabled(true);
     }

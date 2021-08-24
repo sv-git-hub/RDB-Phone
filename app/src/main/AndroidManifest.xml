@@ -13,9 +13,16 @@
             android:roundIcon="@mipmap/ic_launcher_rdb_round"
             android:supportsRtl="true"
             android:theme="@style/AppThemeLauncher">
-        <activity android:name=".AddNote">
+        <activity
+                android:name=".AddNote"
+                android:alwaysRetainTaskState="true">
         </activity>
         <activity android:name=".EditNote">
+        </activity>
+        <activity
+                android:name=".AuthorPopup"
+                android:theme="@style/Theme.AppCompat.Dialog"
+                android:parentActivityName=".AddNote">
         </activity>
         <activity
                 android:name=".MainActivity"

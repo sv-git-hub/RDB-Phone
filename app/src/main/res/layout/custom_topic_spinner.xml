@@ -4,6 +4,6 @@
           android:layout_height="wrap_content"
           android:padding="5dp"
           style="@style/MySpinnerTheme"
-          android:id="@+id/text1" android:hint="Topic">
+          android:id="@+id/text1" android:hint="@string/hint_topic">
 
 </TextView>

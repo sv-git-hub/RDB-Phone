@@ -91,8 +91,14 @@
     <!-- POPUP -->
     <string name="lbl_ok">OK</string>
     <string name="lbl_cancel">Cancel</string>
+    <string name="list_authors">listAuthors</string>
 
     <!-- Buttons -->
     <string name="btn_add_author">Add Author</string>
     <string name="btn_del_author">Delete Author</string>
+
+    <!-- PHRASES -->
+    <string name="add_author_phrase">For new sources add new/existing author(s) below</string>
+    <string name="multiple_authors">Multiple authors for the same title.</string>
+    <string name="new_source">New Source</string>
 </resources>

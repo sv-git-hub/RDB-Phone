@@ -12,7 +12,7 @@ import java.util.List;
 @Dao
 public interface AuthorBySourceDao {
     @Insert
-    void insert(AuthorBySource authorBySource);
+    long insert(AuthorBySource authorBySource);
 
     @Query("SELECT Authors.AuthorID, FirstName, MiddleName, LastName, Suffix FROM Authors\n" +
             "LEFT JOIN Author_By_Source ON Authors.AuthorID=Author_By_Source.AuthorID\n" +

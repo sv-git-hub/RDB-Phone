@@ -9,7 +9,7 @@ import java.util.List;
 @Dao
 public interface QuestionsDao {
     @Insert
-    void addQuestion(Questions question);
+    long addQuestion(Questions question);
 
     @Update(onConflict = OnConflictStrategy.IGNORE)
     void updateQuestion(Questions question);
@@ -22,6 +22,9 @@ public interface QuestionsDao {
 
     @Query("SELECT * FROM Questions WHERE QuestionID = :questionID")
     Questions getQuestion(int questionID);
+
+    @Query("SELECT QuestionID FROM Questions WHERE Question = :question")
+    int getQuestionByValue(String question);
 
     @Query("SELECT COUNT(*) FROM Questions WHERE question = :question")
     int getCountByValue(String question);

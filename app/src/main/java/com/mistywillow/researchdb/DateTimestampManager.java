@@ -18,7 +18,6 @@ public class DateTimestampManager {
 
     public static boolean validateSearchTimeStamp(Context context, String checkTimeStamp){
         if (!checkTimeStamp.isEmpty() && !checkTimeStamp.matches("^((\\d\\d):([0-5]\\d):([0-5]\\d))$")){
-
             PopupDialog.AlertMessage(context,"Error: Invalid TimeStamp","Please enter the following format or leave blank.\n\n" +
                     "Example: 00:00:01 or 01:45:59 = hh:mm:ss");
             return false;

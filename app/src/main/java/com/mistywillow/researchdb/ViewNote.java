@@ -102,7 +102,7 @@ public class ViewNote extends AppCompatActivity {
         nSource = n.getStringExtra("Source");
         nAuthors = n.getStringExtra("Authors");
 
-        researchDatabase = ResearchDatabase.getInstance(this, "Apologetic.db");
+        researchDatabase = ResearchDatabase.getInstance(this, GlobalVariables.DATABASE);
 
         NoteDetails details = researchDatabase.getNotesDao().getNoteDetails(nNoteID);
         noteDetails.clear();
@@ -195,7 +195,7 @@ public class ViewNote extends AppCompatActivity {
                     buildFiles(filePaths);
                 }
 
-                Uri contentUri = getUriForFile(getApplicationContext(), "com.mistywillow.fileprovider", newFile);
+                Uri contentUri = getUriForFile(ViewNote.this, "com.mistywillow.fileprovider", newFile);
                 Log.d("FIle: contentUri", Objects.requireNonNull(contentUri.getPath()));
                 openFile(contentUri, mimeType);
             });

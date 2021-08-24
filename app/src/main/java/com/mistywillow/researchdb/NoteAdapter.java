@@ -18,12 +18,10 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.ViewHolder> {
 
     private final LayoutInflater inflater;
     private final List<SourcesTable> notes;
-    private final ResearchDatabase db;
 
-    public NoteAdapter(Context context, ResearchDatabase db, List<SourcesTable> notes){
+    public NoteAdapter(Context context, List<SourcesTable> notes){
         this.inflater = LayoutInflater.from(context);
         this.notes = notes;
-        this.db = db;
     }
 
     @NonNull
@@ -40,7 +38,7 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.ViewHolder> {
         String noteType = notes.get(i).getSourceType();
         String noteSummary = notes.get(i).getSummary();
         String noteSource = notes.get(i).getTitle();
-        String noteAuthors = getAllAuthors(notes.get(i).getSourceID());
+        String noteAuthors = DBQueryTools.concatenateAuthors(DBQueryTools.getAuthorsBySourceID(notes.get(i).getSourceID()));
         viewHolder.nNoteID.setText(String.valueOf(noteID));
         viewHolder.nNoteType.setText(noteType);
         viewHolder.nSummary.setText(noteSummary);
@@ -76,18 +74,10 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.ViewHolder> {
                 i.putExtra("Type", notes.get(getBindingAdapterPosition()).getSourceType());
                 i.putExtra("Summary", notes.get(getBindingAdapterPosition()).getSummary());
                 i.putExtra("Source", notes.get(getBindingAdapterPosition()).getTitle());
-                i.putExtra("Authors", getAllAuthors(notes.get(getBindingAdapterPosition()).getSourceID()));
+                i.putExtra("Authors", DBQueryTools.concatenateAuthors(DBQueryTools.getAuthorsBySourceID(notes.get(getBindingAdapterPosition()).getSourceID())));
                 v.getContext().startActivity(i);
             });
 
         }
     }
-
-    private String getAllAuthors(int sourceID){
-        List<Authors> authors = db.getAuthorsDao().getSourceAuthors(sourceID);
-        return DBQueryTools.concatenateAuthors(authors);
-    }
-
-
-
 }

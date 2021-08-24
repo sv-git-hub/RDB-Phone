@@ -9,7 +9,7 @@ import java.util.List;
 @Dao
 public interface SourcesDao {
     @Insert
-    void addSource(Sources source);
+    long addSource(Sources source);
     @Update
     void updateSource(Sources source);
     @Delete
@@ -26,6 +26,9 @@ public interface SourcesDao {
     // GETS SOURCES BY TITLE
     @Query("SELECT * FROM Sources WHERE Title = :sourceTitle")
     List<Sources> getSourceByTitle(String sourceTitle);
+
+    @Query("SELECT SourceID FROM Sources WHERE Title = :sourceTitle")
+    int getSourceIDByTitle(String sourceTitle);
 
     // GETS ID OF NEW SOURCE ENTRY
     @Query("SELECT last_insert_rowid()")

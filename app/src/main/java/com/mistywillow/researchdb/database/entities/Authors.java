@@ -8,7 +8,7 @@ import androidx.room.PrimaryKey;
 public class Authors{
 
     @PrimaryKey(autoGenerate = true)
-    @ColumnInfo(name = "AuthorID") private int authorID;
+    @ColumnInfo(name = "AuthorID")    private int authorID;
     @ColumnInfo(name = "FirstName") private String firstName;
     @ColumnInfo(name = "MiddleName") private String middleName;
     @ColumnInfo(name = "LastName") private String lastName;

@@ -1,15 +1,21 @@
 package com.mistywillow.researchdb;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.TextView;
-import android.widget.Toast;
+import android.widget.*;
 import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import com.mistywillow.researchdb.database.entities.Authors;
+import com.mistywillow.researchdb.database.entities.Sources;
 
-public class PopupDialog {
+import java.util.List;
+
+public class PopupDialog{
 
     private static String result = "";
 
@@ -35,8 +41,6 @@ public class PopupDialog {
                 alertDialog.cancel();
             }
         });
-
-
     }
 
     /* Initialize popup dialog view and ui controls in the popup dialog. */
@@ -88,8 +92,7 @@ public class PopupDialog {
         return result;
     }
 
-    private static View SingleInputBox(Context context, String message)
-    {
+    private static View SingleInputBox(Context context, String message)    {
         // Get layout inflater object.
         LayoutInflater layoutInflater = LayoutInflater.from(context);
         // Inflate the popup dialog from a layout xml file.
@@ -97,5 +100,30 @@ public class PopupDialog {
         TextView inputMessage = popupInputDialogView.findViewById(R.id.popupInputMessage);
         inputMessage.setText(message);
         return popupInputDialogView;
+    }
+    public static void AlertSelectAuthor(Context context, String title, String message, List<Sources> sources){
+        // Create a AlertDialog Builder.
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
+        // Set title, icon, can not cancel properties.
+        alertDialogBuilder.setTitle(title);
+        alertDialogBuilder.setIcon(R.drawable.ic_launcher_background);
+        alertDialogBuilder.setCancelable(false);
+
+        // Set the inflated layout view object to the AlertDialog builder.
+        View popup = SelectAuthorTable(context, message, sources);
+        alertDialogBuilder.setView(popup);
+
+        // Create AlertDialog and show.
+        final AlertDialog alertDialog = alertDialogBuilder.create();
+        alertDialog.show();
+    }
+
+    private static View SelectAuthorTable(Context context, String message, List<Sources> sources){
+        LayoutInflater layoutInflater = LayoutInflater.from(context);
+        View popupSourcesDialog = layoutInflater.inflate(R.layout.popup_sources_dialog, null);
+        RecyclerView listAuthors = popupSourcesDialog.findViewById(R.id.ListAuthors);
+        listAuthors.setLayoutManager(new LinearLayoutManager(context));
+        listAuthors.setAdapter(new PopupAdapter(context, sources, (PopupAdapter.IPopupRecycler) context));
+        return popupSourcesDialog;
     }
 }

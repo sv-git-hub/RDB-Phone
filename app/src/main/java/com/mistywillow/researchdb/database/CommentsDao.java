@@ -9,7 +9,7 @@ import java.util.List;
 @Dao
 public interface CommentsDao {
     @Insert
-    void addComment(Comments comment);
+    long addComment(Comments comment);
     @Update
     void updateComment(Comments comment);
     @Delete
