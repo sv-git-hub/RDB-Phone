@@ -3,18 +3,16 @@ package com.mistywillow.researchdb.database;
 import androidx.room.*;
 import androidx.sqlite.db.SimpleSQLiteQuery;
 import com.mistywillow.researchdb.NoteDetails;
-import com.mistywillow.researchdb.database.entities.Files;
 import com.mistywillow.researchdb.database.entities.Notes;
 import com.mistywillow.researchdb.SourcesTable;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Dao
 public interface NotesDao {
 
     @Insert
-    void addNote(Notes note);
+    long addNote(Notes note);
 
     @Update
     void updateNote(Notes note);

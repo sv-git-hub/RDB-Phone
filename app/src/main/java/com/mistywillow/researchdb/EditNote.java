@@ -162,7 +162,6 @@ public class EditNote extends AppCompatActivity {
     }
 
     // CUSTOM METHODS
-
     private void loadAutoCompleteTextViews(){
         /*ArrayAdapter<String> sourceTypeAdapter = DBQueryTools.captureSourceTypes(this, "simple");
         sourceType.setThreshold(1);

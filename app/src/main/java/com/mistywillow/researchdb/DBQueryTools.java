@@ -288,8 +288,7 @@ public class DBQueryTools {
 
         // NOTES
         Notes note = new Notes(noteID, srcID, cmtID, queID, quoID,terID, topID, del);
-        rdb.getNotesDao().addNote(note);
-        noteID = rdb.getNotesDao().lastNotePKID();
+        noteID = (int) rdb.getNotesDao().addNote(note);
 
         Intent a = new Intent(context, ViewNote.class);
         a.putExtra("ID", noteID);
