@@ -101,4 +101,18 @@
     <string name="add_author_phrase">For new sources add new/existing author(s) below</string>
     <string name="multiple_authors">Multiple authors for the same title.</string>
     <string name="new_source">New Source</string>
+
+    <!-- Arrays -->
+    <string name="empty"/>
+    <string name="article">Article</string>
+    <string name="audio">Audio</string>
+    <string name="book">Book</string>
+    <string name="journal">Journal</string>
+    <string name="periodical">Periodical</string>
+    <string name="question">Question</string>
+    <string name="quote">Quote</string>
+    <string name="term">Term</string>
+    <string name="video">Video</string>
+    <string name="website">Website</string>
+    <string name="other">Other</string>
 </resources>

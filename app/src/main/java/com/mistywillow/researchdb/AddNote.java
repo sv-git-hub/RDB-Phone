@@ -32,12 +32,12 @@ public class AddNote extends AppCompatActivity {
     private EditText timeStamp;
 
     //AutoCompleteTextView sourceType;
-    Spinner sourceType;
-    AutoCompleteTextView sourceTitle;
+    private Spinner sourceType;
+    private AutoCompleteTextView sourceTitle;
     //AutoCompleteTextView author;
-    AutoCompleteTextView topic;
-    AutoCompleteTextView question;
-    AutoCompleteTextView summary;
+    private AutoCompleteTextView topic;
+    private AutoCompleteTextView question;
+    private AutoCompleteTextView summary;
 
     private TextView author;
 
@@ -94,7 +94,13 @@ public class AddNote extends AppCompatActivity {
                 new ActivityResultContracts.StartActivityForResult(),
                 result ->{
                     if(result.getResultCode() == Activity.RESULT_OK) {
+                        assert result.getData() != null;
                         Sources src = result.getData().getParcelableExtra("source");
+                        if(src == null){
+                            PopupDialog.AlertMessage(AddNote.this, "Error: Author Choice",
+                                    "An issue occurred and an author choice was not returned.");
+                            return;
+                        }
                         setSourceDetails(src);
                         selectedSourceID = src.getSourceID();
                     }
@@ -113,46 +119,37 @@ public class AddNote extends AppCompatActivity {
     }
 
     private void setupOnClickActions() {
-        sourceTitle.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        sourceTitle.setOnItemClickListener((parent, view, position, id) ->
+                populateSourceDetails(DBQueryTools.getSourcesByTitle(sourceTitle.getText().toString())));
+
+        sourceTitle.setOnFocusChangeListener((v, hasFocus) -> {
+            if(!hasFocus)
                 populateSourceDetails(DBQueryTools.getSourcesByTitle(sourceTitle.getText().toString()));
-            }
         });
 
-        tableLayoutAuthors.addOnLayoutChangeListener(new View.OnLayoutChangeListener() {
-            @Override
-            public void onLayoutChange(View v, int left, int top, int right, int bottom, int oldLeft, int oldTop, int oldRight, int oldBottom) {
-                if (tableLayoutAuthors.getChildCount() > 1)
+        tableLayoutAuthors.addOnLayoutChangeListener((v, left, top, right, bottom, oldLeft, oldTop, oldRight, oldBottom) -> {
+            if(sourceTitle.getText().length() !=0 && !sourceTitle.hasFocus()){
+                if (tableLayoutAuthors.getChildCount() > 1) {
                     author.setText(R.string.add_author_phrase);
-                else if (tableLayoutAuthors.getChildCount() == 1 && bottom < oldBottom && !sourceTitle.hasFocus() && !sourceTitle.getText().toString().equals("")) {
+                }else if(tableLayoutAuthors.getChildCount() == 1 && bottom != oldBottom){
                     populateSourceDetails(DBQueryTools.getSourcesByTitle(sourceTitle.getText().toString()));
                 }
             }
         });
 
-        date.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if (!hasFocus)
-                    DateTimestampManager.validateDate(AddNote.this, date.getText().toString());
-            }
+        date.setOnFocusChangeListener((v, hasFocus) -> {
+            if (!hasFocus)
+                DateTimestampManager.validateDate(AddNote.this, date.getText().toString());
         });
 
-        timeStamp.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if (!hasFocus)
-                    DateTimestampManager.validateSearchTimeStamp(AddNote.this, timeStamp.getText().toString());
-            }
+        timeStamp.setOnFocusChangeListener((v, hasFocus) -> {
+            if (!hasFocus)
+                DateTimestampManager.validateSearchTimeStamp(AddNote.this, timeStamp.getText().toString());
         });
 
-        topic.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if (!hasFocus)
-                    DateTimestampManager.validateTopic(AddNote.this, topic.getText().toString());
-            }
+        topic.setOnFocusChangeListener((v, hasFocus) -> {
+            if (!hasFocus)
+                DateTimestampManager.validateTopic(AddNote.this, topic.getText().toString());
         });
     }
 
@@ -178,11 +175,20 @@ public class AddNote extends AppCompatActivity {
             Toast.makeText(this, String.valueOf(editMenu.size()), Toast.LENGTH_SHORT).show();
 
         }else if(item.getItemId() == R.id.update_note) {
-            int srcID = 0;
+            int srcID;
             if (!requiredFields()) {
                 return false;
             }
             captureNoteDetails();
+
+            if (selectedSourceID > 0)
+                srcID = selectedSourceID;
+            else{
+                srcID = DBQueryTools.addNewSource(new Sources(0, newNoteDetails.get(Globals.TYPE),
+                        newNoteDetails.get(Globals.SOURCE), Integer.parseInt(newNoteDetails.get(Globals.YEAR)), Integer.parseInt(newNoteDetails.get(Globals.MONTH)),
+                        Integer.parseInt(newNoteDetails.get(Globals.DAY)), newNoteDetails.get(Globals.VOLUME),
+                        newNoteDetails.get(Globals.EDITION), newNoteDetails.get(Globals.ISSUE)));
+            }
 
             if (author.getText().toString().equals("For new sources add new/existing author(s) below")) {
 
@@ -196,14 +202,7 @@ public class AddNote extends AppCompatActivity {
                     }
                 }
             }
-            if (selectedSourceID > 0)
-                srcID = selectedSourceID;
-            else{
-                srcID = DBQueryTools.addNewSource(new Sources(0, newNoteDetails.get(Globals.TYPE),
-                        newNoteDetails.get(Globals.SOURCE), Integer.parseInt(newNoteDetails.get(Globals.YEAR)), Integer.parseInt(newNoteDetails.get(Globals.MONTH)),
-                        Integer.parseInt(newNoteDetails.get(Globals.DAY)), newNoteDetails.get(Globals.VOLUME),
-                        newNoteDetails.get(Globals.EDITION), newNoteDetails.get(Globals.ISSUE)));
-            }
+
             List<Integer> newNoteIDs = new ArrayList<>();
             newNoteIDs.add(0);
             newNoteIDs.add(srcID);                                      // Source
@@ -270,7 +269,7 @@ public class AddNote extends AppCompatActivity {
         question.setAdapter(acQuestionAdapt);
     }
 
-    private List<String> captureNoteDetails(){
+    private void captureNoteDetails(){
         String[] parseDate= DateTimestampManager.parseDate(date);
         newNoteDetails = new ArrayList<>();
         newNoteDetails.add(sourceType.toString());              // 0: Type
@@ -292,7 +291,6 @@ public class AddNote extends AppCompatActivity {
         newNoteDetails.add(timeStamp.getText().toString());     // 16: TimeStamp
         newNoteDetails.add(topic.getText().toString());         // 17: Topic
 
-        return newNoteDetails;
     }
 
     private void populateSourceDetails(List<Sources> sources) {
@@ -302,6 +300,7 @@ public class AddNote extends AppCompatActivity {
         if (sources.size() == 0) {
             author.setText(R.string.add_author_phrase);
             selectedSourceID = 0;
+            setZeroSourceDetails();
 
         } else if (sources.size() > 1){
             // sourceID is returned by the intentLauncher.startActivityForResult
@@ -334,9 +333,22 @@ public class AddNote extends AppCompatActivity {
             volume.setText(src.getVolume());
             edition.setText(src.getEdition());
             issue.setText(src.getIssue());
+            sourceType.setSelection(getTypeSelection(src));
         }else{
             setZeroSourceDetails();
         }
+    }
+
+    private int getTypeSelection(Sources src){
+        String[] res = getResources().getStringArray(R.array.types);
+        int result = 0;
+        for(int s = 0; s < res.length; s++){
+            if(src.getSourceType().equals(res[s])) {
+                result = s;
+                break;
+            }
+        }
+        return result;
     }
 
     private void setZeroSourceDetails(){
@@ -384,6 +396,9 @@ public class AddNote extends AppCompatActivity {
 
             } else if (summary.getText().toString().isEmpty()) {
                 msg = "Please enter a summary point. This expands upon your Topic entry or selection.";
+
+            }else if(date.getText().toString().isEmpty()){
+                msg = "Please enter a date. Every source must have a date, if not, use the current year.";
 
             } else {
                 return true;

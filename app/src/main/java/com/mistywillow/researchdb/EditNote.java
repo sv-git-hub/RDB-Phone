@@ -25,6 +25,7 @@ public class EditNote extends AppCompatActivity {
 
     private int nid;
 
+    private TextView sourceType;
     private TextView sourceTitle;
     private TextView author;
     private TextView quote;
@@ -38,7 +39,7 @@ public class EditNote extends AppCompatActivity {
     private TextView pgs_paras;
     private TextView timeStamp;
 
-    private AutoCompleteTextView sourceType;
+
     private AutoCompleteTextView topic;
     private AutoCompleteTextView question;
     private AutoCompleteTextView summary;
@@ -58,7 +59,6 @@ public class EditNote extends AppCompatActivity {
         ResearchDatabase rdb = ResearchDatabase.getInstance(this, GlobalVariables.DATABASE);
 
         // AUTOCOMPLETE TEXT VIEWS
-        sourceType = findViewById(R.id.viewType);
         sourceTitle = findViewById(R.id.viewSource);
         author = findViewById(R.id.viewAuthors);
         topic = findViewById(R.id.viewTopic);
@@ -66,6 +66,7 @@ public class EditNote extends AppCompatActivity {
         summary = findViewById(R.id.viewSummary);
 
         // REGULAR TEXT VIEWS
+        sourceType = findViewById(R.id.viewType);
         comment = findViewById(R.id.viewComment);
         quote = findViewById(R.id.viewQuote);
         term = findViewById(R.id.viewTerm);
@@ -163,10 +164,10 @@ public class EditNote extends AppCompatActivity {
     // CUSTOM METHODS
 
     private void loadAutoCompleteTextViews(){
-        ArrayAdapter<String> sourceTypeAdapter = DBQueryTools.captureSourceTypes(this, "simple");
+        /*ArrayAdapter<String> sourceTypeAdapter = DBQueryTools.captureSourceTypes(this, "simple");
         sourceType.setThreshold(1);
         sourceType.setInputType(0);
-        sourceType.setAdapter(sourceTypeAdapter);
+        sourceType.setAdapter(sourceTypeAdapter);*/
 
         ArrayAdapter<String> summaryAdapter = DBQueryTools.captureSummaries(this);
         summary.setThreshold(1);

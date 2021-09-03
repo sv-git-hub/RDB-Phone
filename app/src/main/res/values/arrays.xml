@@ -1,4 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
+    <array name="types">
+        <item>@string/empty</item>
+        <item>@string/article</item>
+        <item>@string/audio</item>
+        <item>@string/book</item>
+        <item>@string/journal</item>
+        <item>@string/periodical</item>
+        <item>@string/question</item>
+        <item>@string/quote</item>
+        <item>@string/term</item>
+        <item>@string/video</item>
+        <item>@string/website</item>
+        <item>@string/other</item>
+    </array>
 </resources>

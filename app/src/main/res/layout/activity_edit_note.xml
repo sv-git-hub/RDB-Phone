@@ -55,14 +55,12 @@
                     app:layout_constraintStart_toStartOf="parent"
                     android:layout_marginTop="5dp"
                     android:layout_marginStart="5dp"/>
-            <AutoCompleteTextView
+            <TextView
                     android:id="@+id/viewType"
                     android:layout_width="100dp"
                     android:layout_height="wrap_content"
                     android:background="@color/colorWhite"
                     android:padding="5dp"
-                    android:inputType="text"
-                    android:imeOptions="actionDone"
                     android:hint="@string/hint_type"
                     android:ems="10"
                     android:singleLine="true"
@@ -70,6 +68,8 @@
                     app:layout_constraintStart_toEndOf="@+id/lbl_View_Type"
                     app:layout_constraintBaseline_toBaselineOf="@+id/lbl_View_Type"
                     android:layout_marginStart="5dp"/>
+                    <!--android:inputType="text"
+                    android:imeOptions="actionDone"-->
 
             <TextView
                     android:id="@+id/lbl_View_Topic"
@@ -336,7 +336,7 @@
                     android:id="@+id/viewAuthors"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                     android:hint="@string/hint_authors"
+                    android:hint="@string/hint_authors"
                     android:padding="5dp"
                     android:background="@color/colorWhite"
                     android:textSize="12sp"
@@ -357,14 +357,12 @@
                     app:layout_constraintStart_toStartOf="parent"
                     android:layout_marginTop="5dp"
                     android:layout_marginStart="15dp"/>
-            <EditText
+            <TextView
                     android:id="@+id/viewDate"
                     android:layout_width="100dp"
                     android:layout_height="wrap_content"
                     android:background="@color/colorWhite"
                     android:padding="5dp"
-                    android:inputType="date"
-                    android:imeOptions="actionDone"
                     android:hint="@string/hint_date"
                     android:autofillHints="@string/hint_date"
                     android:ems="10"
@@ -372,6 +370,8 @@
                     app:layout_constraintStart_toEndOf="@+id/lbl_View_Date"
                     app:layout_constraintBaseline_toBaselineOf="@+id/lbl_View_Date"
                     android:layout_marginStart="5dp" />
+                    <!--android:inputType="text"
+                    android:imeOptions="actionDone"-->
             <TextView
                     android:id="@+id/lbl_View_Volume"
                     android:text="@string/lbl_note_volume"
@@ -385,13 +385,11 @@
                     app:layout_constraintStart_toEndOf="@id/viewDate"
                     android:layout_marginTop="5dp"
                     android:layout_marginStart="5dp"/>
-            <EditText
+            <TextView
                     android:id="@+id/viewVolume"
                     android:layout_width="100dp"
                     android:layout_height="wrap_content"
                     android:background="@color/colorWhite"
-                    android:inputType="text"
-                    android:imeOptions="actionDone"
                     android:padding="5dp"
                     android:hint="@string/hint_volume"
                     android:autofillHints="@string/hint_volume"
@@ -400,6 +398,8 @@
                     app:layout_constraintStart_toEndOf="@+id/lbl_View_Volume"
                     app:layout_constraintBaseline_toBaselineOf="@+id/lbl_View_Date"
                     android:layout_marginStart="5dp"/>
+                    <!--android:inputType="text"
+                    android:imeOptions="actionDone"-->
             <TextView
                     android:id="@+id/lbl_View_PgsParas"
                     android:text="@string/lbl_note_pgs_paras"
@@ -441,13 +441,11 @@
                     app:layout_constraintStart_toEndOf="@id/viewPgsParas"
                     android:layout_marginTop="5dp"
                     android:layout_marginStart="5dp"/>
-            <EditText
+            <TextView
                     android:id="@+id/viewEdition"
                     android:layout_width="100dp"
                     android:layout_height="wrap_content"
                     android:background="@color/colorWhite"
-                    android:inputType="text"
-                    android:imeOptions="actionDone"
                     android:padding="5dp"
                     android:hint="@string/hint_edition"
                     android:autofillHints="@string/hint_edition"
@@ -456,6 +454,8 @@
                     app:layout_constraintStart_toEndOf="@+id/lbl_View_Edition"
                     app:layout_constraintBaseline_toBaselineOf="@+id/lbl_View_PgsParas"
                     android:layout_marginStart="5dp"/>
+                    <!--android:inputType="text"
+                    android:imeOptions="actionDone"-->
             <TextView
                     android:id="@+id/lbl_View_TimeStamp"
                     android:text="@string/lbl_note_timestamp"
@@ -484,6 +484,7 @@
                     app:layout_constraintStart_toEndOf="@+id/lbl_View_TimeStamp"
                     app:layout_constraintBaseline_toBaselineOf="@+id/lbl_View_TimeStamp"
                     android:layout_marginStart="5dp"/>
+
             <TextView
                     android:id="@+id/lbl_View_Issue"
                     android:text="@string/lbl_note_issue"
@@ -497,14 +498,12 @@
                     app:layout_constraintStart_toEndOf="@id/viewTimeStamp"
                     android:layout_marginTop="5dp"
                     android:layout_marginStart="5dp"/>
-            <EditText
+            <TextView
                     android:id="@+id/viewIssue"
                     android:layout_width="100dp"
                     android:layout_height="wrap_content"
                     android:background="@color/colorWhite"
                     android:padding="5dp"
-                    android:inputType="text"
-                    android:imeOptions="actionDone"
                     android:hint="@string/hint_issue"
                     android:autofillHints="@string/hint_issue"
                     android:ems="10"
@@ -512,6 +511,8 @@
                     app:layout_constraintStart_toEndOf="@+id/lbl_View_Issue"
                     app:layout_constraintBaseline_toBaselineOf="@+id/lbl_View_Issue"
                     android:layout_marginStart="5dp"/>
+                    <!--android:inputType="text"
+                    android:imeOptions="actionDone"-->
 
 
 
