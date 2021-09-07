@@ -84,9 +84,7 @@ public class DBQueryTools {
         return 0;
     }
     public static Integer addNewAuthor(Authors newAuthor){
-        rdb.getAuthorsDao().addAuthor(newAuthor);
-        int id = rdb.getAuthorsDao().lastAuthorsPKID();
-        return id;
+        return (int) rdb.getAuthorsDao().addAuthor(newAuthor);
     }
     public static List<Authors> getAuthorsBySource(Sources source){
         return getAuthorsBySourceID(source.getSourceID());
@@ -289,12 +287,13 @@ public class DBQueryTools {
         // NOTES
         Notes note = new Notes(noteID, srcID, cmtID, queID, quoID,terID, topID, del);
         noteID = (int) rdb.getNotesDao().addNote(note);
-
+        Sources tmpSource = rdb.getSourcesDao().getSource(srcID);
+        Comments tmpComment = rdb.getCommentsDao().getComment(cmtID);
         Intent a = new Intent(context, ViewNote.class);
         a.putExtra("ID", noteID);
-        a.putExtra("Type", data.get(Globals.TYPE));
-        a.putExtra("Summary", data.get(Globals.SUMMARY));
-        a.putExtra("Source", data.get(Globals.SOURCE));
+        a.putExtra("Type", tmpSource.getSourceType());
+        a.putExtra("Summary", tmpComment.getSummary());
+        a.putExtra("Source", tmpSource.getTitle());
         a.putExtra("Authors", DBQueryTools.concatenateAuthors(DBQueryTools.getAuthorsBySourceID(srcID)));
         return a;
 

@@ -1,13 +1,11 @@
 package com.mistywillow.researchdb.database.entities;
 
+import androidx.annotation.NonNull;
 import androidx.room.*;
 
 @Entity(tableName = "Notes", foreignKeys = {
         @ForeignKey(entity = Sources.class, parentColumns = "SourceID", childColumns = "SourceID"),
         @ForeignKey(entity = Comments.class, parentColumns = "CommentID", childColumns = "CommentID"),
-        @ForeignKey(entity = Questions.class, parentColumns = "QuestionID", childColumns = "QuestionID"),
-        @ForeignKey(entity = Quotes.class, parentColumns = "QuoteID", childColumns = "QuoteID"),
-        @ForeignKey(entity = Terms.class, parentColumns = "TermID", childColumns = "TermID"),
         @ForeignKey(entity = Topics.class, parentColumns = "TopicID", childColumns = "TopicID")},
         indices = {@Index("SourceID"), @Index("CommentID"), @Index("QuestionID"), @Index("QuoteID"),
                 @Index("TermID"), @Index("TopicID")})
@@ -15,23 +13,27 @@ public class Notes {
 
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "NoteID")
-    private int noteID;
+    @NonNull
+    private Integer noteID;
     @ColumnInfo(name = "SourceID")
-    private int sourceID;
+    @NonNull
+    private Integer sourceID;
     @ColumnInfo(name = "CommentID")
-    private int commentID;
-    @ColumnInfo(name = "QuestionID", defaultValue = "0")
-    private int questionID;
-    @ColumnInfo(name = "QuoteID", defaultValue = "0")
-    private int quoteID;
-    @ColumnInfo(name = "TermID", defaultValue = "0")
-    private int termID;
+    @NonNull
+    private Integer commentID;
+    @ColumnInfo(name = "QuestionID")
+    private Integer questionID;
+    @ColumnInfo(name = "QuoteID")
+    private Integer quoteID;
+    @ColumnInfo(name = "TermID")
+    private Integer termID;
     @ColumnInfo(name = "TopicID")
-    private int topicID;
-    @ColumnInfo(name = "Deleted", defaultValue = "0")
-    private int deleted;
+    @NonNull
+    private Integer topicID;
+    @ColumnInfo(name = "Deleted")
+    private Integer deleted;
 
-    public Notes(int noteID, int sourceID, int commentID, int questionID, int quoteID, int termID, int topicID, int deleted){
+    public Notes(Integer noteID, Integer sourceID, Integer commentID, Integer questionID, Integer quoteID, Integer termID, Integer topicID, Integer deleted){
         this.noteID = noteID;
         this.sourceID = sourceID;
         this.commentID = commentID;
