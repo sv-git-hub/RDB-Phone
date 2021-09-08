@@ -16,8 +16,8 @@ import java.io.File;
 import java.util.*;
 
 public class MainActivity extends AppCompatActivity {
-    private Spinner topic;
-    private Spinner question;
+    private AutoCompleteTextView topic;
+    private AutoCompleteTextView question;
     private RecyclerView rListNotes;
     private EditText customSearch;
     private ResearchDatabase researchDatabase;
@@ -51,42 +51,36 @@ public class MainActivity extends AppCompatActivity {
             researchDatabase = ResearchDatabase.getInstance(this, GlobalVariables.DATABASE);
 
             // TOPIC LIST
-            ArrayAdapter<String> topicAdapter = new ArrayAdapter<>(this, R.layout.custom_topic_spinner, DBQueryTools.spinnerTopicsList(this));
-            topic.setAdapter(topicAdapter);
-            topic.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            ArrayAdapter<String> topicsAdapter = DBQueryTools.captureDBTopics(this);
+            topic.setAdapter(topicsAdapter);
+            topic.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
-                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                    if(!topic.getSelectedItem().toString().equals("")) {
-                        question.setSelection(0);
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    if(!topic.getText().toString().equals("")) {
+                        question.setText("");
                         rListNotes.setAdapter(null);
                         customSearch.setText(null);
-                        loadNotes(captureNotes(researchDatabase.getNotesDao().getNotesOnTopic(parent.getItemAtPosition(position).toString())));
+                        //loadNotes(captureNotes(researchDatabase.getNotesDao().getNotesOnTopic(parent.getItemAtPosition(position).toString())));
+                        loadNotes(captureNotes(researchDatabase.getNotesDao().getNotesOnTopic(topic.getText().toString())));
                     }
-                }
-
-                @Override
-                public void onNothingSelected(AdapterView<?> parent) {
-
                 }
             });
 
             // QUESTION LIST
-            final ArrayAdapter<String> questionAdapter = new ArrayAdapter<>(this, R.layout.custom_question_spinner, DBQueryTools.spinnerQuestionList(this));
-            question.setAdapter(questionAdapter);
-            question.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            ArrayAdapter<String> acQuestionAdapt = DBQueryTools.captureDBQuestions(this);
+            //question.setThreshold(1);
+            question.setAdapter(acQuestionAdapt);
+            question.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
-                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                    if(!question.getSelectedItem().toString().equals("")) {
-                        topic.setSelection(0);
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    if(!question.getText().toString().equals("")) {
+                        topic.setText("");
+                        //topic.setSelection(0);
                         rListNotes.setAdapter(null);
                         customSearch.setText(null);
-                        loadNotes(captureNotes(researchDatabase.getNotesDao().getNotesOnQuestion(parent.getItemAtPosition(position).toString())));
+                        //loadNotes(captureNotes(researchDatabase.getNotesDao().getNotesOnQuestion(parent.getItemAtPosition(position).toString())));
+                        loadNotes(captureNotes(researchDatabase.getNotesDao().getNotesOnQuestion(question.getText().toString())));
                     }
-                }
-
-                @Override
-                public void onNothingSelected(AdapterView<?> parent) {
-
                 }
             });
 
@@ -104,8 +98,8 @@ public class MainActivity extends AppCompatActivity {
                 return false;
             });
             customSearch.setOnKeyListener((v, keyCode, event) -> {
-                topic.setSelection(0);
-                question.setSelection(0);
+                topic.setText("");
+                question.setText("");
                 rListNotes.setAdapter(null);
                 return false;
             });
@@ -114,15 +108,15 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onResume(){
         super.onResume();
-        if(!topic.getSelectedItem().toString().equals("")) {
+        if(!topic.getText().toString().equals("")) {
             rListNotes.setAdapter(null);
             customSearch.setText(null);
-            loadNotes(captureNotes(researchDatabase.getNotesDao().getNotesOnTopic(topic.getSelectedItem().toString())));
+            loadNotes(captureNotes(researchDatabase.getNotesDao().getNotesOnTopic(topic.getText().toString())));
         }
-        if(!question.getSelectedItem().toString().equals("")) {
+        if(!question.getText().toString().equals("")) {
             rListNotes.setAdapter(null);
             customSearch.setText(null);
-            loadNotes(captureNotes(researchDatabase.getNotesDao().getNotesOnQuestion(question.getSelectedItem().toString())));
+            loadNotes(captureNotes(researchDatabase.getNotesDao().getNotesOnQuestion(question.getText().toString())));
         }
         if(!customSearch.getText().toString().trim().equals("")){
             noteIDsFromCustomSearch = new ArrayList<>();
@@ -225,6 +219,16 @@ public class MainActivity extends AppCompatActivity {
         rListNotes.setAdapter(new NoteAdapter(MainActivity.this, sourcesTable));
         mainMenu.findItem(R.id.clear).setEnabled(true);
         mainMenu.findItem(R.id.note_export).setEnabled(true);
+    }
+
+    private void loadAutoCompleteTextViews(){
+        /*ArrayAdapter<String> topicsAdapter = DBQueryTools.captureDBTopics(this);
+        topic.setThreshold(1);
+        topic.setAdapter(topicsAdapter);
+
+        ArrayAdapter<String> acQuestionAdapt = DBQueryTools.captureDBQuestions(this);
+        question.setThreshold(1);
+        question.setAdapter(acQuestionAdapt);*/
     }
 
     private void completeSearch(Boolean all, String criteria){
