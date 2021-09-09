@@ -53,16 +53,12 @@ public class MainActivity extends AppCompatActivity {
             // TOPIC LIST
             ArrayAdapter<String> topicsAdapter = DBQueryTools.captureDBTopics(this);
             topic.setAdapter(topicsAdapter);
-            topic.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                @Override
-                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                    if(!topic.getText().toString().equals("")) {
-                        question.setText("");
-                        rListNotes.setAdapter(null);
-                        customSearch.setText(null);
-                        //loadNotes(captureNotes(researchDatabase.getNotesDao().getNotesOnTopic(parent.getItemAtPosition(position).toString())));
-                        loadNotes(captureNotes(researchDatabase.getNotesDao().getNotesOnTopic(topic.getText().toString())));
-                    }
+            topic.setOnItemClickListener((parent, view, position, id) -> {
+                if(!topic.getText().toString().equals("")) {
+                    question.setText("");
+                    rListNotes.setAdapter(null);
+                    customSearch.setText(null);
+                    loadNotes(captureNotes(researchDatabase.getNotesDao().getNotesOnTopic(topic.getText().toString())));
                 }
             });
 
@@ -70,17 +66,12 @@ public class MainActivity extends AppCompatActivity {
             ArrayAdapter<String> acQuestionAdapt = DBQueryTools.captureDBQuestions(this);
             //question.setThreshold(1);
             question.setAdapter(acQuestionAdapt);
-            question.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                @Override
-                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                    if(!question.getText().toString().equals("")) {
-                        topic.setText("");
-                        //topic.setSelection(0);
-                        rListNotes.setAdapter(null);
-                        customSearch.setText(null);
-                        //loadNotes(captureNotes(researchDatabase.getNotesDao().getNotesOnQuestion(parent.getItemAtPosition(position).toString())));
-                        loadNotes(captureNotes(researchDatabase.getNotesDao().getNotesOnQuestion(question.getText().toString())));
-                    }
+            question.setOnItemClickListener((parent, view, position, id) -> {
+                if(!question.getText().toString().equals("")) {
+                    topic.setText("");
+                    rListNotes.setAdapter(null);
+                    customSearch.setText(null);
+                    loadNotes(captureNotes(researchDatabase.getNotesDao().getNotesOnQuestion(question.getText().toString())));
                 }
             });
 
@@ -92,7 +83,6 @@ public class MainActivity extends AppCompatActivity {
                         rListNotes.setAdapter(null);
                         completeSearch(false, customSearch.getText().toString());
                         loadNotes(captureNotes(researchDatabase.getNotesDao().getAllNotesOnNoteIDs(noteIDsFromCustomSearch)));
-
                         Toast.makeText(getApplicationContext(), String.valueOf(noteIDsFromCustomSearch.size()), Toast.LENGTH_SHORT).show();
                     }
                 return false;
@@ -219,16 +209,6 @@ public class MainActivity extends AppCompatActivity {
         rListNotes.setAdapter(new NoteAdapter(MainActivity.this, sourcesTable));
         mainMenu.findItem(R.id.clear).setEnabled(true);
         mainMenu.findItem(R.id.note_export).setEnabled(true);
-    }
-
-    private void loadAutoCompleteTextViews(){
-        /*ArrayAdapter<String> topicsAdapter = DBQueryTools.captureDBTopics(this);
-        topic.setThreshold(1);
-        topic.setAdapter(topicsAdapter);
-
-        ArrayAdapter<String> acQuestionAdapt = DBQueryTools.captureDBQuestions(this);
-        question.setThreshold(1);
-        question.setAdapter(acQuestionAdapt);*/
     }
 
     private void completeSearch(Boolean all, String criteria){

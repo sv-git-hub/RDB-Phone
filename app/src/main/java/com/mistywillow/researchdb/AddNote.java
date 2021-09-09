@@ -31,10 +31,8 @@ public class AddNote extends AppCompatActivity {
     private EditText pgs_paras;
     private EditText timeStamp;
 
-    //AutoCompleteTextView sourceType;
     private Spinner sourceType;
     private AutoCompleteTextView sourceTitle;
-    //AutoCompleteTextView author;
     private AutoCompleteTextView topic;
     private AutoCompleteTextView question;
     private AutoCompleteTextView summary;
@@ -238,7 +236,6 @@ public class AddNote extends AppCompatActivity {
         }else if(item.getItemId() == android.R.id.home)
             onBackPressed();
 
-
         return super.onOptionsItemSelected(item);
     }
 
@@ -251,10 +248,6 @@ public class AddNote extends AppCompatActivity {
         ArrayAdapter<String> sourceTitleAdapter = DBQueryTools.captureDBSources(this);
         sourceTitle.setThreshold(1);
         sourceTitle.setAdapter(sourceTitleAdapter);
-/*
-        ArrayAdapter<String> authorsAdapter = DBQueryTools.captureDBAuthors(this);
-        author.setThreshold(1);
-        author.setAdapter(authorsAdapter);*/
 
         ArrayAdapter<String> summaryAdapter = DBQueryTools.captureSummaries(this);
         summary.setThreshold(1);
@@ -272,7 +265,7 @@ public class AddNote extends AppCompatActivity {
     private void captureNoteDetails(){
         String[] parseDate= DateTimestampManager.parseDate(date);
         newNoteDetails = new ArrayList<>();
-        newNoteDetails.add(sourceType.toString());              // 0: Type
+        newNoteDetails.add(sourceType.getSelectedItem().toString()); // 0: Type
         newNoteDetails.add(summary.getText().toString());       // 1: Summary
         newNoteDetails.add(sourceTitle.getText().toString());   // 2: Source
         newNoteDetails.add(author.getText().toString());        // 3: Author(s)
@@ -290,12 +283,11 @@ public class AddNote extends AppCompatActivity {
         newNoteDetails.add(pgs_paras.getText().toString());     // 15: Page
         newNoteDetails.add(timeStamp.getText().toString());     // 16: TimeStamp
         newNoteDetails.add(topic.getText().toString());         // 17: Topic
-
     }
 
     private void populateSourceDetails(List<Sources> sources) {
-        if(sources.get(0).getTitle().equals("The Case for Christianity"))
-            sources.add(new Sources(43, "Book", "The Case for Christianity", 2021, 0, 0, "", "", ""));
+        /*if(sources.get(0).getTitle().equals("The Case for Christianity"))
+            sources.add(new Sources(43, "Book", "The Case for Christianity", 2021, 0, 0, "", "", ""));*/
 
         if (sources.size() == 0) {
             author.setText(R.string.add_author_phrase);
@@ -367,37 +359,37 @@ public class AddNote extends AppCompatActivity {
     private boolean requiredFields(){
         String msg;
 
-        if (topic.getText().toString().isEmpty()){
+        if (topic.getText().toString().equals("")){
             msg = "Please select or enter a topic.";
         }else {
-            if (sourceTitle.getText().toString().isEmpty()) {
+            if (sourceTitle.getText().toString().equals("")) {
                 msg = "Please select an existing source or enter a title for a new source.";
 
-            } else if (author.getText().toString().isEmpty()) {
+            } else if (author.getText().toString().equals("")) {
                 msg = "Please select an existing author or organization, or add a new author or organization.";
 
-            } else if (sourceType.toString().isEmpty()) {
+            } else if (sourceType.getSelectedItem().toString().equals("")) {
                 msg = "Please select a source type.";
 
-            } else if (sourceType.toString().equals("Question") && (question.getText().toString().isEmpty())) {
+            } else if (sourceType.getSelectedItem().toString().equals("Question") && (question.getText().toString().isEmpty())) {
                 msg = "Please enter or select a question because 'Question' was selected as a source. A comment should expand on the meaning.";
 
-            } else if (sourceType.toString().equals("Quote") && (quote.getText().toString().isEmpty())) {
+            } else if (sourceType.getSelectedItem().toString().equals("Quote") && (quote.getText().toString().equals(""))) {
                 msg = "Please enter a quote because 'Quote' was selected as a source. A comment should expand on the meaning.";
 
-            } else if (sourceType.toString().equals("Term") && (term.getText().toString().isEmpty())) {
+            } else if (sourceType.getSelectedItem().toString().equals("Term") && (term.getText().toString().equals(""))) {
                 msg = "Please enter the term and definition. Expand within comments of other sources of interpretation.";
 
-            } else if ((sourceType.toString().equals("Video") || sourceType.toString().equals("Audio")) && timeStamp.getText().toString().isEmpty()) {
+            } else if ((sourceType.getSelectedItem().toString().equals("Video") || sourceType.getSelectedItem().toString().equals("Audio")) && timeStamp.getText().toString().equals("")) {
                 msg = "Please enter a TimeStamp value for an audio or video source.";
 
-            } else if (comment.getText().toString().isEmpty()) {
+            } else if (comment.getText().toString().equals("")) {
                 msg = "Please enter a comment. Comments are specific details related to the topic and summary.";
 
-            } else if (summary.getText().toString().isEmpty()) {
+            } else if (summary.getText().toString().equals("")) {
                 msg = "Please enter a summary point. This expands upon your Topic entry or selection.";
 
-            }else if(date.getText().toString().isEmpty()){
+            }else if(date.getText().toString().equals("")){
                 msg = "Please enter a date. Every source must have a date, if not, use the current year.";
 
             } else {
