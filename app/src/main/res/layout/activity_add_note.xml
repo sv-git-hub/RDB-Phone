@@ -308,6 +308,7 @@
                     android:id="@+id/viewSource"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:inputType="text"
                     android:imeOptions="actionDone"
                     android:hint="@string/hint_source"
                     android:padding="5dp"

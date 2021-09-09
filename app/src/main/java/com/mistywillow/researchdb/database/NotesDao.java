@@ -62,6 +62,12 @@ public interface NotesDao {
     @Query("SELECT COUNT(*) FROM Notes WHERE QuestionID = :id")
     int countQuestionByID(int id);
 
-    @Query("SELECT COUNT(*) FROM Notes WHERE QuestionID = :id")
+    @Query("SELECT COUNT(*) FROM Notes WHERE QuoteID = :id")
+    int countQuoteByID(int id);
+
+    @Query("SELECT COUNT(*) FROM Notes WHERE TermID = :id")
+    int countTermByID(int id);
+
+    @Query("SELECT COUNT(*) FROM Notes WHERE TopicID = :id")
     int countTopicByID(int id);
 }

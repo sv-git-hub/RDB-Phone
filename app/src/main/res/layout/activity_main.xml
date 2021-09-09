@@ -32,7 +32,6 @@
             android:inputType="text"
             android:imeOptions="actionDone"
             app:layout_constraintStart_toStartOf="parent"
-            android:layout_marginLeft="8dp"
             android:layout_marginStart="8dp"
             android:background="#FAFAFA"/>
 
@@ -40,7 +39,8 @@
             android:layout_width="0dp"
             android:layout_height="25dp"
             android:id="@+id/txtCustom"
-            android:paddingLeft="5dp"
+            android:paddingStart="5dp"
+            android:paddingEnd="5dp"
             android:layout_marginEnd="8dp"
             android:layout_marginRight="8dp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -49,12 +49,12 @@
             android:layout_marginLeft="8dp"
             android:layout_marginStart="8dp"
             android:background="#FAFAFA"
-            android:hint="Custom search term(s)"
+            android:hint="@string/hint_custom_Search"
             android:inputType="text"
             android:imeOptions="actionDone"
-            android:cursorVisible="false"
+            android:cursorVisible="true"
             android:textSize="12sp" android:gravity="center_vertical"
-            app:layout_constraintHorizontal_bias="1.0"/>
+            app:layout_constraintHorizontal_bias="1.0" android:autofillHints="@string/hint_custom_Search"/>
 
     <AutoCompleteTextView
             android:layout_width="0dp"

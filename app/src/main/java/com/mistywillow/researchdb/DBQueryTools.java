@@ -301,9 +301,11 @@ public class DBQueryTools {
 
     public static Intent updateNote(Context context, Notes orgNoteTableIDs, List<String> original, List<String> update, int vNoteID){
         // NO SOURCE OR AUTHORS UPDATES. A NEW NOTE SHOULD BE REQUIRED.
+        //Notes thisNote = rdb.getNotesDao().getNote(vNoteID);
+        Notes thisNote = orgNoteTableIDs;
 
         // TYPE; TITLE; YEAR; MONTH; DAY; VOLUME; EDITION; ISSUE
-        if(!valuesAreDifferent(original.get(Globals.TYPE), update.get(Globals.TYPE)) ||
+        /*if(!valuesAreDifferent(original.get(Globals.TYPE), update.get(Globals.TYPE)) ||
                 !valuesAreDifferent(original.get(Globals.YEAR), update.get(Globals.YEAR)) || !valuesAreDifferent(original.get(Globals.MONTH), update.get(Globals.MONTH)) ||
                 !valuesAreDifferent(original.get(Globals.DAY), update.get(Globals.DAY)) || !valuesAreDifferent(original.get(Globals.VOLUME), update.get(Globals.VOLUME)) ||
                 !valuesAreDifferent(original.get(Globals.EDITION), update.get(Globals.EDITION)) || !valuesAreDifferent(original.get(Globals.ISSUE), update.get(Globals.ISSUE))){
@@ -311,7 +313,7 @@ public class DBQueryTools {
                     Integer.parseInt(update.get(Globals.MONTH)), Integer.parseInt(update.get(Globals.DAY)), update.get(Globals.VOLUME), update.get(Globals.EDITION),
                     update.get(Globals.ISSUE));
             rdb.getSourcesDao().updateSource(src);
-        }
+        }*/
 
         // SUMMARY; COMMENT; PAGE; TIMESTAMP; HYPERLINK
         if(!valuesAreDifferent(original.get(Globals.SUMMARY), update.get(Globals.SUMMARY)) || !valuesAreDifferent(original.get(Globals.COMMENT), update.get(Globals.COMMENT)) ||
@@ -329,48 +331,19 @@ public class DBQueryTools {
 
         // QUESTION
         if(!valuesAreDifferent(original.get(Globals.QUESTION), update.get(Globals.QUESTION))){
-            Questions questions = rdb.getQuestionsDao().getQuestion(orgNoteTableIDs.getQuestionID());
-            Questions deleteThis = null;
-            int orgQuestionID = orgNoteTableIDs.getQuestionID();
-            int orgQuestionIDCount = rdb.getNotesDao().countQuestionByID(orgNoteTableIDs.getQuestionID());
-            int newQuestionCount = rdb.getQuestionsDao().getCountByValue(update.get(Globals.QUESTION));
-
-            questions.setQuestion(update.get(Globals.QUESTION));
-
-            // since the original question is a single instance only used by this note, replace the note and keep the ID
-            if(newQuestionCount == 0 && orgQuestionIDCount == 1) {
-                rdb.getQuestionsDao().updateQuestion(questions);}
-            // since the original question is used my other notes, and the new doesn't exist, add it and capture the new QuestionID
-            else if(newQuestionCount == 0 && orgQuestionIDCount > 1){
-                rdb.getQuestionsDao().addQuestion(questions);
-                Notes thisNote = rdb.getNotesDao().getNote(vNoteID);
-                thisNote.setQuestionID(rdb.getQuestionsDao().lastQuestionPKID());
-                rdb.getNotesDao().updateNote(thisNote);
-            }
-            // Multiples of the new question exist, update the notes table for the note only
-            else if(newQuestionCount > 0){
-                orgNoteTableIDs.setQuestionID(rdb.getQuestionsDao().lastQuestionPKID());
-                // If the current value is the only existing, delete it.
-                if(orgQuestionIDCount == 1)
-                    deleteThis = rdb.getQuestionsDao().getQuestion(orgQuestionID);
-                    rdb.getQuestionsDao().deleteQuestion(deleteThis);
-            }
-
+            updateQuestion(orgNoteTableIDs, update);
         }
         // QUOTE
         if(!valuesAreDifferent(original.get(Globals.QUOTE), update.get(Globals.QUOTE))){
-            Quotes quotes = new Quotes(orgNoteTableIDs.getQuoteID(), update.get(5));
-            rdb.getQuotesDao().updateQuote(quotes);
+            updateQuote(orgNoteTableIDs, update);
         }
         // TERM
         if(!valuesAreDifferent(original.get(Globals.TERM), update.get(Globals.TERM))){
-            Terms terms = new Terms(orgNoteTableIDs.getTermID(), update.get(6));
-            rdb.getTermsDao().updateTerm(terms);
+            updateTerm(orgNoteTableIDs, update);
         }
         // TOPIC
         if(!valuesAreDifferent(original.get(Globals.TOPIC), update.get(Globals.TOPIC))){
-            Topics topics = new Topics(orgNoteTableIDs.getTopicID(), update.get(17));
-            rdb.getTopicsDao().updateTopic(topics);
+            updateTopic(orgNoteTableIDs, update);
         }
 
         Intent u = new Intent(context, ViewNote.class);
@@ -382,9 +355,164 @@ public class DBQueryTools {
         return u;
     }
 
+    private static void updateCurrentNoteIDs(Notes note){
+        rdb.getNotesDao().updateNote(note);
+    }
 
+    private static void updateQuestion(Notes thisNote, List<String> update){
+        Questions questions = null;
+        Questions deleteThis;
+        int orgQuestionID = thisNote.getQuestionID();
+        int orgQuestionIDCount = 0;
+        int newQuestionCount = rdb.getQuestionsDao().getCountByValue(update.get(Globals.QUESTION));
 
+        if(thisNote.getQuestionID() != 0) {
+            orgQuestionIDCount = rdb.getNotesDao().countQuestionByID(thisNote.getQuestionID());
+            questions = rdb.getQuestionsDao().getQuestion(thisNote.getQuestionID());
+            questions.setQuestion(update.get(Globals.QUESTION));
+        }
 
+        // nothing exist in this form of quote
+        if(newQuestionCount == 0 && orgQuestionIDCount == 0){
+            thisNote.setQuestionID((int)rdb.getQuestionsDao().addQuestion(new Questions(update.get(Globals.QUESTION))));
+            updateCurrentNoteIDs(thisNote);
+        }
+
+        // since the original question is a single instance only used by this note, replace the note and keep the ID
+        else if(newQuestionCount == 0 && orgQuestionIDCount == 1) {
+            rdb.getQuestionsDao().updateQuestion(questions);}
+
+        // since the original question is used my other notes, and the new doesn't exist, add it and capture the new QuestionID
+        else if(newQuestionCount == 0 && orgQuestionIDCount > 1){
+            int q = (int)rdb.getQuestionsDao().addQuestion(new Questions(update.get(Globals.QUESTION)));
+            thisNote.setQuestionID(q);
+            updateCurrentNoteIDs(thisNote);
+        }
+
+        // Multiples of the new question exist (the new question isn't really new but different), update the notes table for the note only
+        else if(newQuestionCount > 0){
+            thisNote.setQuestionID(rdb.getQuestionsDao().getQuestionByValue(update.get(Globals.QUESTION)));
+            updateCurrentNoteIDs(thisNote);
+            // If the current value is the only existing, delete it.
+            if(orgQuestionIDCount == 1) {
+                deleteThis = rdb.getQuestionsDao().getQuestion(orgQuestionID);
+                rdb.getQuestionsDao().deleteQuestion(deleteThis);
+            }
+        }
+    }
+
+    private static void updateQuote(Notes thisNote, List<String> update){
+        Quotes quotes = null;
+        Quotes deleteThis;
+        int orgQuoteID = thisNote.getQuoteID();
+        int orgQuoteIDCount = 0;
+        int newQuoteCount = rdb.getQuotesDao().getCountByValue(update.get(Globals.QUOTE));
+
+        if(thisNote.getQuoteID() != 0){
+            orgQuoteIDCount = rdb.getNotesDao().countQuoteByID(thisNote.getQuoteID());
+            quotes = rdb.getQuotesDao().getQuote(thisNote.getQuoteID());
+            quotes.setQuote(update.get(Globals.QUOTE));
+        }
+
+        // nothing exist in this form of quote
+        if(newQuoteCount == 0 && orgQuoteIDCount == 0){
+            thisNote.setQuoteID((int)rdb.getQuotesDao().addQuote(new Quotes(0, update.get(Globals.QUOTE))));
+            updateCurrentNoteIDs(thisNote);
+        }
+
+        // since the original quote is a single  only used by this note, replace the note and keep the ID
+        else if(newQuoteCount == 0 && orgQuoteIDCount == 1) {
+            rdb.getQuotesDao().updateQuote(quotes);}
+
+        // since the original quote is used my other notes, and the new doesn't exist, add it and capture the new QuoteID
+        else if(newQuoteCount == 0 && orgQuoteIDCount > 1){
+            thisNote.setQuoteID((int)rdb.getQuotesDao().addQuote(new Quotes(0, update.get(Globals.QUOTE))));
+            updateCurrentNoteIDs(thisNote);
+        }
+
+        // Multiples of the new quote exist (the new quote isn't really new but different), update the notes table for the note only
+        else if(newQuoteCount > 0){
+            thisNote.setQuoteID(rdb.getQuotesDao().getQuoteByValue(update.get(Globals.QUOTE)));
+            updateCurrentNoteIDs(thisNote);
+
+            // If the current value is the only existing, delete it.
+            if(orgQuoteIDCount == 1) {
+                deleteThis = rdb.getQuotesDao().getQuote(orgQuoteID);
+                rdb.getQuotesDao().deleteQuote(deleteThis);
+            }
+        }
+    }
+
+    private static void updateTerm(Notes thisNote, List<String> update){
+        Terms terms = null;
+        Terms deleteThis;
+        int orgTerm = thisNote.getTermID();
+        int orgTermIDCount = 0;
+        int newTermCount = rdb.getTermsDao().getCountByValue(update.get(Globals.TERM));
+
+        if(thisNote.getTermID() != 0) {
+            orgTermIDCount = rdb.getNotesDao().countTermByID(thisNote.getTermID());
+            terms = rdb.getTermsDao().getTerm(thisNote.getTermID());
+            terms.setTerm(update.get(Globals.TERM));
+        }
+
+        // nothing exist in this form of quote
+        if(newTermCount == 0 && orgTermIDCount == 0){
+            thisNote.setTermID((int)rdb.getTermsDao().addTerm(new Terms(0, update.get(Globals.TERM))));
+            updateCurrentNoteIDs(thisNote);
+        }
+
+        // since the original term is a single instance only used by this note, replace the note and keep the ID
+        else if(newTermCount == 0 && orgTermIDCount == 1) {
+            rdb.getTermsDao().updateTerm(terms);}
+
+        // since the original term is used my other notes, and the new doesn't exist, add it and capture the new TermID
+        else if(newTermCount == 0 && orgTermIDCount > 1){
+            thisNote.setTermID((int)rdb.getTermsDao().addTerm(terms));
+            updateCurrentNoteIDs(thisNote);
+        }
+
+        // Multiples of the new term exist (the new term isn't really new but different), update the notes table for the note only
+        else if(newTermCount > 0){
+            thisNote.setTermID(rdb.getTermsDao().getTermByValue(update.get(Globals.TERM)));
+            updateCurrentNoteIDs(thisNote);
+
+            // If the current value is the only existing, delete it.
+            if(orgTermIDCount == 1) {
+                deleteThis = rdb.getTermsDao().getTerm(orgTerm);
+                rdb.getTermsDao().deleteTerm(deleteThis);
+            }
+        }
+    }
+
+    private static void updateTopic(Notes thisNote, List<String> update){
+        Topics topics = rdb.getTopicsDao().getTopic(thisNote.getTopicID());
+        Topics deleteThis;
+        int orgTopic = thisNote.getTopicID();
+        int orgTopicIDCount = rdb.getNotesDao().countTopicByID(thisNote.getTopicID());
+        int newTopicCount = rdb.getTopicsDao().getCountByValue(update.get(Globals.TOPIC));
+
+        // since the original topic is a single instance only used by this note, replace the note and keep the ID
+        if(newTopicCount == 0 && orgTopicIDCount == 1) {
+            topics.setTopic(update.get(Globals.TOPIC));
+            rdb.getTopicsDao().updateTopic(topics);}
+
+        // since the original topic is used by other notes, and the new doesn't exist, add it and capture the new TopicID
+        else if(newTopicCount == 0 && orgTopicIDCount > 1){
+            thisNote.setTopicID((int)rdb.getTopicsDao().addTopic(new Topics(0, update.get(Globals.TOPIC))));
+            updateCurrentNoteIDs(thisNote);
+        }
+        // Multiples of the new question exist (the new question isn't really new but different), update the notes table for the note only
+        else if(newTopicCount > 0){
+            thisNote.setTopicID(rdb.getTopicsDao().getTopicByValue(update.get(Globals.TOPIC)));
+            updateCurrentNoteIDs(thisNote);
+            // If the current value is the only existing, delete it.
+            if(orgTopicIDCount == 1) {
+                deleteThis = rdb.getTopicsDao().getTopic(orgTopic);
+                rdb.getTopicsDao().deleteTopic(deleteThis);
+            }
+        }
+    }
 
 
 

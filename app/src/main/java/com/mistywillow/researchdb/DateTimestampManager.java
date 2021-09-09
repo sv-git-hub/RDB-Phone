@@ -61,15 +61,15 @@ public class DateTimestampManager {
         String[] returnDT = new String[3];
         if(tempDate.length==0){
             return new String[]{"0", "0", "0"};
-        }else if(tempDate.length == 1){
+        }else if(tempDate.length == 1){ // e.g., 2021 [0]
             returnDT[0] = tempDate[0]; // Year
             returnDT[1] = "0";
             returnDT[2] = "0";
-        }else if(tempDate.length == 2){
-            returnDT[0] = tempDate[0]; // Year
-            returnDT[1] = tempDate[1]; // Month
+        }else if(tempDate.length == 2){ // e.g., 12/2021 [0][1]
+            returnDT[0] = tempDate[1]; // Year
+            returnDT[1] = tempDate[0]; // Month
             returnDT[2] = "0";
-        }else{
+        }else{                          // e.g., 01/02/2021 [0][1][2]
             returnDT[0] = tempDate[2]; // Year
             returnDT[1] = tempDate[0]; // Month
             returnDT[2] = tempDate[1]; // Day

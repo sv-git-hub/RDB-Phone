@@ -82,6 +82,7 @@
     <string name="hint_issue">Issue</string>
     <string name="hint_pgs_paras">Pg(s)/Para(s)</string>
     <string name="hint_timestamp">hh:mm:ss</string>
+    <string name="hint_custom_Search">Custom Search Term(s)</string>
 
 
     <string name="add_topic">Add or Select a Topic</string>

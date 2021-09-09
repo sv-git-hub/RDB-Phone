@@ -272,9 +272,9 @@ public class AddNote extends AppCompatActivity {
         newNoteDetails.add(question.getText().toString());      // 4: Question
         newNoteDetails.add(quote.getText().toString());         // 5: Quote
         newNoteDetails.add(term.getText().toString());          // 6: Term
-        newNoteDetails.add(parseDate[2]);                       // 7: Year
-        newNoteDetails.add(parseDate[0]);                       // 8: Month
-        newNoteDetails.add(parseDate[1]);                       // 9: Day
+        newNoteDetails.add(parseDate[0]);                       // 7: Year
+        newNoteDetails.add(parseDate[1]);                       // 8: Month
+        newNoteDetails.add(parseDate[2]);                       // 9: Day
         newNoteDetails.add(volume.getText().toString());        // 10: Volume
         newNoteDetails.add(edition.getText().toString());       // 11: Edition
         newNoteDetails.add(issue.getText().toString());         // 12: Issue
@@ -345,10 +345,10 @@ public class AddNote extends AppCompatActivity {
 
     private void setZeroSourceDetails(){
         author.setText(R.string.add_author_phrase);
-        date.setText("");
-        volume.setText("");
-        edition.setText("");
-        issue.setText("");
+        date.setText(null);
+        volume.setText(null);
+        edition.setText(null);
+        issue.setText(null);
     }
 
     private List<Files> captureFiles(){
@@ -367,6 +367,9 @@ public class AddNote extends AppCompatActivity {
 
             } else if (author.getText().toString().equals("")) {
                 msg = "Please select an existing author or organization, or add a new author or organization.";
+
+            }else if(author.getText().toString().equals("For new sources add new/existing author(s) below") && tableLayoutAuthors.getChildCount()==1){
+                msg = "Please enter a new or existing author in the Authors table below for new sources.";
 
             } else if (sourceType.getSelectedItem().toString().equals("")) {
                 msg = "Please select a source type.";

@@ -88,8 +88,8 @@ public class MainActivity extends AppCompatActivity {
                 return false;
             });
             customSearch.setOnKeyListener((v, keyCode, event) -> {
-                topic.setText("");
-                question.setText("");
+                topic.setText(null);
+                question.setText(null);
                 rListNotes.setAdapter(null);
                 return false;
             });
@@ -194,8 +194,8 @@ public class MainActivity extends AppCompatActivity {
     // CUSTOM METHODS
 
     public void clearFields(){
-        topic.setSelection(0);
-        question.setSelection(0);
+        topic.setText(null);
+        question.setText(null);
         customSearch.setText(null);
         rListNotes.setAdapter(null);
     }

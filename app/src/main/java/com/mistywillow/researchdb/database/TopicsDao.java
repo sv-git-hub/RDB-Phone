@@ -17,10 +17,19 @@ public interface TopicsDao {
 
     @Query("SELECT * FROM Topics ORDER BY Topic")
     List<Topics> getTopics();
+
     @Query("SELECT * FROM Topics WHERE TopicID = :topicID")
     Topics getTopic(int topicID);
+
     @Query("Select topicID FROM Topics WHERE Topic = :topic")
     int getTopicID(String topic);
+
+    @Query("SELECT COUNT(*) FROM Topics WHERE Topic = :topic")
+    int getCountByValue(String topic);
+
+    @Query("SELECT TopicID FROM Topics WHERE Topic = :topic")
+    int getTopicByValue(String topic);
+
     @Query("SELECT last_insert_rowid()")
     int lastTopicsPKID();
     @RawQuery
