@@ -48,7 +48,7 @@ public class MainActivity extends AppCompatActivity {
             //CopyAssets.copyAssets(this, "databases", "Apologetic.db");
 
             // MY DATABASE:
-            researchDatabase = ResearchDatabase.getInstance(this, GlobalVariables.DATABASE);
+            researchDatabase = ResearchDatabase.getInstance(this, GlobalFilePathVariables.DATABASE);
 
             // TOPIC LIST
             ArrayAdapter<String> topicsAdapter = DBQueryTools.captureDBTopics(this);

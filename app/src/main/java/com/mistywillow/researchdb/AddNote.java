@@ -87,7 +87,7 @@ public class AddNote extends AppCompatActivity {
         newSourcesAuthorIDs = new ArrayList<>();
 
         // GET DATABASE INSTANCE
-        rdb = ResearchDatabase.getInstance(this, GlobalVariables.DATABASE);
+        rdb = ResearchDatabase.getInstance(this, GlobalFilePathVariables.DATABASE);
         intentLauncher = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
                 result ->{

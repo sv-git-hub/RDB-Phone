@@ -31,7 +31,7 @@ public class UserLog {
     }
     public static void setUserInfo(Context context, String parameter, String data) {
         try {
-            Scanner f = new Scanner(Paths.get(GlobalVariables.DATA_DIRECTORY + "user_log/userInfo.txt"));
+            Scanner f = new Scanner(Paths.get(GlobalFilePathVariables.DATA_DIRECTORY + "user_log/userInfo.txt"));
             String currentUserInfo = parameter + ":=" + getUserInfo(context, parameter);
             String line;
             String newLine = "";
@@ -44,7 +44,7 @@ public class UserLog {
                 }
             }
             f.close();
-            FileWriter writer = new FileWriter(GlobalVariables.DATA_DIRECTORY + "user_log/userInfo.txt");
+            FileWriter writer = new FileWriter(GlobalFilePathVariables.DATA_DIRECTORY + "user_log/userInfo.txt");
             writer.write(newLine);
             writer.close();
         } catch (IOException e) {

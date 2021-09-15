@@ -56,7 +56,7 @@ public class EditNote extends AppCompatActivity {
         toolbar.setTitleTextColor(getColor(R.color.colorWhite));
         setSupportActionBar(toolbar);
 
-        ResearchDatabase rdb = ResearchDatabase.getInstance(this, GlobalVariables.DATABASE);
+        ResearchDatabase rdb = ResearchDatabase.getInstance(this, GlobalFilePathVariables.DATABASE);
 
         // AUTOCOMPLETE TEXT VIEWS
         sourceTitle = findViewById(R.id.viewSource);

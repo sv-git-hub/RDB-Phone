@@ -6,9 +6,6 @@ import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.*;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 import com.mistywillow.researchdb.database.ResearchDatabase;
 import com.mistywillow.researchdb.database.entities.*;
 
@@ -48,14 +45,13 @@ public class DBQueryTools {
         return str.toString().trim();
     }
     public static ArrayAdapter<String> captureDBAuthors(Context context){
-        rdb = ResearchDatabase.getInstance(context, "Apologetic.db");
+        rdb = ResearchDatabase.getInstance(context, GlobalFilePathVariables.DATABASE);
         List<Authors> authors = rdb.getAuthorsDao().getAuthors();
         List<String> orgAuthors = new ArrayList<>();
         for(Authors a: authors){
             orgAuthors.add(DBQueryTools.concatenateAuthor(a));
         }
         return new ArrayAdapter<>(context, android.R.layout.simple_list_item_1, orgAuthors);
-        //author.setAdapter(authorsAdapter);
     }
     public static List<Authors> captureAuthorsTable(TableLayout authorsTable){
         List<Authors> authors = new ArrayList<>();
@@ -96,6 +92,7 @@ public class DBQueryTools {
         List<Authors> newAuthors = getAuthorsBySource(source);
         return DBQueryTools.concatenateAuthors(newAuthors);
     }
+
     // METHODS PERTAINING TO SOURCES
     public static Integer addNewSource(Sources src){
         return (int) rdb.getSourcesDao().addSource(src);
@@ -116,7 +113,7 @@ public class DBQueryTools {
             public View getView(int position, View convertView, ViewGroup parent) {
                 /// Get the Item from ListView
                 View view = super.getView(position, convertView, parent);
-                TextView tv = (TextView) view.findViewById(android.R.id.text1);
+                TextView tv = view.findViewById(android.R.id.text1);
                 // Set the text size 25 dip for ListView each item
                 tv.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 12);
 
@@ -126,45 +123,19 @@ public class DBQueryTools {
         };
     }
 
-        // CAPTURE METHODS FOR MAIN ACTIVITY ONLY - INCLUDES ""  (BLANK)
-    public static List<String>spinnerTopicsList(Context context){
-        rdb = ResearchDatabase.getInstance(context, "Apologetic.db");
-        // TOPIC LIST
-        List<Topics> arrTopics = rdb.getTopicsDao().getTopics();
-        final List<String> nTopics = new ArrayList<>();
-        nTopics.add("");
-        for (Topics t: arrTopics) {
-            nTopics.add(t.getTopic());
-        }
-        return nTopics;
-    }
-    public static List<String>spinnerQuestionList(Context context){
-        rdb = ResearchDatabase.getInstance(context, "Apologetic.db");
-        // QUESTIONS LIST
-        List<Questions> arrQuestions = rdb.getQuestionsDao().getQuestions();
-        List<String> nQuestions = new ArrayList<>();
-        nQuestions.add("");
-        for (Questions q: arrQuestions) {
-            nQuestions.add(q.getQuestion());
-        }
-        return nQuestions;
-    }
-
         // CAPTURE METHODS FOR LOADING SPINNERS IN EditNote and AddNote classes
     public static ArrayAdapter<String>captureSourceTypes(Context context, String layout){
         List<String> orgSourceTypes = new ArrayList<>(Arrays.asList("","Article", "Audio", "Book", "Journal", "Periodical", "Question", "Quote", "Term", "Video", "Website", "Other"));
-        if(layout=="simple")
+        if(layout.equals("simple"))
             return new ArrayAdapter<>(context, android.R.layout.simple_list_item_1, orgSourceTypes);
         else
             return new ArrayAdapter<>(context, R.layout.custom_type_spinner, orgSourceTypes);
     }
     public static ArrayAdapter<String> captureDBSources(Context context){
-        rdb = ResearchDatabase.getInstance(context, GlobalVariables.DATABASE);
+        rdb = ResearchDatabase.getInstance(context, GlobalFilePathVariables.DATABASE);
         List<Sources> sources = rdb.getSourcesDao().getSources();
         List<String> orgSourceTitles = new ArrayList<>();
         for(Sources s : sources){
-            /*String authors = concatenateAuthors(getAuthorsBySourceID(s.getSourceID()));
-            orgSourceTitles.add(s.getSourceID() + " ~ " + s.getTitle());*/
             orgSourceTitles.add(s.getTitle());
         }
         return new ArrayAdapter<>(context, android.R.layout.simple_list_item_1, orgSourceTitles);
@@ -213,7 +184,6 @@ public class DBQueryTools {
             queID = (int) rdb.getQuestionsDao().addQuestion(questions);
         }
         return queID;}
-
     public static Integer getQuoteID(List<String> data){
         int quoID = rdb.getQuotesDao().getQuoteByValue(data.get(Globals.QUOTE));
         if((!data.get(Globals.QUOTE).isEmpty() || !data.get(Globals.QUOTE).matches("")) && quoID == 0) {
@@ -237,72 +207,191 @@ public class DBQueryTools {
         }
         return topID;}
 
-        // METHODS - OTHER
-    public static String concatenateDate(String month, String day, String year){
-        StringBuilder sb = new StringBuilder();
-        if(!month.isEmpty() && !month.equals("0")){
-            sb.append(month);
+        // METHODS TO MANAGE TABLE DATA ENTRY AND UPDATES EFFICIENTLY
+        private static void updateCurrentNoteIDs(Notes note){
+            rdb.getNotesDao().updateNote(note);
         }
-        if(!day.isEmpty() && !day.equals("0")){
-            if (!month.isEmpty() && !month.equals("0")){
-                sb.append("/").append(day);
-            }else{
-                sb.append(day);
+    private static void updateQuestion(Notes thisNote, List<String> update){
+        Questions questions = null;
+        Questions deleteThis;
+        int orgQuestionID = thisNote.getQuestionID();
+        int orgQuestionIDCount = 0;
+        int newQuestionCount = rdb.getQuestionsDao().getCountByValue(update.get(Globals.QUESTION));
+
+        if(thisNote.getQuestionID() != 0) {
+            orgQuestionIDCount = rdb.getNotesDao().countQuestionByID(thisNote.getQuestionID());
+            questions = rdb.getQuestionsDao().getQuestion(thisNote.getQuestionID());
+            questions.setQuestion(update.get(Globals.QUESTION));
+        }
+
+        // nothing exist in this form of quote
+        if(newQuestionCount == 0 && orgQuestionIDCount == 0){
+            thisNote.setQuestionID((int)rdb.getQuestionsDao().addQuestion(new Questions(update.get(Globals.QUESTION))));
+            updateCurrentNoteIDs(thisNote);
+        }
+
+        // since the original question is a single instance only used by this note, replace the note and keep the ID
+        else if(newQuestionCount == 0 && orgQuestionIDCount == 1) {
+            rdb.getQuestionsDao().updateQuestion(questions);}
+
+        // since the original question is used my other notes, and the new doesn't exist, add it and capture the new QuestionID
+        else if(newQuestionCount == 0 && orgQuestionIDCount > 1){
+            int q = (int)rdb.getQuestionsDao().addQuestion(new Questions(update.get(Globals.QUESTION)));
+            thisNote.setQuestionID(q);
+            updateCurrentNoteIDs(thisNote);
+        }
+
+        // Multiples of the new question exist (the new question isn't really new but different), update the notes table for the note only
+        else if(newQuestionCount > 0){
+            thisNote.setQuestionID(rdb.getQuestionsDao().getQuestionByValue(update.get(Globals.QUESTION)));
+            updateCurrentNoteIDs(thisNote);
+            // If the current value is the only existing, delete it.
+            if(orgQuestionIDCount == 1) {
+                deleteThis = rdb.getQuestionsDao().getQuestion(orgQuestionID);
+                rdb.getQuestionsDao().deleteQuestion(deleteThis);
             }
         }
-        if(!year.isEmpty()){
-            if ((month.isEmpty() || month.equals("0")) && (day.isEmpty() || day.equals("0"))){
-                sb.append(year);
-            }else{
-                sb.append("/").append(year);
+    }
+    private static void updateQuote(Notes thisNote, List<String> update){
+        Quotes quotes = null;
+        Quotes deleteThis;
+        int orgQuoteID = thisNote.getQuoteID();
+        int orgQuoteIDCount = 0;
+        int newQuoteCount = rdb.getQuotesDao().getCountByValue(update.get(Globals.QUOTE));
+
+        if(thisNote.getQuoteID() != 0){
+            orgQuoteIDCount = rdb.getNotesDao().countQuoteByID(thisNote.getQuoteID());
+            quotes = rdb.getQuotesDao().getQuote(thisNote.getQuoteID());
+            quotes.setQuote(update.get(Globals.QUOTE));
+        }
+
+        // nothing exist in this form of quote
+        if(newQuoteCount == 0 && orgQuoteIDCount == 0){
+            thisNote.setQuoteID((int)rdb.getQuotesDao().addQuote(new Quotes(0, update.get(Globals.QUOTE))));
+            updateCurrentNoteIDs(thisNote);
+        }
+
+        // since the original quote is a single  only used by this note, replace the note and keep the ID
+        else if(newQuoteCount == 0 && orgQuoteIDCount == 1) {
+            rdb.getQuotesDao().updateQuote(quotes);}
+
+        // since the original quote is used my other notes, and the new doesn't exist, add it and capture the new QuoteID
+        else if(newQuoteCount == 0 && orgQuoteIDCount > 1){
+            thisNote.setQuoteID((int)rdb.getQuotesDao().addQuote(new Quotes(0, update.get(Globals.QUOTE))));
+            updateCurrentNoteIDs(thisNote);
+        }
+
+        // Multiples of the new quote exist (the new quote isn't really new but different), update the notes table for the note only
+        else if(newQuoteCount > 0){
+            thisNote.setQuoteID(rdb.getQuotesDao().getQuoteByValue(update.get(Globals.QUOTE)));
+            updateCurrentNoteIDs(thisNote);
+
+            // If the current value is the only existing, delete it.
+            if(orgQuoteIDCount == 1) {
+                deleteThis = rdb.getQuotesDao().getQuote(orgQuoteID);
+                rdb.getQuotesDao().deleteQuote(deleteThis);
             }
         }
-        return sb.toString();
     }
-    public static boolean checkForDuplicate(String data, String table, String column){
-        return false;
-    }
-    private long countByString(){return 0;}
+    private static void updateTerm(Notes thisNote, List<String> update){
+        Terms terms = null;
+        Terms deleteThis;
+        int orgTerm = thisNote.getTermID();
+        int orgTermIDCount = 0;
+        int newTermCount = rdb.getTermsDao().getCountByValue(update.get(Globals.TERM));
 
-        // EVALUATES NOTES AS OBJECTS
-    @SuppressWarnings("BooleanMethodIsAlwaysInverted")
-    private static boolean valuesAreDifferent(String obj1, String obj2){
-        if(obj1 == null || obj1.isEmpty() || obj1.trim().isEmpty()){obj1 = "";}
-        if(obj2 == null || obj2.isEmpty() || obj2.trim().isEmpty()){obj2 = "";}
-        return obj1.equals(obj2);
+        if(thisNote.getTermID() != 0) {
+            orgTermIDCount = rdb.getNotesDao().countTermByID(thisNote.getTermID());
+            terms = rdb.getTermsDao().getTerm(thisNote.getTermID());
+            terms.setTerm(update.get(Globals.TERM));
+        }
+
+        // nothing exist in this form of quote
+        if(newTermCount == 0 && orgTermIDCount == 0){
+            thisNote.setTermID((int)rdb.getTermsDao().addTerm(new Terms(0, update.get(Globals.TERM))));
+            updateCurrentNoteIDs(thisNote);
+        }
+
+        // since the original term is a single instance only used by this note, replace the note and keep the ID
+        else if(newTermCount == 0 && orgTermIDCount == 1) {
+            rdb.getTermsDao().updateTerm(terms);}
+
+        // since the original term is used my other notes, and the new doesn't exist, add it and capture the new TermID
+        else if(newTermCount == 0 && orgTermIDCount > 1){
+            thisNote.setTermID((int)rdb.getTermsDao().addTerm(terms));
+            updateCurrentNoteIDs(thisNote);
+        }
+
+        // Multiples of the new term exist (the new term isn't really new but different), update the notes table for the note only
+        else if(newTermCount > 0){
+            thisNote.setTermID(rdb.getTermsDao().getTermByValue(update.get(Globals.TERM)));
+            updateCurrentNoteIDs(thisNote);
+
+            // If the current value is the only existing, delete it.
+            if(orgTermIDCount == 1) {
+                deleteThis = rdb.getTermsDao().getTerm(orgTerm);
+                rdb.getTermsDao().deleteTerm(deleteThis);
+            }
+        }
+    }
+    private static void updateTopic(Notes thisNote, List<String> update){
+        Topics topics = rdb.getTopicsDao().getTopic(thisNote.getTopicID());
+        Topics deleteThis;
+        int orgTopic = thisNote.getTopicID();
+        int orgTopicIDCount = rdb.getNotesDao().countTopicByID(thisNote.getTopicID());
+        int newTopicCount = rdb.getTopicsDao().getCountByValue(update.get(Globals.TOPIC));
+
+        // since the original topic is a single instance only used by this note, replace the note and keep the ID
+        if(newTopicCount == 0 && orgTopicIDCount == 1) {
+            topics.setTopic(update.get(Globals.TOPIC));
+            rdb.getTopicsDao().updateTopic(topics);}
+
+        // since the original topic is used by other notes, and the new doesn't exist, add it and capture the new TopicID
+        else if(newTopicCount == 0 && orgTopicIDCount > 1){
+            thisNote.setTopicID((int)rdb.getTopicsDao().addTopic(new Topics(0, update.get(Globals.TOPIC))));
+            updateCurrentNoteIDs(thisNote);
+        }
+        // Multiples of the new question exist (the new question isn't really new but different), update the notes table for the note only
+        else if(newTopicCount > 0){
+            thisNote.setTopicID(rdb.getTopicsDao().getTopicByValue(update.get(Globals.TOPIC)));
+            updateCurrentNoteIDs(thisNote);
+            // If the current value is the only existing, delete it.
+            if(orgTopicIDCount == 1) {
+                deleteThis = rdb.getTopicsDao().getTopic(orgTopic);
+                rdb.getTopicsDao().deleteTopic(deleteThis);
+            }
+        }
     }
 
+        // METHODS TO ADD OR UPDATE NOTES
     public static Intent addNewNote(Context context, List<Integer> data){
 
-        rdb = ResearchDatabase.getInstance(context, GlobalVariables.DATABASE);
-        int noteID = 0;
-        int srcID = data.get(1);
-        int cmtID = data.get(2);
-        int queID = data.get(3);
-        int quoID = data.get(4);
-        int terID = data.get(5);
-        int topID = data.get(6);
-        int del =0;
+            rdb = ResearchDatabase.getInstance(context, GlobalFilePathVariables.DATABASE);
+            int noteID = 0;
+            int srcID = data.get(1);
+            int cmtID = data.get(2);
+            int queID = data.get(3);
+            int quoID = data.get(4);
+            int terID = data.get(5);
+            int topID = data.get(6);
+            int del =0;
 
-        // NOTES
-        Notes note = new Notes(noteID, srcID, cmtID, queID, quoID,terID, topID, del);
-        noteID = (int) rdb.getNotesDao().addNote(note);
-        Sources tmpSource = rdb.getSourcesDao().getSource(srcID);
-        Comments tmpComment = rdb.getCommentsDao().getComment(cmtID);
-        Intent a = new Intent(context, ViewNote.class);
-        a.putExtra("ID", noteID);
-        a.putExtra("Type", tmpSource.getSourceType());
-        a.putExtra("Summary", tmpComment.getSummary());
-        a.putExtra("Source", tmpSource.getTitle());
-        a.putExtra("Authors", DBQueryTools.concatenateAuthors(DBQueryTools.getAuthorsBySourceID(srcID)));
-        return a;
+            // NOTES
+            Notes note = new Notes(noteID, srcID, cmtID, queID, quoID,terID, topID, del);
+            noteID = (int) rdb.getNotesDao().addNote(note);
+            Sources tmpSource = rdb.getSourcesDao().getSource(srcID);
+            Comments tmpComment = rdb.getCommentsDao().getComment(cmtID);
+            Intent a = new Intent(context, ViewNote.class);
+            a.putExtra("ID", noteID);
+            a.putExtra("Type", tmpSource.getSourceType());
+            a.putExtra("Summary", tmpComment.getSummary());
+            a.putExtra("Source", tmpSource.getTitle());
+            a.putExtra("Authors", DBQueryTools.concatenateAuthors(DBQueryTools.getAuthorsBySourceID(srcID)));
+            return a;
 
-    }
-
+        }
     public static Intent updateNote(Context context, Notes orgNoteTableIDs, List<String> original, List<String> update, int vNoteID){
         // NO SOURCE OR AUTHORS UPDATES. A NEW NOTE SHOULD BE REQUIRED.
-        //Notes thisNote = rdb.getNotesDao().getNote(vNoteID);
-        Notes thisNote = orgNoteTableIDs;
 
         // TYPE; TITLE; YEAR; MONTH; DAY; VOLUME; EDITION; ISSUE
         /*if(!valuesAreDifferent(original.get(Globals.TYPE), update.get(Globals.TYPE)) ||
@@ -355,163 +444,35 @@ public class DBQueryTools {
         return u;
     }
 
-    private static void updateCurrentNoteIDs(Notes note){
-        rdb.getNotesDao().updateNote(note);
-    }
-
-    private static void updateQuestion(Notes thisNote, List<String> update){
-        Questions questions = null;
-        Questions deleteThis;
-        int orgQuestionID = thisNote.getQuestionID();
-        int orgQuestionIDCount = 0;
-        int newQuestionCount = rdb.getQuestionsDao().getCountByValue(update.get(Globals.QUESTION));
-
-        if(thisNote.getQuestionID() != 0) {
-            orgQuestionIDCount = rdb.getNotesDao().countQuestionByID(thisNote.getQuestionID());
-            questions = rdb.getQuestionsDao().getQuestion(thisNote.getQuestionID());
-            questions.setQuestion(update.get(Globals.QUESTION));
+        // METHODS - OTHER
+    public static String concatenateDate(String month, String day, String year){
+        StringBuilder sb = new StringBuilder();
+        if(!month.isEmpty() && !month.equals("0")){
+            sb.append(month);
         }
-
-        // nothing exist in this form of quote
-        if(newQuestionCount == 0 && orgQuestionIDCount == 0){
-            thisNote.setQuestionID((int)rdb.getQuestionsDao().addQuestion(new Questions(update.get(Globals.QUESTION))));
-            updateCurrentNoteIDs(thisNote);
-        }
-
-        // since the original question is a single instance only used by this note, replace the note and keep the ID
-        else if(newQuestionCount == 0 && orgQuestionIDCount == 1) {
-            rdb.getQuestionsDao().updateQuestion(questions);}
-
-        // since the original question is used my other notes, and the new doesn't exist, add it and capture the new QuestionID
-        else if(newQuestionCount == 0 && orgQuestionIDCount > 1){
-            int q = (int)rdb.getQuestionsDao().addQuestion(new Questions(update.get(Globals.QUESTION)));
-            thisNote.setQuestionID(q);
-            updateCurrentNoteIDs(thisNote);
-        }
-
-        // Multiples of the new question exist (the new question isn't really new but different), update the notes table for the note only
-        else if(newQuestionCount > 0){
-            thisNote.setQuestionID(rdb.getQuestionsDao().getQuestionByValue(update.get(Globals.QUESTION)));
-            updateCurrentNoteIDs(thisNote);
-            // If the current value is the only existing, delete it.
-            if(orgQuestionIDCount == 1) {
-                deleteThis = rdb.getQuestionsDao().getQuestion(orgQuestionID);
-                rdb.getQuestionsDao().deleteQuestion(deleteThis);
+        if(!day.isEmpty() && !day.equals("0")){
+            if (!month.isEmpty() && !month.equals("0")){
+                sb.append("/").append(day);
+            }else{
+                sb.append(day);
             }
         }
-    }
-
-    private static void updateQuote(Notes thisNote, List<String> update){
-        Quotes quotes = null;
-        Quotes deleteThis;
-        int orgQuoteID = thisNote.getQuoteID();
-        int orgQuoteIDCount = 0;
-        int newQuoteCount = rdb.getQuotesDao().getCountByValue(update.get(Globals.QUOTE));
-
-        if(thisNote.getQuoteID() != 0){
-            orgQuoteIDCount = rdb.getNotesDao().countQuoteByID(thisNote.getQuoteID());
-            quotes = rdb.getQuotesDao().getQuote(thisNote.getQuoteID());
-            quotes.setQuote(update.get(Globals.QUOTE));
-        }
-
-        // nothing exist in this form of quote
-        if(newQuoteCount == 0 && orgQuoteIDCount == 0){
-            thisNote.setQuoteID((int)rdb.getQuotesDao().addQuote(new Quotes(0, update.get(Globals.QUOTE))));
-            updateCurrentNoteIDs(thisNote);
-        }
-
-        // since the original quote is a single  only used by this note, replace the note and keep the ID
-        else if(newQuoteCount == 0 && orgQuoteIDCount == 1) {
-            rdb.getQuotesDao().updateQuote(quotes);}
-
-        // since the original quote is used my other notes, and the new doesn't exist, add it and capture the new QuoteID
-        else if(newQuoteCount == 0 && orgQuoteIDCount > 1){
-            thisNote.setQuoteID((int)rdb.getQuotesDao().addQuote(new Quotes(0, update.get(Globals.QUOTE))));
-            updateCurrentNoteIDs(thisNote);
-        }
-
-        // Multiples of the new quote exist (the new quote isn't really new but different), update the notes table for the note only
-        else if(newQuoteCount > 0){
-            thisNote.setQuoteID(rdb.getQuotesDao().getQuoteByValue(update.get(Globals.QUOTE)));
-            updateCurrentNoteIDs(thisNote);
-
-            // If the current value is the only existing, delete it.
-            if(orgQuoteIDCount == 1) {
-                deleteThis = rdb.getQuotesDao().getQuote(orgQuoteID);
-                rdb.getQuotesDao().deleteQuote(deleteThis);
+        if(!year.isEmpty()){
+            if ((month.isEmpty() || month.equals("0")) && (day.isEmpty() || day.equals("0"))){
+                sb.append(year);
+            }else{
+                sb.append("/").append(year);
             }
         }
+        return sb.toString();
     }
 
-    private static void updateTerm(Notes thisNote, List<String> update){
-        Terms terms = null;
-        Terms deleteThis;
-        int orgTerm = thisNote.getTermID();
-        int orgTermIDCount = 0;
-        int newTermCount = rdb.getTermsDao().getCountByValue(update.get(Globals.TERM));
-
-        if(thisNote.getTermID() != 0) {
-            orgTermIDCount = rdb.getNotesDao().countTermByID(thisNote.getTermID());
-            terms = rdb.getTermsDao().getTerm(thisNote.getTermID());
-            terms.setTerm(update.get(Globals.TERM));
-        }
-
-        // nothing exist in this form of quote
-        if(newTermCount == 0 && orgTermIDCount == 0){
-            thisNote.setTermID((int)rdb.getTermsDao().addTerm(new Terms(0, update.get(Globals.TERM))));
-            updateCurrentNoteIDs(thisNote);
-        }
-
-        // since the original term is a single instance only used by this note, replace the note and keep the ID
-        else if(newTermCount == 0 && orgTermIDCount == 1) {
-            rdb.getTermsDao().updateTerm(terms);}
-
-        // since the original term is used my other notes, and the new doesn't exist, add it and capture the new TermID
-        else if(newTermCount == 0 && orgTermIDCount > 1){
-            thisNote.setTermID((int)rdb.getTermsDao().addTerm(terms));
-            updateCurrentNoteIDs(thisNote);
-        }
-
-        // Multiples of the new term exist (the new term isn't really new but different), update the notes table for the note only
-        else if(newTermCount > 0){
-            thisNote.setTermID(rdb.getTermsDao().getTermByValue(update.get(Globals.TERM)));
-            updateCurrentNoteIDs(thisNote);
-
-            // If the current value is the only existing, delete it.
-            if(orgTermIDCount == 1) {
-                deleteThis = rdb.getTermsDao().getTerm(orgTerm);
-                rdb.getTermsDao().deleteTerm(deleteThis);
-            }
-        }
-    }
-
-    private static void updateTopic(Notes thisNote, List<String> update){
-        Topics topics = rdb.getTopicsDao().getTopic(thisNote.getTopicID());
-        Topics deleteThis;
-        int orgTopic = thisNote.getTopicID();
-        int orgTopicIDCount = rdb.getNotesDao().countTopicByID(thisNote.getTopicID());
-        int newTopicCount = rdb.getTopicsDao().getCountByValue(update.get(Globals.TOPIC));
-
-        // since the original topic is a single instance only used by this note, replace the note and keep the ID
-        if(newTopicCount == 0 && orgTopicIDCount == 1) {
-            topics.setTopic(update.get(Globals.TOPIC));
-            rdb.getTopicsDao().updateTopic(topics);}
-
-        // since the original topic is used by other notes, and the new doesn't exist, add it and capture the new TopicID
-        else if(newTopicCount == 0 && orgTopicIDCount > 1){
-            thisNote.setTopicID((int)rdb.getTopicsDao().addTopic(new Topics(0, update.get(Globals.TOPIC))));
-            updateCurrentNoteIDs(thisNote);
-        }
-        // Multiples of the new question exist (the new question isn't really new but different), update the notes table for the note only
-        else if(newTopicCount > 0){
-            thisNote.setTopicID(rdb.getTopicsDao().getTopicByValue(update.get(Globals.TOPIC)));
-            updateCurrentNoteIDs(thisNote);
-            // If the current value is the only existing, delete it.
-            if(orgTopicIDCount == 1) {
-                deleteThis = rdb.getTopicsDao().getTopic(orgTopic);
-                rdb.getTopicsDao().deleteTopic(deleteThis);
-            }
-        }
+        // EVALUATES NOTES AS OBJECTS
+    @SuppressWarnings("BooleanMethodIsAlwaysInverted")
+    private static boolean valuesAreDifferent(String obj1, String obj2){
+        if(obj1 == null || obj1.isEmpty() || obj1.trim().isEmpty()){obj1 = "";}
+        if(obj2 == null || obj2.isEmpty() || obj2.trim().isEmpty()){obj2 = "";}
+        return obj1.equals(obj2);
     }
 
 

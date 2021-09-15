@@ -102,7 +102,7 @@ public class ViewNote extends AppCompatActivity {
         nSource = n.getStringExtra("Source");
         nAuthors = n.getStringExtra("Authors");
 
-        researchDatabase = ResearchDatabase.getInstance(this, GlobalVariables.DATABASE);
+        researchDatabase = ResearchDatabase.getInstance(this, GlobalFilePathVariables.DATABASE);
 
         NoteDetails details = researchDatabase.getNotesDao().getNoteDetails(nNoteID);
         noteDetails.clear();

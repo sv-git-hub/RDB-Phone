@@ -158,10 +158,13 @@ public class BuildTableLayout extends AppCompatActivity{
     }
 
     public static void deleteTableRows(TableLayout table){
-        for (int i=1; i < table.getChildCount(); i++){
+        TableRow tableRow = (TableRow) table.getFocusedChild();
+        table.removeView(tableRow);
+
+        /*for (int i=1; i < table.getChildCount(); i++){
             TableRow tblRow = (TableRow) table.getChildAt(i);
             table.removeView(tblRow);
-        }
+        }*/
     }
 
 
