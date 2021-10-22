@@ -28,20 +28,12 @@ public class BuildTableLayout extends AppCompatActivity{
                 //row.addView(addEditTextToTable(context, fileName));
                 row.addView(addRowTextViewToTable(context, fileName, false));
                 row.setClickable(true);
-                row.setOnClickListener(v ->{
-                    Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-                    intent.setType("*/*");
-                    FileChooser fileChooser = new FileChooser(intent);
-                    if(fileChooser==null)Toast.makeText(null, "FileChooser is Null", Toast.LENGTH_SHORT).show();
-                    TextView child = (TextView) row.getChildAt(1);
-                    child.setText(fileChooser.getFilePath());
-                });
             }
         }
         return row;
     }
 
-     public static TableRow setupAuthorsTableRow (Context context, TableLayout table, String first, String middle, String last, String suffix, boolean bold){
+    public static TableRow setupAuthorsTableRow (Context context, TableLayout table, String first, String middle, String last, String suffix, boolean bold){
         TableRow row = new TableRow(context);
         if(bold) {
             row.addView(setupAuthorsAddRowButton(context, table));
@@ -158,13 +150,10 @@ public class BuildTableLayout extends AppCompatActivity{
     }
 
     public static void deleteTableRows(TableLayout table){
-        TableRow tableRow = (TableRow) table.getFocusedChild();
-        table.removeView(tableRow);
-
-        /*for (int i=1; i < table.getChildCount(); i++){
+        for (int i=1; i < table.getChildCount(); i++){
             TableRow tblRow = (TableRow) table.getChildAt(i);
             table.removeView(tblRow);
-        }*/
+        }
     }
 
 

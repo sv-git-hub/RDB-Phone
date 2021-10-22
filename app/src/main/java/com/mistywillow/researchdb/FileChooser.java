@@ -9,22 +9,21 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 
 public class FileChooser extends AppCompatActivity {
-
-    public FileChooser(Intent intent){
-        if(intent==null) Toast.makeText(null, "Intent is Null", Toast.LENGTH_SHORT).show();
-        resultLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
-            if (result.getResultCode() == Activity.RESULT_OK && result.getData() != null){
-                Uri uri = result.getData().getData();
-                filePath = uri.getPath();
-            }
-        });
-        if(resultLauncher==null)Toast.makeText(null, "Launcher is Null", Toast.LENGTH_SHORT).show();
-        resultLauncher.launch(intent);
-    }
-
     private String fileName;
     private String filePath;
     private final ActivityResultLauncher<Intent> resultLauncher;
+
+    public FileChooser(){
+        this.resultLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
+            if (result.getResultCode() == Activity.RESULT_OK && result.getData() != null){
+                Uri uri = result.getData().getData();
+                this.filePath = uri.getPath();
+            }
+        });
+        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+        intent.setType("*/*");
+        resultLauncher.launch(intent);
+    }
 
     public String getFileName() {
         return fileName;

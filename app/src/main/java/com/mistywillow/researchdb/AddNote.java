@@ -2,6 +2,7 @@ package com.mistywillow.researchdb;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.net.Uri;
 import android.view.*;
 import android.widget.*;
 import androidx.activity.result.ActivityResultLauncher;
@@ -12,6 +13,8 @@ import android.os.Bundle;
 import androidx.appcompat.widget.Toolbar;
 import com.mistywillow.researchdb.database.ResearchDatabase;
 import com.mistywillow.researchdb.database.entities.*;
+
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -19,6 +22,7 @@ import java.util.Objects;
 public class AddNote extends AppCompatActivity {
     private ResearchDatabase rdb;
     ActivityResultLauncher<Intent> intentLauncher;
+    ActivityResultLauncher<Intent> resultLauncher;
 
     private EditText quote;
     private EditText term;
@@ -38,6 +42,8 @@ public class AddNote extends AppCompatActivity {
     private AutoCompleteTextView summary;
 
     private TextView author;
+
+    private Button btnAddFile;
 
     private TableLayout tableLayoutFiles;
     private TableLayout tableLayoutAuthors;
@@ -77,10 +83,19 @@ public class AddNote extends AppCompatActivity {
         edition = findViewById(R.id.viewEdition);
         issue = findViewById(R.id.viewIssue);
 
+        btnAddFile = findViewById(R.id.addFile);
+
         tableLayoutFiles = findViewById(R.id.table_files);
-        tableLayoutFiles.addView(BuildTableLayout.setupFilesTableRow(this,tableLayoutFiles,"FileID", "FileName",true));
+        tableLayoutFiles.addView(BuildTableLayout.setupFilesTableRow(this,tableLayoutFiles,"FileID", "FilePath/FileName",true));
         tableLayoutAuthors = findViewById(R.id.table_authors);
         tableLayoutAuthors.addView(BuildTableLayout.setupAuthorsTableRow(this,tableLayoutAuthors,"Organization/First", "Middle", "Last", "Suffix", true));
+
+        resultLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
+            if (result.getResultCode() == Activity.RESULT_OK && result.getData() != null){
+                Uri uri = result.getData().getData();
+                tableLayoutFiles.addView(BuildTableLayout.setupFilesTableRow(AddNote.this,tableLayoutFiles,"", uri.getPath(),false));
+            }
+        });
 
         //ARRAYS, LISTS, ETC.
         selectedSourceID = 0;
@@ -117,6 +132,16 @@ public class AddNote extends AppCompatActivity {
     }
 
     private void setupOnClickActions() {
+        btnAddFile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+                intent.setType("*/*");
+                resultLauncher.launch(intent);
+
+            }
+        });
+
         sourceTitle.setOnItemClickListener((parent, view, position, id) ->
                 populateSourceDetails(DBQueryTools.getSourcesByTitle(sourceTitle.getText().toString())));
 

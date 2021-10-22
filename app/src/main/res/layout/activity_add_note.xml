@@ -273,6 +273,15 @@
                     app:layout_constraintStart_toEndOf="@+id/lbl_View_Term" android:layout_marginStart="5dp"
                     android:layout_marginEnd="5dp"/>
 
+            <Button android:layout_width="wrap_content"
+                    android:layout_height="40dp"
+                    android:id="@+id/addFile"
+                    android:text="Add File"
+                    android:textSize="12sp"
+                    app:layout_constraintTop_toBottomOf="@id/viewTerm"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"/>
+
             <TableLayout
                     android:id="@+id/table_files"
                     android:layout_width="wrap_content"
@@ -283,9 +292,9 @@
                     android:background="@color/colorDkGray"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/viewTerm"
+                    app:layout_constraintTop_toBottomOf="@+id/addFile"
                     android:padding="2dp"
-                    android:layout_marginTop="15dp"
+                    android:layout_marginTop="5dp"
                     android:layout_marginEnd="5dp"
                     android:layout_marginStart="5dp">
 
