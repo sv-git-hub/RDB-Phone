@@ -1,8 +1,12 @@
 package com.mistywillow.researchdb;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.net.Uri;
+import android.provider.MediaStore;
+import android.util.Log;
 import android.view.*;
 import android.widget.*;
 import androidx.activity.result.ActivityResultLauncher;
@@ -14,7 +18,10 @@ import androidx.appcompat.widget.Toolbar;
 import com.mistywillow.researchdb.database.ResearchDatabase;
 import com.mistywillow.researchdb.database.entities.*;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -93,7 +100,9 @@ public class AddNote extends AppCompatActivity {
         resultLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
             if (result.getResultCode() == Activity.RESULT_OK && result.getData() != null){
                 Uri uri = result.getData().getData();
-                tableLayoutFiles.addView(BuildTableLayout.setupFilesTableRow(AddNote.this,tableLayoutFiles,"", uri.getPath(),false));
+               // String str = result.getData().getData().getPath();
+                String str = RealPathUtil.getRealPath(this, uri);
+                tableLayoutFiles.addView(BuildTableLayout.setupFilesTableRow(AddNote.this,tableLayoutFiles,"", str,false));
             }
         });
 
@@ -178,7 +187,7 @@ public class AddNote extends AppCompatActivity {
 
     private void setupMenuOptions() {
         editMenu.findItem(R.id.clear).setEnabled(false);
-        editMenu.findItem(R.id.edit_note).setEnabled(false);
+        editMenu.findItem(R.id.edit_note).setEnabled(true);
     }
 
     // MENU METHODS
@@ -242,10 +251,11 @@ public class AddNote extends AppCompatActivity {
                 }
             }
 
-            startActivity(DBQueryTools.addNewNote(this, newNoteIDs));
+            List<Files> addFiles = captureNoteFiles();
+            startActivity(DBQueryTools.addNewNote(this, newNoteIDs, addFiles));
 
         }else if(item.getItemId() == R.id.edit_note){
-            Toast.makeText(this, "Edit Note for Delete clicked!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Edit Note clicked!", Toast.LENGTH_SHORT).show();
         }else if(item.getItemId() == R.id.mark_for_delete) {
             Toast.makeText(this, "Mark Note for Delete clicked!", Toast.LENGTH_SHORT).show();
         }else if(item.getItemId() == R.id.unMark_for_delete) {
@@ -262,6 +272,20 @@ public class AddNote extends AppCompatActivity {
             onBackPressed();
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private String getRealPathFromURI(Uri contentURI) {
+        String result;
+        Cursor cursor = getContentResolver().query(contentURI, null, null, null, null);
+        if (cursor == null) { // Source is Dropbox or other similar local file path
+            result = contentURI.getPath();
+        } else {
+            cursor.moveToFirst();
+            int idx = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA);
+            result = cursor.getString(idx);
+            cursor.close();
+        }
+        return result;
     }
 
     private void loadSpinner(){
@@ -328,8 +352,38 @@ public class AddNote extends AppCompatActivity {
             setSourceDetails(sources.get(0));
             selectedSourceID = sources.get(0).getSourceID();
         }
+    }
 
+    private List<Files> captureNoteFiles(){
+        List<Files> noteFiles = new ArrayList<>();
+        int i = tableLayoutFiles.getChildCount();
+        if(i>1){
+            for (int itr = 1; itr<i; itr++) { // iterating through indexes
+                TableRow tr = (TableRow) tableLayoutFiles.getChildAt(itr);
+                TextView tv = (TextView) tr.getChildAt(1); // 1 is the file path position
+                File f = new File(tv.getText().toString());
+                String n = f.getName();
 
+                try {
+                    FileInputStream fis = new FileInputStream(f.getPath());
+                    ByteArrayOutputStream bos = new ByteArrayOutputStream();
+                    byte[] bar = new byte[1024];
+                    for (int read; (read = fis.read(bar)) != -1; ) {
+                        bos.write(bar, 0, read);
+                    }
+                    fis.close();
+
+                    noteFiles.add(new Files(0, n, bos.toByteArray()));
+
+                    Toast.makeText(this, "DONE", Toast.LENGTH_SHORT).show();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    Log.d("Input File", e.toString());
+                }
+            }
+        }
+        Toast.makeText(this, String.valueOf(i), Toast.LENGTH_SHORT).show();
+        return noteFiles;
     }
 
     private void getCorrectAuthors(List<Sources> sources) {

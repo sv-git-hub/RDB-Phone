@@ -246,6 +246,11 @@ public class ViewNote extends AppCompatActivity {
         }
     }
 
+    private String getFileExtension(String fileName){
+        String[] ext = fileName.split("[.]");
+        return ext[ext.length-1];
+    }
+
     private void populateFields() {
         sourceType.setText(noteDetails.get(Globals.TYPE));
         topic.setText(noteDetails.get(Globals.TOPIC));
@@ -307,10 +312,7 @@ public class ViewNote extends AppCompatActivity {
         }
     }
 
-    private String getFileExtension(String fileName){
-        String[] ext = fileName.split("[.]");
-        return ext[ext.length-1];
-    }
+
 
     private TextView setupRowTextView(String value, boolean bold){
         TextView tv = new TextView(this);

@@ -6,6 +6,7 @@ import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.*;
+import com.mistywillow.researchdb.database.FilesByNoteDao_Impl;
 import com.mistywillow.researchdb.database.ResearchDatabase;
 import com.mistywillow.researchdb.database.entities.*;
 
@@ -158,15 +159,14 @@ public class DBQueryTools {
             orgQuestions.add(q.getQuestion());
         }
         return new ArrayAdapter<>(context, android.R.layout.simple_list_item_1, orgQuestions);
-        //question.setAdapter(acQuestionAdapt);
     }
     public static ArrayAdapter<String> captureSummaries(Context context){
         rdb = ResearchDatabase.getInstance(context, "Apologetic.db");
         List<Comments> summaries = rdb.getCommentsDao().getComments();
         List<String> orgSummaries = new ArrayList<>();
         for(Comments c : summaries){
-            if(!c.getSummary().isEmpty() || !orgSummaries.contains(c.getSummary().trim()))
-                orgSummaries.add(c.getSummary());
+            if(!c.getSummary().isEmpty() && !orgSummaries.contains(c.getSummary().trim()))
+                orgSummaries.add(c.getSummary().trim());
         }
         return new ArrayAdapter<>(context, android.R.layout.simple_list_item_1, orgSummaries);
     }
@@ -364,7 +364,7 @@ public class DBQueryTools {
     }
 
         // METHODS TO ADD OR UPDATE NOTES
-    public static Intent addNewNote(Context context, List<Integer> data){
+    public static Intent addNewNote(Context context, List<Integer> data, List<Files> files){
 
             rdb = ResearchDatabase.getInstance(context, GlobalFilePathVariables.DATABASE);
             int noteID = 0;
@@ -381,15 +381,30 @@ public class DBQueryTools {
             noteID = (int) rdb.getNotesDao().addNote(note);
             Sources tmpSource = rdb.getSourcesDao().getSource(srcID);
             Comments tmpComment = rdb.getCommentsDao().getComment(cmtID);
+            if(files!=null)
+                addNewNoteFiles(noteID, files);
+
             Intent a = new Intent(context, ViewNote.class);
             a.putExtra("ID", noteID);
             a.putExtra("Type", tmpSource.getSourceType());
             a.putExtra("Summary", tmpComment.getSummary());
             a.putExtra("Source", tmpSource.getTitle());
             a.putExtra("Authors", DBQueryTools.concatenateAuthors(DBQueryTools.getAuthorsBySourceID(srcID)));
+
             return a;
 
+    }
+    public static void addNewNoteFiles(int noteID, List<Files> nf){
+        if(nf.size()>0) {
+            for (Files f : nf) {
+                long id = rdb.getFilesDao().addFile(f);
+                rdb.getFilesByNoteDao().insert(new FilesByNote(noteID, (int) id));
+            }
         }
+    }
+
+
+
     public static Intent updateNote(Context context, Notes orgNoteTableIDs, List<String> original, List<String> update, int vNoteID){
         // NO SOURCE OR AUTHORS UPDATES. A NEW NOTE SHOULD BE REQUIRED.
 
