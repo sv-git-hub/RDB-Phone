@@ -13,6 +13,9 @@ public interface FilesByNoteDao {
     @Insert
     void insert(FilesByNote filesByNote);
 
+    @Delete
+    void delete(FilesByNote filesByNote);
+
     @SuppressWarnings(RoomWarnings.CURSOR_MISMATCH)
     @Query("SELECT f.FileID, f.FileName FROM Files AS f \n" +
             "LEFT JOIN Files_By_Note AS fbn ON f.FileID=fbn.FileID \n" +

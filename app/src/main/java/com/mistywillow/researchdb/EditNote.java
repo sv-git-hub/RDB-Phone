@@ -1,10 +1,14 @@
 package com.mistywillow.researchdb;
 
+import android.app.Activity;
 import android.content.Intent;
+import android.net.Uri;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
 import android.view.*;
 import android.widget.*;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
@@ -18,10 +22,15 @@ import java.util.Objects;
 
 public class EditNote extends AppCompatActivity {
 
+    ActivityResultLauncher<Intent> resultLauncher;
+
     private Notes orgNoteTableIDs;
 
     private List<String> viewNoteDetails;
     private List<String> updatedNoteDetails;
+
+    private List<Files> viewNoteFiles;
+    private List<Files> newNoteFiles;
 
     private int nid;
 
@@ -44,6 +53,7 @@ public class EditNote extends AppCompatActivity {
     private AutoCompleteTextView question;
     private AutoCompleteTextView summary;
 
+    private Button btnAddFile;
     private TableLayout tableLayoutFiles;
     private Menu editMenu;
 
@@ -78,9 +88,20 @@ public class EditNote extends AppCompatActivity {
         pgs_paras = findViewById(R.id.viewPgsParas);
         timeStamp = findViewById(R.id.viewTimeStamp);
 
+        btnAddFile = findViewById(R.id.addFile);
+
         // TABLES
         tableLayoutFiles = findViewById(R.id.table_files);
         tableLayoutFiles.setTag(R.id.table_files, "tableFiles");
+
+        resultLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
+            if (result.getResultCode() == Activity.RESULT_OK && result.getData() != null){
+                Uri uri = result.getData().getData();
+                // String str = result.getData().getData().getPath();
+                String str = RealPathUtil.getRealPath(this, uri);
+                tableLayoutFiles.addView(BuildTableLayout.setupFilesTableRow(EditNote.this,tableLayoutFiles,"", str,false));
+            }
+        });
 
         // BEGIN SETUP and LOADING ACTIVITY and DATA ==================================================================
         Intent viewDetails = getIntent();
@@ -90,7 +111,7 @@ public class EditNote extends AppCompatActivity {
         nid = vNoteID;
         orgNoteTableIDs = rdb.getNotesDao().getNote(vNoteID);
         viewNoteDetails = viewBundle.getStringArrayList("NoteDetails");
-        List<Files> viewNoteFiles = viewBundle.getParcelableArrayList("NoteFiles");
+        viewNoteFiles = viewBundle.getParcelableArrayList("NoteFiles");
 
         // CAPTURE DB INFORMATION FOR AUTO-COMPLETE TEXT VIEWS
         loadAutoCompleteTextViews(); // INCLUDES SOURCE TYPES and SOURCE TITLE
@@ -106,6 +127,16 @@ public class EditNote extends AppCompatActivity {
     }
 
     private void setupOnClickActions() {
+        btnAddFile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+                intent.setType("*/*");
+                resultLauncher.launch(intent);
+
+            }
+        });
+
         sourceTitle.setOnFocusChangeListener((v, hasFocus) -> {
             if(!hasFocus){
                 author.setText(DBQueryTools.concatenateAuthors(DBQueryTools.getAuthorsBySourceID(orgNoteTableIDs.getSourceID())));
@@ -134,7 +165,9 @@ public class EditNote extends AppCompatActivity {
 
         }else if(item.getItemId() == R.id.update_note) {
             captureFieldsUponUpdate();
-            startActivity(DBQueryTools.updateNote(this, orgNoteTableIDs, viewNoteDetails, updatedNoteDetails, nid));
+            newNoteFiles = DBQueryTools.captureNoteFiles(tableLayoutFiles);
+            startActivity(DBQueryTools.updateNote(this, orgNoteTableIDs, viewNoteDetails, updatedNoteDetails,
+                    viewNoteFiles, newNoteFiles, nid));
             Toast.makeText(this, "Update Note clicked!", Toast.LENGTH_SHORT).show();
 
         }else if(item.getItemId() == R.id.edit_note){
