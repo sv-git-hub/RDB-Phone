@@ -15,19 +15,19 @@ public interface TopicsDao {
     @Delete
     void deleteTopic(Topics topic);
 
-    @Query("SELECT * FROM Topics ORDER BY Topic")
+    @Query("SELECT * FROM Topic ORDER BY Topic")
     List<Topics> getTopics();
 
-    @Query("SELECT * FROM Topics WHERE TopicID = :topicID")
+    @Query("SELECT * FROM Topic WHERE TopicID = :topicID")
     Topics getTopic(int topicID);
 
-    @Query("Select topicID FROM Topics WHERE Topic = :topic")
+    @Query("Select topicID FROM Topic WHERE Topic = :topic")
     int getTopicID(String topic);
 
-    @Query("SELECT COUNT(*) FROM Topics WHERE Topic = :topic")
+    @Query("SELECT COUNT(*) FROM Topic WHERE Topic = :topic")
     int getCountByValue(String topic);
 
-    @Query("SELECT TopicID FROM Topics WHERE Topic = :topic")
+    @Query("SELECT TopicID FROM Topic WHERE Topic = :topic")
     int getTopicByValue(String topic);
 
     @Query("SELECT last_insert_rowid()")

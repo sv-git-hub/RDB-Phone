@@ -8,7 +8,7 @@ import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
-@Entity(tableName = "Sources")
+@Entity(tableName = "Source")
 public class Sources implements Parcelable{
 
     @PrimaryKey(autoGenerate = true)
@@ -19,19 +19,19 @@ public class Sources implements Parcelable{
     @ColumnInfo(name = "Title")
     private String title;
     @Nullable
-    @ColumnInfo(name = "Year", defaultValue = "")
+    @ColumnInfo(name = "Year")
     private int year;
-    @ColumnInfo(name = "Month", defaultValue = "")
+    @ColumnInfo(name = "Month")
     @Nullable
     private int month;
-    @ColumnInfo(name = "Day", defaultValue = "")
+    @ColumnInfo(name = "Day")
     @Nullable
     private int day;
-    @ColumnInfo(name = "Volume", defaultValue = "")
+    @ColumnInfo(name = "Volume")
     private String volume;
-    @ColumnInfo(name = "Edition", defaultValue = "")
+    @ColumnInfo(name = "Edition")
     private String edition;
-    @ColumnInfo(name = "Issue", defaultValue = "")
+    @ColumnInfo(name = "Issue")
     private String issue;
 
     public Sources(int sourceID, String sourceType, String title, int year, int month, int day, String volume, String edition, String issue){

@@ -15,19 +15,19 @@ public interface TermsDao {
     @Delete
     void deleteTerm(Terms term);
 
-    @Query("SELECT * FROM Terms")
+    @Query("SELECT * FROM Term")
     List<Terms> getTerms();
 
-    @Query("SELECT * FROM Terms WHERE TermID = :termID")
+    @Query("SELECT * FROM Term WHERE TermID = :termID")
     Terms getTerm(int termID);
 
-    @Query("SELECT TermID FROM Terms WHERE Term = :term")
+    @Query("SELECT TermID FROM Term WHERE Term = :term")
     int getTermByValue(String term);
 
     @Query("SELECT last_insert_rowid()")
     int lastTermsPKID();
 
-    @Query("SELECT COUNT(*) FROM Terms WHERE Term = :term")
+    @Query("SELECT COUNT(*) FROM Term WHERE Term = :term")
     int getCountByValue(String term);
 
     @RawQuery

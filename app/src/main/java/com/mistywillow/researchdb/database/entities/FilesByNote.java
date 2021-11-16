@@ -5,7 +5,7 @@ import androidx.room.Entity;
 import androidx.room.ForeignKey;
 import androidx.room.Index;
 
-@Entity(tableName = "Files_By_Note", primaryKeys = {"NoteID", "FileID"},foreignKeys = {
+@Entity(tableName = "File_By_Note", primaryKeys = {"NoteID", "FileID"},foreignKeys = {
         @ForeignKey(entity = Notes.class, parentColumns = "NoteID", childColumns = "NoteID"),
         @ForeignKey(entity = Files.class, parentColumns = "FileID", childColumns = "FileID")},
         indices = {@Index("NoteID"), @Index("FileID")})

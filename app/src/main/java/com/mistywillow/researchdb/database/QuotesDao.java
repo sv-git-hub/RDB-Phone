@@ -15,15 +15,15 @@ public interface QuotesDao {
     @Delete
     void deleteQuote(Quotes quote);
 
-    @Query("SELECT * FROM Quotes")
+    @Query("SELECT * FROM Quote")
     List<Quotes> getQuotes();
-    @Query("SELECT * FROM Quotes WHERE QuoteID = :quoteID")
+    @Query("SELECT * FROM Quote WHERE QuoteID = :quoteID")
     Quotes getQuote(int quoteID);
 
-    @Query("SELECT QuoteID FROM Quotes WHERE Quote = :quote")
+    @Query("SELECT QuoteID FROM Quote WHERE Quote = :quote")
     int getQuoteByValue(String quote);
 
-    @Query("SELECT COUNT(*) FROM Quotes WHERE quote = :quote")
+    @Query("SELECT COUNT(*) FROM Quote WHERE quote = :quote")
     int getCountByValue(String quote);
 
     @Query("SELECT last_insert_rowid()")

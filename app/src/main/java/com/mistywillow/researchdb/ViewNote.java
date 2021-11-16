@@ -21,6 +21,7 @@ import com.mistywillow.researchdb.database.entities.Files;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -28,7 +29,7 @@ import java.util.Objects;
 import static androidx.core.content.FileProvider.getUriForFile;
 
 public class ViewNote extends AppCompatActivity {
-    ResearchDatabase researchDatabase;
+    ResearchDatabase rdb;
     int nNoteID;
 
     List<String> noteDetails = new ArrayList<>();
@@ -102,17 +103,17 @@ public class ViewNote extends AppCompatActivity {
         nSource = n.getStringExtra("Source");
         nAuthors = n.getStringExtra("Authors");
 
-        researchDatabase = ResearchDatabase.getInstance(this, GlobalFilePathVariables.DATABASE);
+        rdb = ResearchDatabase.getInstance(this, GlobalFilePathVariables.DATABASE);
 
-        NoteDetails details = researchDatabase.getNotesDao().getNoteDetails(nNoteID);
+        NoteDetails details = rdb.getNotesDao().getNoteDetails(nNoteID);
         noteDetails.clear();
         noteDetails = loadAllNoteDetails(nType, nSummary, nSource, nAuthors, details);
         populateFields();
 
-        noteFiles = researchDatabase.getFilesByNoteDao().getFilesByNote(nNoteID);
+        noteFiles = rdb.getFilesByNoteDao().getFilesByNote(nNoteID);
         populateFileData(noteFiles);
 
-        fileBytes = researchDatabase.getFilesByNoteDao().getFileData(nNoteID);
+        fileBytes = rdb.getFilesByNoteDao().getFileData(nNoteID);
 
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
     }
@@ -177,14 +178,19 @@ public class ViewNote extends AppCompatActivity {
 
                 TableRow tablerow = (TableRow) v;
                 TextView sample = (TextView) tablerow.getChildAt(1);
+                TextView num = (TextView) tablerow.getChildAt(0);
+                int fID = Integer.parseInt(num.getText().toString());
                 String result = sample.getText().toString();
 
+                Files nFile = rdb.getFilesDao().getFile(fID);
+
                 MimeTypeMap myMime = MimeTypeMap.getSingleton();
-                String mimeType = myMime.getMimeTypeFromExtension(getFileExtension(result));
+                String mimeType = myMime.getMimeTypeFromExtension(getFileExtension(nFile.getFileName()));
+                //String mimeType = myMime.getMimeTypeFromExtension(getFileExtension(result));
+
 
                 checkFolderExists(this, "note_files");
 
-                //File filePaths = new File(getFilesDir().toString());
                 File filePaths = new File(getFilesDir().toString() + "/note_files/");
                 Log.d("File: filePaths", filePaths.getAbsolutePath());
 
@@ -192,11 +198,12 @@ public class ViewNote extends AppCompatActivity {
                 Log.d("Files: newFile", newFile.getAbsolutePath());
 
                 if(!newFile.exists()){
-                    buildFiles(filePaths);
+                    buildFile(filePaths, nFile);
+                    //buildFiles(filePaths);
                 }
 
                 Uri contentUri = getUriForFile(ViewNote.this, "com.mistywillow.fileprovider", newFile);
-                Log.d("FIle: contentUri", Objects.requireNonNull(contentUri.getPath()));
+                Log.d("File: contentUri", Objects.requireNonNull(contentUri.getPath()));
                 openFile(contentUri, mimeType);
             });
         }
@@ -212,19 +219,27 @@ public class ViewNote extends AppCompatActivity {
     }
 
     private void openFile(Uri uri, String mime){
+        Log.d("ViewNote:openFile", mime+":"+uri.toString());
         Intent intent = new Intent(Intent.ACTION_VIEW);
         intent.setDataAndType(uri,mime);
         intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
         startActivity(intent);
     }
 
+    private void buildFile(File fPath, Files file){
+        // added getBytes(StandardCharacterSets.UTF_8)
+        createFile(fPath.getAbsolutePath() + "/" + file.getFileName(), file.getFileData());
+    }
+
     private void buildFiles(File location){
+        Log.d("ViewNote:buildFiles", location.getAbsolutePath());
         int i = 0;
         for (Files f: noteFiles) {
+           Log.d("ViewNote:buildFiles",f.getFileName());
             createFile(location.getAbsolutePath() + "/" + f.getFileName(), fileBytes.get(i));
             i++;
         }
-    }
+}
 
     private void createFile(String fileName, byte[] fileBytes){
         FileOutputStream fos = null;

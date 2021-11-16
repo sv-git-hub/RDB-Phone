@@ -17,16 +17,16 @@ public interface QuestionsDao {
     @Delete
     void deleteQuestion(Questions question);
 
-    @Query("SELECT * FROM Questions ORDER BY Question")
+    @Query("SELECT * FROM Question ORDER BY Question")
     List<Questions> getQuestions();
 
-    @Query("SELECT * FROM Questions WHERE QuestionID = :questionID")
+    @Query("SELECT * FROM Question WHERE QuestionID = :questionID")
     Questions getQuestion(int questionID);
 
-    @Query("SELECT QuestionID FROM Questions WHERE Question = :question")
+    @Query("SELECT QuestionID FROM Question WHERE Question = :question")
     int getQuestionByValue(String question);
 
-    @Query("SELECT COUNT(*) FROM Questions WHERE question = :question")
+    @Query("SELECT COUNT(*) FROM Question WHERE question = :question")
     int getCountByValue(String question);
 
     @Query("SELECT last_insert_rowid()")

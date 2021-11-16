@@ -13,19 +13,22 @@ public interface FilesByNoteDao {
     @Insert
     void insert(FilesByNote filesByNote);
 
+    @Delete
+    void delete(FilesByNote filesByNote);
+
     @SuppressWarnings(RoomWarnings.CURSOR_MISMATCH)
-    @Query("SELECT f.FileID, f.FileName FROM Files AS f \n" +
-            "LEFT JOIN Files_By_Note AS fbn ON f.FileID=fbn.FileID \n" +
+    @Query("SELECT f.FileID, f.FileName FROM File AS f \n" +
+            "LEFT JOIN File_By_Note AS fbn ON f.FileID=fbn.FileID \n" +
             "WHERE fbn.NoteID=:noteID")
     List<Files> getFilesByNote(final int noteID);
 
     @Query("SELECT Notes.NoteID, SourceID, CommentID, QuestionID, QuoteID, TermID, TopicID, Deleted FROM Notes \n" +
-            "LEFT JOIN Files_By_Note ON Notes.NoteID=Files_By_Note.NoteID\n" +
-            "WHERE Files_By_Note.FileID=:fileID")
+            "LEFT JOIN File_By_Note ON Notes.NoteID=File_By_Note.NoteID\n" +
+            "WHERE File_By_Note.FileID=:fileID")
     List<Notes> getNotesByFile(final int fileID);
 
-    @Query("SELECT f.FileData FROM Files AS f \n" +
-            "LEFT JOIN Files_By_Note AS fbn ON f.FileID=fbn.FileID \n" +
+    @Query("SELECT f.FileData FROM File AS f \n" +
+            "LEFT JOIN File_By_Note AS fbn ON f.FileID=fbn.FileID \n" +
             "WHERE fbn.NoteID=:noteID")
     List<byte[]> getFileData(int noteID);
 
@@ -34,6 +37,6 @@ public interface FilesByNoteDao {
     List<NotesWithFiles> getNotesWithFiles();
 
     @Transaction
-    @Query("SELECT * FROM Files")
+    @Query("SELECT * FROM File")
     List<FilesWithNotes> getFilesWithNotes();
 }

@@ -12,14 +12,14 @@ import androidx.room.*;
 public class Notes {
 
     @PrimaryKey(autoGenerate = true)
+    @NonNull
     @ColumnInfo(name = "NoteID")
-    @NonNull
     private Integer noteID;
+    @NonNull
     @ColumnInfo(name = "SourceID")
-    @NonNull
     private Integer sourceID;
-    @ColumnInfo(name = "CommentID")
     @NonNull
+    @ColumnInfo(name = "CommentID")
     private Integer commentID;
     @ColumnInfo(name = "QuestionID")
     private Integer questionID;
@@ -27,8 +27,8 @@ public class Notes {
     private Integer quoteID;
     @ColumnInfo(name = "TermID")
     private Integer termID;
-    @ColumnInfo(name = "TopicID")
     @NonNull
+    @ColumnInfo(name = "TopicID")
     private Integer topicID;
     @ColumnInfo(name = "Deleted")
     private Integer deleted;

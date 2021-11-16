@@ -16,25 +16,25 @@ public interface SourcesDao {
     void deleteSource(Sources source);
 
     // GETS ALL SOURCES
-    @Query("SELECT * FROM Sources")
+    @Query("SELECT * FROM Source")
     List<Sources> getSources();
 
     // GETS INDIVIDUAL SOURCES
-    @Query("SELECT * FROM Sources WHERE SourceID == :sourceID")
+    @Query("SELECT * FROM Source WHERE SourceID == :sourceID")
     Sources getSource(int sourceID);
 
     // GETS SOURCES BY TITLE
-    @Query("SELECT * FROM Sources WHERE Title = :sourceTitle")
+    @Query("SELECT * FROM Source WHERE Title = :sourceTitle")
     List<Sources> getSourceByTitle(String sourceTitle);
 
-    @Query("SELECT SourceID FROM Sources WHERE Title = :sourceTitle")
+    @Query("SELECT SourceID FROM Source WHERE Title = :sourceTitle")
     int getSourceIDByTitle(String sourceTitle);
 
     // GETS ID OF NEW SOURCE ENTRY
     @Query("SELECT last_insert_rowid()")
     int lastSourcePKID();
 
-    @Query("SELECT COUNT(*) FROM Sources WHERE title = :sourceTitle")
+    @Query("SELECT COUNT(*) FROM Source WHERE title = :sourceTitle")
     int countByTitle(String sourceTitle);
 
     // SEARCH BASED UPON A CUSTOM TEXTVIEW ENTRY

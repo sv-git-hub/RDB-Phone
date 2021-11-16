@@ -19,9 +19,9 @@ public interface CommentsDao {
 //            "WHERE EXISTS (SELECT NoteID FROM Notes WHERE Comments.CommentID = Notes.CommentID and Notes.NoteID = :nid)")
 //    void update(long nid, String data);
 
-    @Query("SELECT * FROM Comments")
+    @Query("SELECT * FROM Comment")
     List<Comments> getComments();
-    @Query("SELECT * FROM Comments WHERE CommentID = :commentID")
+    @Query("SELECT * FROM Comment WHERE CommentID = :commentID")
     Comments getComment(int commentID);
     @Query("SELECT last_insert_rowid()")
     int lastCommentPKID();

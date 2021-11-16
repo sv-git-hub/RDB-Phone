@@ -2,14 +2,17 @@ package com.mistywillow.researchdb;
 
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.*;
-import com.mistywillow.researchdb.database.FilesByNoteDao_Impl;
 import com.mistywillow.researchdb.database.ResearchDatabase;
 import com.mistywillow.researchdb.database.entities.*;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
 import java.util.*;
 
 public class DBQueryTools {
@@ -170,6 +173,34 @@ public class DBQueryTools {
         }
         return new ArrayAdapter<>(context, android.R.layout.simple_list_item_1, orgSummaries);
     }
+    public static List<Files> captureNoteFiles(TableLayout table){
+        List<Files> noteFiles = new ArrayList<>();
+        int i = table.getChildCount();
+        if(i>1){
+            for (int itr = 1; itr<i; itr++) { // iterating through indexes
+                TableRow tr = (TableRow) table.getChildAt(itr);
+                TextView tv = (TextView) tr.getChildAt(1); // 1 is the file path position
+                File f = new File(tv.getText().toString());
+                String n = f.getName();
+
+                try {
+                    FileInputStream fis = new FileInputStream(f.getPath());
+                    ByteArrayOutputStream bos = new ByteArrayOutputStream();
+                    byte[] buf = new byte[1024];
+                    for (int read; (read = fis.read(buf)) != -1; ) {
+                        bos.write(buf, 0, read);
+                    }
+                    fis.close();
+
+                    noteFiles.add(new Files(0, n, bos.toByteArray()));
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    Log.d("Input File", e.toString());
+                }
+            }
+        }
+        return noteFiles;
+    }
 
         // METHODS TO CAPTURE NEW NOTE IDS
     public static Integer getCommentID(List<String> data){
@@ -208,9 +239,9 @@ public class DBQueryTools {
         return topID;}
 
         // METHODS TO MANAGE TABLE DATA ENTRY AND UPDATES EFFICIENTLY
-        private static void updateCurrentNoteIDs(Notes note){
-            rdb.getNotesDao().updateNote(note);
-        }
+    private static void updateCurrentNoteIDs(Notes note){
+        rdb.getNotesDao().updateNote(note);
+    }
     private static void updateQuestion(Notes thisNote, List<String> update){
         Questions questions = null;
         Questions deleteThis;
@@ -405,7 +436,8 @@ public class DBQueryTools {
 
 
 
-    public static Intent updateNote(Context context, Notes orgNoteTableIDs, List<String> original, List<String> update, int vNoteID){
+    public static Intent updateNote(Context context, Notes orgNoteTableIDs, List<String> original, List<String> update,
+                                    List<Files> orgFiles, List<Files> newFiles, int vNoteID){
         // NO SOURCE OR AUTHORS UPDATES. A NEW NOTE SHOULD BE REQUIRED.
 
         // TYPE; TITLE; YEAR; MONTH; DAY; VOLUME; EDITION; ISSUE
@@ -449,6 +481,8 @@ public class DBQueryTools {
         if(!valuesAreDifferent(original.get(Globals.TOPIC), update.get(Globals.TOPIC))){
             updateTopic(orgNoteTableIDs, update);
         }
+        // NOTEFILES
+        updateFiles(vNoteID, orgFiles, newFiles);
 
         Intent u = new Intent(context, ViewNote.class);
         u.putExtra("ID", vNoteID);
@@ -457,6 +491,51 @@ public class DBQueryTools {
         u.putExtra("Source", update.get(2));
         u.putExtra("Authors",update.get(3));
         return u;
+    }
+
+    public static void updateFiles(int id, List<Files> orgFiles, List<Files> newFiles){
+        try {
+            if (newFiles != null && orgFiles != null) {
+                // Add new files
+                for (Files nFile : newFiles) {
+                    boolean found = false;
+                    for (Files oFile : orgFiles) {
+                        if (oFile.toString().equals(nFile.toString())) {
+                            found = true;
+                            break;
+                        }
+                    }
+                    if (!found) {
+                        long add = rdb.getFilesDao().addFile(nFile);
+                        rdb.getFilesByNoteDao().insert(new FilesByNote(id,(int)add));
+                    }
+                }
+
+                // Delete Files
+                for (Files oFile : orgFiles) {
+                    boolean found = false;
+                    for (Files nFile : newFiles) {
+                        if (nFile.toString().equals(oFile.toString())) {
+                            found = true;
+                            break;
+                        }
+                    }
+                    if (!found) {
+                        rdb.getFilesByNoteDao().delete(new FilesByNote(id, oFile.getFileID()));
+                        rdb.getFilesDao().deleteFile(oFile);
+                    }
+                }
+            } else if (newFiles.size() > 0) {
+                for (Files f:newFiles) {
+                    long add = rdb.getFilesDao().addFile(f);
+                    rdb.getFilesByNoteDao().insert(new FilesByNote(id,(int)add));
+                }
+            }
+
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
     }
 
         // METHODS - OTHER

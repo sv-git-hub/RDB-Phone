@@ -7,7 +7,7 @@ import androidx.room.TypeConverters;
 
 import java.sql.Blob;
 
-@Entity(tableName = "Comments")
+@Entity(tableName = "Comment")
 public class Comments {
 
     @PrimaryKey(autoGenerate = true)
@@ -19,7 +19,7 @@ public class Comments {
     private String comment;
     @ColumnInfo(name = "Page")
     private String page;
-    @ColumnInfo(name = "TimeStamp")
+    @ColumnInfo(name = "TimeStamp", typeAffinity = ColumnInfo.UNSPECIFIED)
     private String timeStamp;
     @ColumnInfo(name = "Hyperlink")
     private String hyperlink;

@@ -52,17 +52,18 @@ public class BuildTableLayout extends AppCompatActivity{
         return row;
     }
 
-    public static Button setupFilesAddRowButton(Context context, TableLayout table){
-        Button btnAddRow = new Button(context);
+    public static TextView setupFilesAddRowButton(Context context, TableLayout table){
+        //Button btnAddRow = new Button(context);
+        TextView btnAddRow = new TextView(context);
         TableRow.LayoutParams trLayoutParams = new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.MATCH_PARENT);
         trLayoutParams.setMargins(3,3,3,3);
         btnAddRow.setBackgroundColor(Color.WHITE);
         btnAddRow.setLayoutParams(trLayoutParams);
-        btnAddRow.setText("+");
+        btnAddRow.setText(R.string.lbl_column_file_id);
         btnAddRow.setTypeface(Typeface.DEFAULT,Typeface.BOLD);
         btnAddRow.setGravity(Gravity.CENTER);
         btnAddRow.setPadding(5,5,5,5);
-        btnAddRow.setOnClickListener(v -> table.addView(setupFilesTableRow(context, table, "", "", false)));
+        //btnAddRow.setOnClickListener(v -> table.addView(setupFilesTableRow(context, table, "", "", false)));
         return btnAddRow;
     }
 

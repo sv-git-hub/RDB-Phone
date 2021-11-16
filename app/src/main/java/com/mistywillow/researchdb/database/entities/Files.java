@@ -6,9 +6,10 @@ import androidx.room.*;
 import com.mistywillow.researchdb.FileTypeConverter;
 
 import java.io.Serializable;
+import java.nio.charset.StandardCharsets;
 import java.sql.Blob;
 
-@Entity(tableName = "Files")
+@Entity(tableName = "File")
 public class Files implements Parcelable {
 
     @PrimaryKey(autoGenerate = true)
@@ -19,7 +20,7 @@ public class Files implements Parcelable {
     private String fileName;
 
     @TypeConverters(FileTypeConverter.class)
-    @ColumnInfo(name = "FileData", typeAffinity = ColumnInfo.TEXT)
+    @ColumnInfo(name = "FileData", typeAffinity = ColumnInfo.BLOB)
     private byte[] fileData;
 
     @SuppressWarnings(RoomWarnings.CURSOR_MISMATCH)
@@ -61,13 +62,11 @@ public class Files implements Parcelable {
         this.fileName = fileName;
     }
 
-    public byte[] getFileData() {
-        return fileData;
-    }
+    public byte[] getFileData() {return fileData;}
+    //public String getFileData() {return fileData;}
 
-    public void setFileData(byte[] fileData) {
-        this.fileData = fileData;
-    }
+    public void setFileData(byte[] fileData) {this.fileData = fileData;}
+    //public void setFileData(String fileData) {this.fileData = fileData;}
 
     @Override
     public int describeContents() {
@@ -78,6 +77,7 @@ public class Files implements Parcelable {
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeInt(fileID);
         dest.writeString(fileName);
+        // added getBytes(StandardCharsets.UTF_8)
         dest.writeByteArray(fileData);
     }
 }

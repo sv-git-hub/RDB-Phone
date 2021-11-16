@@ -16,9 +16,11 @@
             android:requestLegacyExternalStorage="true">
         <activity
                 android:name=".AddNote"
-                android:alwaysRetainTaskState="true">
+                android:alwaysRetainTaskState="true"
+                android:screenOrientation="portrait">
         </activity>
-        <activity android:name=".EditNote">
+        <activity android:name=".EditNote"
+                  android:screenOrientation="portrait">
         </activity>
         <activity
                 android:name=".AuthorPopup"
@@ -28,7 +30,8 @@
         <activity
                 android:name=".MainActivity"
                 android:launchMode="singleTop"
-                android:theme="@style/Theme.AppCompat.NoActionBar">
+                android:theme="@style/Theme.AppCompat.NoActionBar"
+                android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
@@ -37,7 +40,8 @@
         </activity>
         <activity
                 android:name=".ViewNote"
-                android:parentActivityName=".MainActivity">
+                android:parentActivityName=".MainActivity"
+                android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW"/>
 
