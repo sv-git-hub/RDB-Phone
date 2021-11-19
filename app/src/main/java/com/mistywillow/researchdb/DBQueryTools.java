@@ -173,30 +173,42 @@ public class DBQueryTools {
         }
         return new ArrayAdapter<>(context, android.R.layout.simple_list_item_1, orgSummaries);
     }
-    public static List<Files> captureNoteFiles(TableLayout table){
+
+    public static List<Files> captureNoteFiles(List<Files> curFiles, TableLayout table){
         List<Files> noteFiles = new ArrayList<>();
         int i = table.getChildCount();
         if(i>1){
             for (int itr = 1; itr<i; itr++) { // iterating through indexes
                 TableRow tr = (TableRow) table.getChildAt(itr);
+                /*TextView id = (TextView) tr.getChildAt(0);*/
                 TextView tv = (TextView) tr.getChildAt(1); // 1 is the file path position
-                File f = new File(tv.getText().toString());
-                String n = f.getName();
-
-                try {
-                    FileInputStream fis = new FileInputStream(f.getPath());
-                    ByteArrayOutputStream bos = new ByteArrayOutputStream();
-                    byte[] buf = new byte[1024];
-                    for (int read; (read = fis.read(buf)) != -1; ) {
-                        bos.write(buf, 0, read);
+                // Check if file exists by ID, if so, this is an update, add it to the new file list
+                if(curFiles != null && !tv.getText().toString().contains("/")){
+                    for (Files cur : curFiles){
+                        if(cur.getFileName().equals(tv.getText().toString())) {
+                            noteFiles.add(cur);
+                            //noteFiles.add(rdb.getFilesDao().getFile(cur.getFileID())); // add current files to keep
+                        }
                     }
-                    fis.close();
+                }else{
+                    File f = new File(tv.getText().toString());
+                    String n = f.getName();
+                    try {
+                        FileInputStream fis = new FileInputStream(f.getPath());
+                        ByteArrayOutputStream bos = new ByteArrayOutputStream();
+                        byte[] buf = new byte[1024];
+                        for (int read; (read = fis.read(buf)) != -1; ) {
+                            bos.write(buf, 0, read);
+                        }
+                        fis.close();
 
-                    noteFiles.add(new Files(0, n, bos.toByteArray()));
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    Log.d("Input File", e.toString());
+                        noteFiles.add(new Files(0, n, bos.toByteArray()));
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        Log.d("Input File", e.toString());
+                    }
                 }
+
             }
         }
         return noteFiles;
@@ -500,14 +512,14 @@ public class DBQueryTools {
                 for (Files nFile : newFiles) {
                     boolean found = false;
                     for (Files oFile : orgFiles) {
-                        if (oFile.toString().equals(nFile.toString())) {
-                            found = true;
+                        if (nFile.getFileID() == oFile.getFileID() && nFile.getFileName().equals(oFile.getFileName())) {
+                            found = true; // Do nothing
                             break;
                         }
                     }
                     if (!found) {
                         long add = rdb.getFilesDao().addFile(nFile);
-                        rdb.getFilesByNoteDao().insert(new FilesByNote(id,(int)add));
+                            rdb.getFilesByNoteDao().insert(new FilesByNote(id,(int)add));
                     }
                 }
 
@@ -515,7 +527,7 @@ public class DBQueryTools {
                 for (Files oFile : orgFiles) {
                     boolean found = false;
                     for (Files nFile : newFiles) {
-                        if (nFile.toString().equals(oFile.toString())) {
+                        if (nFile.getFileID() != 0 && oFile.getFileName().equals(nFile.getFileName())) {
                             found = true;
                             break;
                         }

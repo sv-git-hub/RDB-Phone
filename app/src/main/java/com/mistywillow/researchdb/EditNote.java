@@ -165,7 +165,7 @@ public class EditNote extends AppCompatActivity {
 
         }else if(item.getItemId() == R.id.update_note) {
             captureFieldsUponUpdate();
-            newNoteFiles = DBQueryTools.captureNoteFiles(tableLayoutFiles);
+            newNoteFiles = DBQueryTools.captureNoteFiles(viewNoteFiles, tableLayoutFiles);
             startActivity(DBQueryTools.updateNote(this, orgNoteTableIDs, viewNoteDetails, updatedNoteDetails,
                     viewNoteFiles, newNoteFiles, nid));
             Toast.makeText(this, "Update Note clicked!", Toast.LENGTH_SHORT).show();

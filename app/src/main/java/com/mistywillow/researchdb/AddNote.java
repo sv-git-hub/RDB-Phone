@@ -252,7 +252,7 @@ public class AddNote extends AppCompatActivity {
             }
 
             //List<Files> addFiles = captureNoteFiles();
-            List<Files> addFiles = DBQueryTools.captureNoteFiles(tableLayoutFiles);
+            List<Files> addFiles = DBQueryTools.captureNoteFiles(null, tableLayoutFiles);
             startActivity(DBQueryTools.addNewNote(this, newNoteIDs, addFiles));
 
         }else if(item.getItemId() == R.id.edit_note){
