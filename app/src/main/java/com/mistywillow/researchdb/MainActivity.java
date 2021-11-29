@@ -37,18 +37,21 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        setTheme(R.style.AppThemeLauncher);
         super.onCreate(savedInstanceState);
+        setTheme(R.style.AppThemeLauncher);
         setContentView(R.layout.activity_main);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         toolbar.setTitleTextColor(getColor(R.color.colorWhite));
         setSupportActionBar(toolbar);
+        //Toast.makeText(this, "support action bar", Toast.LENGTH_LONG).show();
 
         topic = findViewById(R.id.listTopic);
         question = findViewById(R.id.listQuestion);
         customSearch = findViewById(R.id.txtCustom);
         rListNotes = findViewById(R.id.listNotes);
+
+        rListNotes.setAdapter(null);
 
         if(!checkPermission())
             requestPermission();
@@ -187,6 +190,8 @@ public class MainActivity extends AppCompatActivity {
         super.onDestroy();
     }
 
+    /*https://stackoverflow.com/questions/36461730/how-to-delete-file-when-application-is-closed*/
+
     private void deleteNoteFiles() {
         boolean tf;
         File file = new File(getFilesDir() + "/note_files");
@@ -194,11 +199,12 @@ public class MainActivity extends AppCompatActivity {
             File[] files = file.listFiles();
             if (files != null) {
                 for (File f : files) {
-                    if (f.isDirectory()) {
+                    f.delete();
+                    /*if (f.isDirectory()) {
                         tf = f.delete();
                         if(tf)
                             Toast.makeText(this, f.getName() + " was deleted!", Toast.LENGTH_SHORT).show();
-                    }
+                    }*/
                 }
             }
         }
@@ -292,7 +298,6 @@ public class MainActivity extends AppCompatActivity {
 
     /** The following permissions check functionality was sourced from:
      * https://www.journaldev.com/10409/android-runtime-permissions-example
-     * @return
      */
     private boolean checkPermission() {
         int result = ContextCompat.checkSelfPermission(getApplicationContext(), INTERNET);

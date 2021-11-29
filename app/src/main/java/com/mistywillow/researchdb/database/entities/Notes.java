@@ -33,7 +33,7 @@ public class Notes {
     @ColumnInfo(name = "Deleted")
     private Integer deleted;
 
-    public Notes(Integer noteID, Integer sourceID, Integer commentID, Integer questionID, Integer quoteID, Integer termID, Integer topicID, Integer deleted){
+    public Notes(@NonNull Integer noteID, @NonNull Integer sourceID, @NonNull Integer commentID, Integer questionID, Integer quoteID, Integer termID, @NonNull Integer topicID, Integer deleted){
         this.noteID = noteID;
         this.sourceID = sourceID;
         this.commentID = commentID;
@@ -44,7 +44,8 @@ public class Notes {
         this.deleted = deleted;
     }
 
-    public int getNoteID() {
+    @NonNull
+    public Integer getNoteID() {
         return noteID;
     }
 
@@ -52,7 +53,8 @@ public class Notes {
         this.noteID = noteID;
     }
 
-    public int getSourceID() {
+    @NonNull
+    public Integer getSourceID() {
         return sourceID;
     }
 
@@ -60,7 +62,8 @@ public class Notes {
         this.sourceID = sourceID;
     }
 
-    public int getCommentID() {
+    @NonNull
+    public Integer getCommentID() {
         return commentID;
     }
 
@@ -68,7 +71,7 @@ public class Notes {
         this.commentID = commentID;
     }
 
-    public int getQuestionID() {
+    public Integer getQuestionID() {
         return questionID;
     }
 
@@ -76,7 +79,7 @@ public class Notes {
         this.questionID = questionID;
     }
 
-    public int getQuoteID() {
+    public Integer getQuoteID() {
         return quoteID;
     }
 
@@ -84,7 +87,7 @@ public class Notes {
         this.quoteID = quoteID;
     }
 
-    public int getTermID() {
+    public Integer getTermID() {
         return termID;
     }
 
@@ -92,7 +95,8 @@ public class Notes {
         this.termID = termID;
     }
 
-    public int getTopicID() {
+    @NonNull
+    public Integer getTopicID() {
         return topicID;
     }
 
@@ -100,7 +104,7 @@ public class Notes {
         this.topicID = topicID;
     }
 
-    public int getDeleted() {
+    public Integer getDeleted() {
         return deleted;
     }
 

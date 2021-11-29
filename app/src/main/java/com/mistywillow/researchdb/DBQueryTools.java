@@ -452,17 +452,6 @@ public class DBQueryTools {
                                     List<Files> orgFiles, List<Files> newFiles, int vNoteID){
         // NO SOURCE OR AUTHORS UPDATES. A NEW NOTE SHOULD BE REQUIRED.
 
-        // TYPE; TITLE; YEAR; MONTH; DAY; VOLUME; EDITION; ISSUE
-        /*if(!valuesAreDifferent(original.get(Globals.TYPE), update.get(Globals.TYPE)) ||
-                !valuesAreDifferent(original.get(Globals.YEAR), update.get(Globals.YEAR)) || !valuesAreDifferent(original.get(Globals.MONTH), update.get(Globals.MONTH)) ||
-                !valuesAreDifferent(original.get(Globals.DAY), update.get(Globals.DAY)) || !valuesAreDifferent(original.get(Globals.VOLUME), update.get(Globals.VOLUME)) ||
-                !valuesAreDifferent(original.get(Globals.EDITION), update.get(Globals.EDITION)) || !valuesAreDifferent(original.get(Globals.ISSUE), update.get(Globals.ISSUE))){
-            Sources src = new Sources(orgNoteTableIDs.getSourceID(), update.get(Globals.TYPE),update.get(Globals.SOURCE), Integer.parseInt(update.get(Globals.YEAR)),
-                    Integer.parseInt(update.get(Globals.MONTH)), Integer.parseInt(update.get(Globals.DAY)), update.get(Globals.VOLUME), update.get(Globals.EDITION),
-                    update.get(Globals.ISSUE));
-            rdb.getSourcesDao().updateSource(src);
-        }*/
-
         // SUMMARY; COMMENT; PAGE; TIMESTAMP; HYPERLINK
         if(!valuesAreDifferent(original.get(Globals.SUMMARY), update.get(Globals.SUMMARY)) || !valuesAreDifferent(original.get(Globals.COMMENT), update.get(Globals.COMMENT)) ||
                 !valuesAreDifferent(original.get(Globals.PAGE), update.get(Globals.PAGE)) || !valuesAreDifferent(original.get(Globals.TIMESTAMP), update.get(Globals.TIMESTAMP)) ||

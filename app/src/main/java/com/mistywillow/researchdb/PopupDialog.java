@@ -1,16 +1,12 @@
 package com.mistywillow.researchdb;
 
-import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.*;
 import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import com.mistywillow.researchdb.database.entities.Authors;
 import com.mistywillow.researchdb.database.entities.Sources;
 
 import java.util.List;

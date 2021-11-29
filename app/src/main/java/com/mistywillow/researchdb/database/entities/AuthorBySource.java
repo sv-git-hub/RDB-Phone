@@ -2,8 +2,6 @@ package com.mistywillow.researchdb.database.entities;
 
 // JOIN TABLE FOR AUTHORS AND SOURCES REQUIRING PRIMARY AND FOREIGN KEYS
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.ForeignKey;

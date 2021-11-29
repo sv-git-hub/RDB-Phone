@@ -5,7 +5,7 @@ import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
 @Entity(tableName = "Author")
-public class Authors{
+public class Authors {
 
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "AuthorID")    private int authorID;

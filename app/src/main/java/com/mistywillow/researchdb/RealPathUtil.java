@@ -5,11 +5,9 @@ import android.content.ContentUris;
 import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Environment;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
-import androidx.loader.content.CursorLoader;
 
 import java.io.File;
 
@@ -20,8 +18,8 @@ import java.io.File;
 public class RealPathUtil {
 
     public static String getRealPath(Context context, Uri fileUri) {
-        String realPath;
-        // SDK < API11
+        //String realPath;
+        /*// SDK < API11
         if (Build.VERSION.SDK_INT < 11) {
             realPath = RealPathUtil.getRealPathFromURI_BelowAPI11(context, fileUri);
         }
@@ -32,12 +30,12 @@ public class RealPathUtil {
         // SDK > 19 (Android 4.4) and up
         else {
             realPath = RealPathUtil.getRealPathFromURI_API19(context, fileUri);
-        }
-        return realPath;
+        }*/
+        return RealPathUtil.getRealPathFromURI_API19(context, fileUri);
     }
 
 
-    @SuppressLint("NewApi")
+/*    @SuppressLint("NewApi")
     public static String getRealPathFromURI_API11to18(Context context, Uri contentUri) {
         String[] proj = {MediaStore.Images.Media.DATA};
         String result = null;
@@ -52,9 +50,9 @@ public class RealPathUtil {
             cursor.close();
         }
         return result;
-    }
+    }*/
 
-    public static String getRealPathFromURI_BelowAPI11(Context context, Uri contentUri) {
+/*    public static String getRealPathFromURI_BelowAPI11(Context context, Uri contentUri) {
         String[] proj = {MediaStore.Images.Media.DATA};
         Cursor cursor = context.getContentResolver().query(contentUri, proj, null, null, null);
         int column_index = 0;
@@ -67,7 +65,7 @@ public class RealPathUtil {
             return result;
         }
         return result;
-    }
+    }*/
 
     /**
      * Get a file path from a Uri. This will get the the path for Storage Access
@@ -81,10 +79,12 @@ public class RealPathUtil {
     @SuppressLint("NewApi")
     public static String getRealPathFromURI_API19(final Context context, final Uri uri) {
 
-        final boolean isKitKat = Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT;
+        //final boolean isKitKat = true;
+        //final boolean isKitKat = Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT;
 
         // DocumentProvider
-        if (isKitKat && DocumentsContract.isDocumentUri(context, uri)) {
+        //if (isKitKat && DocumentsContract.isDocumentUri(context, uri)) {
+        if (DocumentsContract.isDocumentUri(context, uri)) {
             // ExternalStorageProvider
             if (isExternalStorageDocument(uri)) {
                 final String docId = DocumentsContract.getDocumentId(uri);
@@ -92,7 +92,8 @@ public class RealPathUtil {
                 final String type = split[0];
 
                 if ("primary".equalsIgnoreCase(type)) {
-                    return Environment.getExternalStorageDirectory() + "/" + split[1];
+                    return Environment.getExternalStorageState() + "/" + split[1];
+                    //return Environment.getExternalStorageDirectory() + "/" + split[1];
                 }
 
                 // TODO handle non-primary volumes
@@ -108,6 +109,7 @@ public class RealPathUtil {
 
                 String fileName = getFilePath(context, uri);
                 if (fileName != null) {
+                    //return Environment.getExternalStorageState() + "/Download/" + fileName;
                     return Environment.getExternalStorageDirectory().toString() + "/Download/" + fileName;
                 }
 
@@ -119,7 +121,7 @@ public class RealPathUtil {
                         return id;
                 }
 
-                final Uri contentUri = ContentUris.withAppendedId(Uri.parse("content://downloads/public_downloads"), Long.valueOf(id));
+                final Uri contentUri = ContentUris.withAppendedId(Uri.parse("content://downloads/public_downloads"), Long.parseLong(id));
                 return getDataColumn(context, contentUri, null, null);
 
             }

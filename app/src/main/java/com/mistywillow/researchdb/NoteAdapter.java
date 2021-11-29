@@ -8,8 +8,6 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-import com.mistywillow.researchdb.database.*;
-import com.mistywillow.researchdb.database.entities.Authors;
 
 
 import java.util.List;
