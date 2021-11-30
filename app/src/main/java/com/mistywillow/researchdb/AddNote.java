@@ -91,11 +91,6 @@ public class AddNote extends AppCompatActivity {
         resultLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
             if (result.getResultCode() == Activity.RESULT_OK && result.getData() != null){
                 Uri uri = result.getData().getData();
-                /*String str;
-                if(uri.getPath().contains(":"))
-                    str = uri.getPath().split(":")[1];
-                else
-                    str = uri.getPath();*/
                 String str = RealPathUtil.getRealPath(this, uri);
                 tableLayoutFiles.addView(BuildTableLayout.setupFilesTableRow(AddNote.this,tableLayoutFiles,"", str,false));
             }

@@ -105,7 +105,7 @@ public class DBQueryTools {
         return rdb.getSourcesDao().getSourceByTitle(sourceTitle);
     }
     public static ArrayAdapter<String> captureDBSourcesWithAuthors(Context context){
-        rdb = ResearchDatabase.getInstance(context, "Apologetic.db");
+        rdb = ResearchDatabase.getInstance(context, GlobalFilePathVariables.DATABASE);
         List<Sources> sources = rdb.getSourcesDao().getSources();
         List<String> orgSourceTitles = new ArrayList<>();
         for(Sources src : sources){
@@ -145,7 +145,7 @@ public class DBQueryTools {
         return new ArrayAdapter<>(context, android.R.layout.simple_list_item_1, orgSourceTitles);
     }
     public static ArrayAdapter<String> captureDBTopics(Context context){
-        rdb = ResearchDatabase.getInstance(context, "Apologetic.db");
+        rdb = ResearchDatabase.getInstance(context, GlobalFilePathVariables.DATABASE);
         List<Topics> topics = rdb.getTopicsDao().getTopics();
         List<String> orgTopics = new ArrayList<>();
         for(Topics t : topics){
@@ -155,7 +155,7 @@ public class DBQueryTools {
         //topic.setAdapter(topicsAdapter);
     }
     public static ArrayAdapter<String> captureDBQuestions(Context context){
-        rdb = ResearchDatabase.getInstance(context, "Apologetic.db");
+        rdb = ResearchDatabase.getInstance(context, GlobalFilePathVariables.DATABASE);
         List<Questions> questions = rdb.getQuestionsDao().getQuestions();
         List<String> orgQuestions = new ArrayList<>();
         for(Questions q : questions){
@@ -164,7 +164,7 @@ public class DBQueryTools {
         return new ArrayAdapter<>(context, android.R.layout.simple_list_item_1, orgQuestions);
     }
     public static ArrayAdapter<String> captureSummaries(Context context){
-        rdb = ResearchDatabase.getInstance(context, "Apologetic.db");
+        rdb = ResearchDatabase.getInstance(context, GlobalFilePathVariables.DATABASE);
         List<Comments> summaries = rdb.getCommentsDao().getComments();
         List<String> orgSummaries = new ArrayList<>();
         for(Comments c : summaries){
@@ -420,7 +420,7 @@ public class DBQueryTools {
             int del =0;
 
             // NOTES
-            Notes note = new Notes(noteID, srcID, cmtID, queID, quoID,terID, topID, del);
+            Notes note = new Notes(srcID, cmtID, queID, quoID,terID, topID, del);
             noteID = (int) rdb.getNotesDao().addNote(note);
             Sources tmpSource = rdb.getSourcesDao().getSource(srcID);
             Comments tmpComment = rdb.getCommentsDao().getComment(cmtID);

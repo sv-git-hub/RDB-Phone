@@ -43,6 +43,16 @@ public class Notes {
         this.topicID = topicID;
         this.deleted = deleted;
     }
+    @Ignore
+    public Notes(@NonNull Integer sourceID, @NonNull Integer commentID, Integer questionID, Integer quoteID, Integer termID, @NonNull Integer topicID, Integer deleted){
+        this.sourceID = sourceID;
+        this.commentID = commentID;
+        this.questionID = questionID;
+        this.quoteID = quoteID;
+        this.termID = termID;
+        this.topicID = topicID;
+        this.deleted = deleted;
+    }
 
     @NonNull
     public Integer getNoteID() {

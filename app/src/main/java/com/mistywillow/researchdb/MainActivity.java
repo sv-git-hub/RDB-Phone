@@ -61,7 +61,7 @@ public class MainActivity extends AppCompatActivity {
 
             // GET ASSETS
             //CopyAssets.copyAssets(this, "user_log", "userInfo.txt");
-            //CopyAssets.copyAssets(this, "databases", "Apologetic.db");
+            //CopyAssets.copyAssets(this, "databases", GlobalFilePathVariables.DATABASE);
 
             // MY DATABASE:
             researchDatabase = ResearchDatabase.getInstance(this, GlobalFilePathVariables.DATABASE);
