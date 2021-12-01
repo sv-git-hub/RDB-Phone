@@ -133,7 +133,7 @@ public class DBQueryTools {
         if(layout.equals("simple"))
             return new ArrayAdapter<>(context, android.R.layout.simple_list_item_1, orgSourceTypes);
         else
-            return new ArrayAdapter<>(context, R.layout.custom_type_spinner, orgSourceTypes);
+            return new ArrayAdapter<>(context, R.layout.custom_dropdown_list, orgSourceTypes);
     }
     public static ArrayAdapter<String> captureDBSources(Context context){
         rdb = ResearchDatabase.getInstance(context, GlobalFilePathVariables.DATABASE);
@@ -142,7 +142,7 @@ public class DBQueryTools {
         for(Sources s : sources){
             orgSourceTitles.add(s.getTitle());
         }
-        return new ArrayAdapter<>(context, android.R.layout.simple_list_item_1, orgSourceTitles);
+        return new ArrayAdapter<>(context, R.layout.custom_dropdown_list, orgSourceTitles);
     }
     public static ArrayAdapter<String> captureDBTopics(Context context){
         rdb = ResearchDatabase.getInstance(context, GlobalFilePathVariables.DATABASE);
@@ -151,7 +151,7 @@ public class DBQueryTools {
         for(Topics t : topics){
             orgTopics.add(t.getTopic());
         }
-        return new ArrayAdapter<>(context, android.R.layout.simple_list_item_1, orgTopics);
+        return new ArrayAdapter<>(context, R.layout.custom_dropdown_list, orgTopics);
         //topic.setAdapter(topicsAdapter);
     }
     public static ArrayAdapter<String> captureDBQuestions(Context context){
@@ -161,7 +161,7 @@ public class DBQueryTools {
         for(Questions q : questions){
             orgQuestions.add(q.getQuestion());
         }
-        return new ArrayAdapter<>(context, android.R.layout.simple_list_item_1, orgQuestions);
+        return new ArrayAdapter<>(context, R.layout.custom_drowdown_list_wrap, orgQuestions);
     }
     public static ArrayAdapter<String> captureSummaries(Context context){
         rdb = ResearchDatabase.getInstance(context, GlobalFilePathVariables.DATABASE);
@@ -171,7 +171,7 @@ public class DBQueryTools {
             if(!c.getSummary().isEmpty() && !orgSummaries.contains(c.getSummary().trim()))
                 orgSummaries.add(c.getSummary().trim());
         }
-        return new ArrayAdapter<>(context, android.R.layout.simple_list_item_1, orgSummaries);
+        return new ArrayAdapter<>(context, R.layout.custom_dropdown_list, orgSummaries);
     }
 
     public static List<Files> captureNoteFiles(List<Files> curFiles, TableLayout table){
