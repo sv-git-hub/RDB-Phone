@@ -1,0 +1,49 @@
+{
+  "formatVersion": 1,
+  "database": {
+    "version": 1,
+    "identityHash": "4959a6052d480c4fd80a4c0e4b4a3314",
+    "entities": [
+      {
+        "tableName": "MasterDatabaseList",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER, `databaseName` TEXT, PRIMARY KEY(`id`))",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "databaseName",
+            "columnName": "databaseName",
+            "affinity": "TEXT",
+            "notNull": false
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "id"
+          ],
+          "autoGenerate": false
+        },
+        "indices": [
+          {
+            "name": "index_MasterDatabaseList_databaseName",
+            "unique": true,
+            "columnNames": [
+              "databaseName"
+            ],
+            "createSql": "CREATE UNIQUE INDEX IF NOT EXISTS `index_MasterDatabaseList_databaseName` ON `${TABLE_NAME}` (`databaseName`)"
+          }
+        ],
+        "foreignKeys": []
+      }
+    ],
+    "views": [],
+    "setupQueries": [
+      "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '4959a6052d480c4fd80a4c0e4b4a3314')"
+    ]
+  }
+}
