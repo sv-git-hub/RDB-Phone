@@ -116,4 +116,16 @@
     <string name="video">Video</string>
     <string name="website">Website</string>
     <string name="other">Other</string>
+
+    <string name="firstInstall">firstInstall:=</string>
+    <string name="java">java:=</string>
+    <string name="android">android:=</string>
+    <string name="version">version:=</string>
+    <string name="de_fault">default:=</string>
+    <string name="database">database:=</string>
+    <string name="dbPath">dbPath:=</string>
+    <string name="prevDBPath">prevDBPath:=</string>
+    <string name="manualDOCX">manualDOCX:=</string>
+    <string name="manualPDF">manualPDF:=</string>
+    <string name="userLog">userLog:=</string>
 </resources>

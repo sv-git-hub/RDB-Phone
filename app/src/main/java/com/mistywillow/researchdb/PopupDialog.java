@@ -97,7 +97,7 @@ public class PopupDialog{
         inputMessage.setText(message);
         return popupInputDialogView;
     }
-    public static void AlertSelectAuthor(Context context, String title, String message, List<Sources> sources){
+    /*public static void AlertSelectAuthor(Context context, String title, String message, List<Sources> sources){
         // Create a AlertDialog Builder.
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
         // Set title, icon, can not cancel properties.
@@ -112,14 +112,14 @@ public class PopupDialog{
         // Create AlertDialog and show.
         final AlertDialog alertDialog = alertDialogBuilder.create();
         alertDialog.show();
-    }
+    }*/
 
-    private static View SelectAuthorTable(Context context, String message, List<Sources> sources){
+    /*private static View SelectAuthorTable(Context context, String message, List<Sources> sources){
         LayoutInflater layoutInflater = LayoutInflater.from(context);
         View popupSourcesDialog = layoutInflater.inflate(R.layout.popup_sources_dialog, null);
         RecyclerView listAuthors = popupSourcesDialog.findViewById(R.id.ListAuthors);
         listAuthors.setLayoutManager(new LinearLayoutManager(context));
         listAuthors.setAdapter(new PopupAdapter(context, sources, (PopupAdapter.IPopupRecycler) context));
         return popupSourcesDialog;
-    }
+    }*/
 }

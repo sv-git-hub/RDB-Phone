@@ -14,4 +14,17 @@
         <item>@string/website</item>
         <item>@string/other</item>
     </array>
+
+    <array name="user_log">
+        <item>@string/firstInstall</item>
+        <item>@string/java</item>
+        <item>@string/android</item>
+        <item>@string/version</item>
+        <item>@string/de_fault</item>
+        <item>@string/dbPath</item>
+        <item>@string/prevDBPath</item>
+        <item>@string/manualDOCX</item>
+        <item>@string/manualPDF</item>
+        <item>@string/userLog</item>
+    </array>
 </resources>

@@ -60,7 +60,7 @@ public class MainActivity extends AppCompatActivity {
         this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 
             // GET ASSETS
-            //CopyAssets.copyAssets(this, "user_log", "userInfo.txt");
+            CopyAssets.copyAssets(this, "user_log", "userInfo.txt");
             //CopyAssets.copyAssets(this, "databases", GlobalFilePathVariables.DATABASE);
 
             // MY DATABASE:
@@ -146,7 +146,7 @@ public class MainActivity extends AppCompatActivity {
     private void setupMenuOptionsNotAvailable() {
         mainMenu.findItem(R.id.clear).setEnabled(false);
         mainMenu.findItem(R.id.main_print).setEnabled(false);
-        mainMenu.findItem(R.id.edit_note).setEnabled(false);
+        mainMenu.findItem(R.id.edit_note).setEnabled(true);
         mainMenu.findItem(R.id.mark_for_delete).setEnabled(false);
         mainMenu.findItem(R.id.unMark_for_delete).setEnabled(false);
         mainMenu.findItem(R.id.permanently_delete).setEnabled(false);
@@ -166,7 +166,9 @@ public class MainActivity extends AppCompatActivity {
             startActivity(launchAdd);
 
         }else if(item.getItemId() == R.id.edit_note){
-            Toast.makeText(this, "Edit Note for Delete clicked!", Toast.LENGTH_SHORT).show();
+            String path = this.getFilesDir().getPath();
+            Toast.makeText(this, "Path: " + path, Toast.LENGTH_LONG).show();
+            //Toast.makeText(this, "Edit Note for Delete clicked!", Toast.LENGTH_SHORT).show();
         }else if(item.getItemId() == R.id.mark_for_delete) {
             Toast.makeText(this, "Mark Note for Delete clicked!", Toast.LENGTH_SHORT).show();
         }else if(item.getItemId() == R.id.unMark_for_delete) {
@@ -231,14 +233,14 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void completeSearch(Boolean all, String criteria){
-        captureCustomSearchNoteIDs("Sources", "SourceID", researchDatabase.getSourcesDao().customSearchSourcesTable(searchTable(all, criteria, "Sources", "SourceID", Collections.singletonList("Title"))));
-        captureCustomSearchNoteIDs("Comments", "CommentID", researchDatabase.getCommentsDao().customSearchCommentsTable(searchTable(all, criteria,"Comments", "CommentID", Arrays.asList("Summary", "Comment", "Page", "TimeStamp","Hyperlink"))));
-        captureCustomSearchNoteIDs("Questions", "QuestionID", researchDatabase.getQuestionsDao().customSearchQuestionsTable(searchTable(all, criteria, "Questions", "QuestionID", Collections.singletonList("Question"))));
-        captureCustomSearchNoteIDs("Quotes", "QuoteID", researchDatabase.getQuotesDao().customSearchQuotesTable(searchTable(all, criteria, "Quotes", "QuoteID", Collections.singletonList("Quote"))));
-        captureCustomSearchNoteIDs("Terms", "TermID", researchDatabase.getTermsDao().customSearchTermsTable(searchTable(all, criteria, "Terms", "TermID", Collections.singletonList("Term"))));
-        captureCustomSearchNoteIDs("Topics", "TopicID", researchDatabase.getTopicsDao().customSearchTopicsTable(searchTable(all, criteria, "Topics", "TopicID", Collections.singletonList("Topic"))));
-        captureCustomSearchNoteIDs("Files", "FileID", researchDatabase.getFilesDao().customSearchFilesTable(searchTable(all, criteria, "Files", "FileID", Collections.singletonList("FileName"))));
-        captureCustomSearchNoteIDs("Authors", "AuthorID", researchDatabase.getTopicsDao().customSearchTopicsTable(searchTable(all, criteria, "Authors", "AuthorID", Arrays.asList("FirstName", "MiddleName", "LastName", "Suffix"))));
+        captureCustomSearchNoteIDs("Source", "SourceID", researchDatabase.getSourcesDao().customSearchSourcesTable(searchTable(all, criteria, "Source", "SourceID", Collections.singletonList("Title"))));
+        captureCustomSearchNoteIDs("Comment", "CommentID", researchDatabase.getCommentsDao().customSearchCommentsTable(searchTable(all, criteria,"Comment", "CommentID", Arrays.asList("Summary", "Comment", "Page", "TimeStamp","Hyperlink"))));
+        captureCustomSearchNoteIDs("Question", "QuestionID", researchDatabase.getQuestionsDao().customSearchQuestionsTable(searchTable(all, criteria, "Question", "QuestionID", Collections.singletonList("Question"))));
+        captureCustomSearchNoteIDs("Quote", "QuoteID", researchDatabase.getQuotesDao().customSearchQuotesTable(searchTable(all, criteria, "Quote", "QuoteID", Collections.singletonList("Quote"))));
+        captureCustomSearchNoteIDs("Term", "TermID", researchDatabase.getTermsDao().customSearchTermsTable(searchTable(all, criteria, "Term", "TermID", Collections.singletonList("Term"))));
+        captureCustomSearchNoteIDs("Topic", "TopicID", researchDatabase.getTopicsDao().customSearchTopicsTable(searchTable(all, criteria, "Topic", "TopicID", Collections.singletonList("Topic"))));
+        captureCustomSearchNoteIDs("File", "FileID", researchDatabase.getFilesDao().customSearchFilesTable(searchTable(all, criteria, "File", "FileID", Collections.singletonList("FileName"))));
+        captureCustomSearchNoteIDs("Author", "AuthorID", researchDatabase.getTopicsDao().customSearchTopicsTable(searchTable(all, criteria, "Author", "AuthorID", Arrays.asList("FirstName", "MiddleName", "LastName", "Suffix"))));
     }
 
     private SimpleSQLiteQuery searchTable(boolean all, String criteria, String table, String tableID, List<String> columnNames){
@@ -250,9 +252,9 @@ public class MainActivity extends AppCompatActivity {
         List<Integer> temp = new ArrayList<>();
         String query;
         for(Integer id : tableList) {
-            if (table.equals("Files"))
-                query = "SELECT NoteID FROM " + table + "_By_Note WHERE " + tableID + " = " + id;
-            else if (table.equals("Authors"))
+            if (table.equals("File"))
+                query = "SELECT NoteID FROM " + "File_By_Note WHERE " + tableID + " = " + id;
+            else if (table.equals("Author"))
                 query = "SELECT NoteID FROM Notes AS n " +
                         "LEFT JOIN Author_By_Source AS s " +
                         "WHERE " + id + " = s.AuthorID AND s.SourceID = n.SourceID";

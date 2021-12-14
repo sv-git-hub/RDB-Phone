@@ -3,6 +3,7 @@ package com.mistywillow.researchdb.database;
 
 import android.content.Context;
 import androidx.room.*;
+import com.mistywillow.researchdb.UserLog;
 import com.mistywillow.researchdb.database.entities.*;
 
 @Database(entities = {AuthorBySource.class, Authors.class,  Comments.class, Files.class, FilesByNote.class,
