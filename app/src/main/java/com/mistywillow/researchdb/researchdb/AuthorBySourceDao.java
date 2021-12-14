@@ -1,11 +1,11 @@
-package com.mistywillow.researchdb.database;
+package com.mistywillow.researchdb.researchdb;
 
 import androidx.room.*;
 import com.mistywillow.researchdb.AuthorsWithSources;
 import com.mistywillow.researchdb.SourcesWithAuthors;
-import com.mistywillow.researchdb.database.entities.Authors;
-import com.mistywillow.researchdb.database.entities.AuthorBySource;
-import com.mistywillow.researchdb.database.entities.Sources;
+import com.mistywillow.researchdb.researchdb.entities.Authors;
+import com.mistywillow.researchdb.researchdb.entities.AuthorBySource;
+import com.mistywillow.researchdb.researchdb.entities.Sources;
 
 import java.util.List;
 

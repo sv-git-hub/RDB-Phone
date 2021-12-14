@@ -1,11 +1,6 @@
 package com.mistywillow.researchdb;
 
-import android.content.Context;
-import android.widget.Toast;
 import androidx.room.Dao;
-import androidx.room.RawQuery;
-import androidx.sqlite.db.SimpleSQLiteQuery;
-import com.mistywillow.researchdb.database.ResearchDatabase;
 
 @Dao
 public class SearchUpdateDatabase {

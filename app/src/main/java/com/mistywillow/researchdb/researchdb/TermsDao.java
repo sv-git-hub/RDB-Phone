@@ -1,8 +1,8 @@
-package com.mistywillow.researchdb.database;
+package com.mistywillow.researchdb.researchdb;
 
 import androidx.room.*;
 import androidx.sqlite.db.SupportSQLiteQuery;
-import com.mistywillow.researchdb.database.entities.Terms;
+import com.mistywillow.researchdb.researchdb.entities.Terms;
 
 import java.util.List;
 

@@ -17,13 +17,17 @@ import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.sqlite.db.SimpleSQLiteQuery;
-import com.mistywillow.researchdb.database.ResearchDatabase;
+import com.mistywillow.researchdb.databases.ResearchDatabase;
 import java.io.File;
 import java.util.*;
 
 import static android.Manifest.permission.*;
 
 public class MainActivity extends AppCompatActivity {
+    public static final String INTENT_EXTRA_DATABASEID = "database_id";
+    public static final String INTENT_EXTRA_DATABASENAME = "database_name";
+
+
     private AutoCompleteTextView topic;
     private AutoCompleteTextView question;
     private RecyclerView rListNotes;

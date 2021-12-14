@@ -13,8 +13,8 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import androidx.appcompat.widget.Toolbar;
-import com.mistywillow.researchdb.database.ResearchDatabase;
-import com.mistywillow.researchdb.database.entities.*;
+import com.mistywillow.researchdb.databases.ResearchDatabase;
+import com.mistywillow.researchdb.researchdb.entities.*;
 
 import java.util.ArrayList;
 import java.util.List;

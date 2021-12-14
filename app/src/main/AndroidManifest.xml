@@ -38,6 +38,9 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
+        <activity android:name=".MainActivityMaster">
+
+        </activity>
         <activity
                 android:name=".ViewNote"
                 android:parentActivityName=".MainActivity"

@@ -1,10 +1,9 @@
-package com.mistywillow.researchdb.database;
+package com.mistywillow.researchdb.researchdb;
 
 import androidx.room.*;
-import com.mistywillow.researchdb.FileTypeConverter;
 import com.mistywillow.researchdb.FilesWithNotes;
 import com.mistywillow.researchdb.NotesWithFiles;
-import com.mistywillow.researchdb.database.entities.*;
+import com.mistywillow.researchdb.researchdb.entities.*;
 
 import java.util.List;
 

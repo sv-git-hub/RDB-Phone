@@ -1,11 +1,8 @@
-package com.mistywillow.researchdb.database.entities;
+package com.mistywillow.researchdb.researchdb.entities;
 
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
-import androidx.room.TypeConverters;
-
-import java.sql.Blob;
 
 @Entity(tableName = "Comment")
 public class Comments {

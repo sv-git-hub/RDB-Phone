@@ -7,8 +7,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-import com.mistywillow.researchdb.database.entities.Questions;
-import com.mistywillow.researchdb.database.entities.Topics;
+import com.mistywillow.researchdb.researchdb.entities.Questions;
 
 import java.util.List;
 

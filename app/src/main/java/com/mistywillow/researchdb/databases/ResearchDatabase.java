@@ -1,10 +1,10 @@
-package com.mistywillow.researchdb.database;
+package com.mistywillow.researchdb.databases;
 
 
 import android.content.Context;
 import androidx.room.*;
-import com.mistywillow.researchdb.UserLog;
-import com.mistywillow.researchdb.database.entities.*;
+import com.mistywillow.researchdb.researchdb.*;
+import com.mistywillow.researchdb.researchdb.entities.*;
 
 @Database(entities = {AuthorBySource.class, Authors.class,  Comments.class, Files.class, FilesByNote.class,
         Notes.class, Questions.class, Quotes.class, Sources.class, Terms.class, Topics.class}, version = 1)

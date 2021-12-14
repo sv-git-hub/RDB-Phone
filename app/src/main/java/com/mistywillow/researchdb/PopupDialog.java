@@ -5,11 +5,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.*;
 import androidx.appcompat.app.AlertDialog;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import com.mistywillow.researchdb.database.entities.Sources;
-
-import java.util.List;
 
 public class PopupDialog{
 

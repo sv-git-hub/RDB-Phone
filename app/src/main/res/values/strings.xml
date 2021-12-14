@@ -1,6 +1,10 @@
 <resources>
     <string name="app_name">ResearchDB</string>
 
+    <!-- MAIN MASTER ACTIVITY -->
+    <string name="master_enter_db">"Enter a new database name here:"</string>
+    <string name="master_add_db">Add Database</string>
+    <string name="master_no_db_selected">NO DATABASE SELECTED</string>
 
     <!-- MENU and MENU ITEMS -->
     <string name="menu_title_file">File</string>

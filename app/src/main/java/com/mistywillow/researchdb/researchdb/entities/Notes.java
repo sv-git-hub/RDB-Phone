@@ -1,4 +1,4 @@
-package com.mistywillow.researchdb.database.entities;
+package com.mistywillow.researchdb.researchdb.entities;
 
 import androidx.annotation.NonNull;
 import androidx.room.*;

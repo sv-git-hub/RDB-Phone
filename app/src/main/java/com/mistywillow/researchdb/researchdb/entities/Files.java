@@ -1,13 +1,9 @@
-package com.mistywillow.researchdb.database.entities;
+package com.mistywillow.researchdb.researchdb.entities;
 
 import android.os.Parcel;
 import android.os.Parcelable;
 import androidx.room.*;
 import com.mistywillow.researchdb.FileTypeConverter;
-
-import java.io.Serializable;
-import java.nio.charset.StandardCharsets;
-import java.sql.Blob;
 
 @Entity(tableName = "File")
 public class Files implements Parcelable {

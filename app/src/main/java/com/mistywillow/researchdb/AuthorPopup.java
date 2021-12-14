@@ -3,16 +3,13 @@ package com.mistywillow.researchdb;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
 import android.widget.TextView;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import com.mistywillow.researchdb.database.entities.Sources;
+import com.mistywillow.researchdb.researchdb.entities.Sources;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class AuthorPopup extends AppCompatActivity implements PopupAdapter.IPopupRecycler {

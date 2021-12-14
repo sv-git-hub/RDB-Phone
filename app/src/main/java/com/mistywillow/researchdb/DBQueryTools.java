@@ -7,8 +7,8 @@ import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.*;
-import com.mistywillow.researchdb.database.ResearchDatabase;
-import com.mistywillow.researchdb.database.entities.*;
+import com.mistywillow.researchdb.databases.ResearchDatabase;
+import com.mistywillow.researchdb.researchdb.entities.*;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;

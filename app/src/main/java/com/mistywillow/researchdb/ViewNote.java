@@ -14,14 +14,13 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import androidx.appcompat.widget.Toolbar;
-import com.mistywillow.researchdb.database.*;
+import com.mistywillow.researchdb.databases.ResearchDatabase;
 import android.widget.*;
-import com.mistywillow.researchdb.database.entities.Files;
+import com.mistywillow.researchdb.researchdb.entities.Files;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;

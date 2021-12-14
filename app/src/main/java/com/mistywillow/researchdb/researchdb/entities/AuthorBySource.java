@@ -1,4 +1,4 @@
-package com.mistywillow.researchdb.database.entities;
+package com.mistywillow.researchdb.researchdb.entities;
 
 // JOIN TABLE FOR AUTHORS AND SOURCES REQUIRING PRIMARY AND FOREIGN KEYS
 

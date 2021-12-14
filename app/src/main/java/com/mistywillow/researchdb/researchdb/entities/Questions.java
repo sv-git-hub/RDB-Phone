@@ -1,8 +1,7 @@
-package com.mistywillow.researchdb.database.entities;
+package com.mistywillow.researchdb.researchdb.entities;
 
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
-import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
 @Entity(tableName = "Question")
