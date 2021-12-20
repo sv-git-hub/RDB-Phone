@@ -3,6 +3,7 @@ package com.mistywillow.researchdb;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.view.*;
@@ -24,9 +25,10 @@ import java.util.*;
 import static android.Manifest.permission.*;
 
 public class MainActivity extends AppCompatActivity {
-    public static final String INTENT_EXTRA_DATABASEID = "database_id";
-    public static final String INTENT_EXTRA_DATABASENAME = "database_name";
+    /*public static final String INTENT_EXTRA_DATABASEID = "database_id";
+    public static final String INTENT_EXTRA_DATABASENAME = "database_name";*/
 
+    SharedPreferences sharedPreferences;
 
     private AutoCompleteTextView topic;
     private AutoCompleteTextView question;
@@ -48,7 +50,8 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         toolbar.setTitleTextColor(getColor(R.color.colorWhite));
         setSupportActionBar(toolbar);
-        //Toast.makeText(this, "support action bar", Toast.LENGTH_LONG).show();
+
+        sharedPreferences = getSharedPreferences(Globals.SHARED_PREF_FILE, MODE_PRIVATE);
 
         topic = findViewById(R.id.listTopic);
         question = findViewById(R.id.listQuestion);
@@ -67,8 +70,13 @@ public class MainActivity extends AppCompatActivity {
             CopyAssets.copyAssets(this, "user_log", "userInfo.txt");
             //CopyAssets.copyAssets(this, "databases", GlobalFilePathVariables.DATABASE);
 
-            // MY DATABASE:
-            researchDatabase = ResearchDatabase.getInstance(this, GlobalFilePathVariables.DATABASE);
+        /**
+         * THE MAIN ACTIVITY MASTER SHOULD PASS VARIABLES TO THE DATABASE HERE TO OPEN THE EXISTING DB
+         */
+
+        // MY DATABASE:
+        //String temp = sharedPreferences.getString("database","");
+            researchDatabase = ResearchDatabase.getInstance(this, sharedPreferences.getString("database",""));
 
             // TOPIC LIST
             ArrayAdapter<String> topicsAdapter = DBQueryTools.captureDBTopics(this);

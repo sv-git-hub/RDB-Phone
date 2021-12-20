@@ -33,10 +33,10 @@ public abstract class ResearchDatabase extends RoomDatabase {
         if(INSTANCE == null){
                 synchronized (ResearchDatabase.class) {
                     INSTANCE = Room.databaseBuilder(context, ResearchDatabase.class, dbName)
-                            .createFromAsset("databases/" + dbName)
                             .allowMainThreadQueries()
                             .build();
                     //.addMigrations(MIGRATION_1_2, MIGRATION_2_3)
+                    //.createFromAsset("databases/" + dbName)
                 }
         }
         return INSTANCE;
