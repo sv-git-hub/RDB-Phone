@@ -156,7 +156,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setupMenuOptionsNotAvailable() {
-        mainMenu.findItem(R.id.clear).setEnabled(false);
+        mainMenu.findItem(R.id.clear).setEnabled(true);
         mainMenu.findItem(R.id.main_print).setEnabled(false);
         mainMenu.findItem(R.id.edit_note).setEnabled(true);
         mainMenu.findItem(R.id.mark_for_delete).setEnabled(false);
@@ -167,11 +167,14 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        if(item.getItemId() == R.id.clear) {
+        if (item.getItemId() == R.id.new_database){
+            Intent addDB = new Intent(getApplicationContext(), MainActivityMaster.class);
+            startActivity(addDB);
+
+        }else if(item.getItemId() == R.id.clear) {
             clearFields();
             mainMenu.findItem(R.id.clear).setEnabled(false);
             mainMenu.findItem(R.id.note_export).setEnabled(false);
-
 
         }else if(item.getItemId() == R.id.add_note) {
             Intent launchAdd = new Intent(this, AddNote.class);
@@ -204,7 +207,7 @@ public class MainActivity extends AppCompatActivity {
         super.onDestroy();
     }
 
-    /*https://stackoverflow.com/questions/36461730/how-to-delete-file-when-application-is-closed*/
+    /**https://stackoverflow.com/questions/36461730/how-to-delete-file-when-application-is-closed*/
 
     private void deleteNoteFiles() {
         boolean tf;
@@ -214,11 +217,6 @@ public class MainActivity extends AppCompatActivity {
             if (files != null) {
                 for (File f : files) {
                     f.delete();
-                    /*if (f.isDirectory()) {
-                        tf = f.delete();
-                        if(tf)
-                            Toast.makeText(this, f.getName() + " was deleted!", Toast.LENGTH_SHORT).show();
-                    }*/
                 }
             }
         }

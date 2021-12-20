@@ -11,9 +11,9 @@
                   android:title="@string/menu_title_database">
                 <menu>
                     <item android:id="@+id/new_database"
-                          android:title="@string/menu_title_new_database"/>
-                    <item android:id="@+id/open_database"
-                          android:title="@string/menu_title_open_database"/>
+                          android:title="@string/menu_title_open_create_database"/>
+                    <item android:id="@+id/delete_database"
+                          android:title="@string/menu_title_delete_database"/>
                     <item android:id="@+id/backup_database"
                           android:title="@string/menu_title_backup_database"/>
                 </menu>
@@ -62,8 +62,6 @@
                   android:title="@string/menu_title_review_notes_for_delete"/>
             <item android:id="@+id/permanently_delete"
                   android:title="@string/menu_title_permanently_delete_note"/>
-            <item android:id="@+id/delete_database"
-                  android:title="@string/menu_title_delete_database"/>
         </menu>
     </item>
 

@@ -17,8 +17,8 @@
     <string name="menu_title_print">Print</string>
     <string name="menu_title_close">Close</string>
 
-    <string name="menu_title_new_database">New Database</string>
-    <string name="menu_title_open_database">Open Database</string>
+    <string name="menu_title_open_create_database">Open/Create Database</string>
+    <string name="menu_title_delete_database">Delete Database</string>
     <string name="menu_title_backup_database">Backup Database</string>
 
     <string name="menu_title_note_import">Import</string>
@@ -35,7 +35,6 @@
     <string name="menu_title_unmark_note_for_delete">Unmark Note for Delete</string>
     <string name="menu_title_review_notes_for_delete">Review Notes for Delete</string>
     <string name="menu_title_permanently_delete_note">Permanently Delete Note</string>
-    <string name="menu_title_delete_database">Delete Database</string>
 
     <!-- HELP -->
     <string name="menu_title_manual">ResearchDB Manual</string>

@@ -2,6 +2,7 @@ package com.mistywillow.researchdb;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.view.*;
 import android.widget.*;

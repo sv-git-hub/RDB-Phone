@@ -17,6 +17,7 @@ import java.util.*;
 
 public class DBQueryTools {
 
+
     private static ResearchDatabase rdb = null;
 
     // METHODS PERTAINING TO AUTHORS
