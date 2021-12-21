@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              android:orientation="vertical"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              tools:context=".MainActivityMaster">
+    <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/master_enter_db" />
+    <EditText
+            android:id="@+id/database_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:autofillHints="@string/master_enter_db"
+            android:hint="@string/master_enter_db"
+            android:inputType="text"
+            android:text="">
+    </EditText>
+    <Button
+            android:id="@+id/addDatabase"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/master_add_db">
+    </Button>
+    <ListView
+            android:id="@+id/database_list"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+    </ListView>
+    <Button
+            android:id="@+id/useSelectedDatabase"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/master_no_db_selected"
+            android:clickable="false"
+    >
+    </Button>
+
+</LinearLayout>
