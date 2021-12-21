@@ -7,6 +7,35 @@
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
     </style>
+    
+    <!-- Master Info/instruction TextView -->
+    <style name="master_info">
+        <item name="android:textSize">12sp</item>
+        <item name="android:textColor">@color/colorDkGray</item>
+        <item name="android:background">@color/colorWhite</item>
+    </style>
+
+    <!-- Master Label TextView -->
+    <style name="master_label">
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@color/colorDkGray</item>
+        <item name="android:textStyle">bold|italic</item>
+    </style>
+
+    <style name="master_delete">
+        <item name="android:textSize">12sp</item>
+        <item name="android:textColor">@color/colorRed</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:background">@color/colorDkGray</item>
+    </style>
+
+    <style name="master_database">
+        <item name="android:textSize">12sp</item>
+        <item name="android:textColor">@color/colorWhite</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:background">@color/colorDkGray</item>
+    </style>
+
 
     <style name="AppThemeLauncher" parent="Theme.AppCompat.Light.NoActionBar">
 
@@ -20,6 +49,12 @@
     <style name="MySpinnerTheme"
            parent="@android:style/Widget.TextView.SpinnerItem">
         <item name="android:textSize">12sp</item>
+    </style>
+
+    <style name="Divider">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">1dp</item>
+        <item name="android:background">@color/colorBlack</item>
     </style>
 
 </resources>

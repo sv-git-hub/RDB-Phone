@@ -5,6 +5,9 @@
     <color name="colorAccent">#D81B60</color>
     <color name="colorBlack">#000000</color>
     <color name="colorWhite">#FFFFFF</color>
-    <color name="colorGray">#DEDEDE</color>
+    <color name="colorLtGray">#DEDEDE</color>
+    <color name="colorGray">#B8BFC2</color>
+    <color name="colorMedGray">#8E9598</color>
     <color name="colorDkGray">#707078</color>
+    <color name="colorRed">#CE0018</color>
 </resources>

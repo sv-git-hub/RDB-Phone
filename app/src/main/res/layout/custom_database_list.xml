@@ -18,11 +18,12 @@
             android:layout_height="match_parent"
             android:layout_width="match_parent"
             android:padding="2dp"
+            android:background="@color/colorGray"
             android:id="@+id/innerConstraintLayout">
 
         <TextView
                 android:id="@+id/x_delete"
-                android:layout_width="wrap_content"
+                android:layout_width="20dp"
                 android:layout_height="wrap_content"
                 android:text="@string/master_delete"
                 android:padding="2dp"
@@ -45,7 +46,8 @@
                 app:layout_constraintStart_toEndOf="@id/x_delete"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                android:layout_marginStart="5dp"/>
+                android:layout_marginStart="5dp"
+                android:background="@color/colorDkGray"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>

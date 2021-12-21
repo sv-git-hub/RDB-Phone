@@ -20,7 +20,8 @@
         <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_height="match_parent"
                 android:layout_width="match_parent"
-                android:padding="5dp" android:id="@+id/innerConstraintLayout">
+                android:padding="5dp"
+                android:id="@+id/innerConstraintLayout">
 
             <TextView
                     android:text="Note Source Type"

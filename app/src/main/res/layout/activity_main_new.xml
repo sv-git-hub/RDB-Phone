@@ -7,7 +7,7 @@
         android:layout_height="match_parent"
         android:orientation="vertical"
         tools:context=".MainActivityMaster"
-        android:background="@color/colorPrimary">
+        android:background="@color/colorDkGray">
     <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -19,7 +19,38 @@
             android:layout_marginStart="8dp"
             android:layout_marginEnd="8dp"
             android:layout_marginBottom="8dp"
-            android:background="@color/colorGray">
+            android:background="@color/colorLtGray">
+
+        <ImageView
+                android:id="@+id/rdb_icon"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                app:srcCompat="@drawable/icon"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/appName"
+                android:layout_marginTop="8dp"
+                android:layout_marginStart="8dp"
+                tools:layout_editor_absoluteX="378dp"/>
+
+        <TextView
+                android:id="@+id/appName"
+                android:layout_width="0dp"
+                  android:layout_height="40dp"
+                  android:text="@string/app_name"
+                  android:textSize="24sp"
+                android:gravity="center|left"
+                  android:textColor="@color/colorDkGray"
+                  android:textStyle="bold|italic"
+                  app:layout_constraintTop_toTopOf="parent"
+                  app:layout_constraintStart_toEndOf="@id/rdb_icon"
+                  app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginTop="8dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+        />
+
+
     <TextView
             android:id="@+id/database_instructions"
             android:layout_width="match_parent"
@@ -27,7 +58,7 @@
             android:text="@string/menu_database_instructions"
             style="@style/master_info"
             android:padding="5dp"
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/rdb_icon"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             android:layout_marginTop="8dp"
@@ -70,7 +101,7 @@
             android:layout_height="25dp"
             android:text=""
             android:inputType="text"
-            android:textSize="12dp"
+            android:textSize="12sp"
             android:padding="5dp"
             android:imeOptions="actionDone"
             android:cursorVisible="true"
@@ -118,7 +149,7 @@
             android:layout_marginTop="16dp"
             android:layout_marginStart="8dp"
             android:layout_marginEnd="8dp"
-            android:background="@color/colorGray"/>
+            android:background="@color/colorLtGray"/>
 
     <TextView
             android:id="@+id/how_to_import_database"
@@ -134,7 +165,7 @@
             android:layout_marginTop="8dp"
             android:layout_marginStart="8dp"
             android:layout_marginEnd="8dp"
-            android:background="@color/colorGray"
+            android:background="@color/colorLtGray"
             app:layout_constraintHorizontal_bias="1.0"/>
 
     <Button
@@ -171,7 +202,7 @@
             android:layout_marginTop="16dp"
             android:layout_marginStart="8dp"
             android:layout_marginEnd="8dp"
-            android:background="@color/colorGray"/>
+            android:background="@color/colorLtGray"/>
 
     <TextView
             android:id="@+id/how_to_select_database"
@@ -187,7 +218,7 @@
             android:layout_marginTop="8dp"
             android:layout_marginStart="8dp"
             android:layout_marginEnd="8dp"
-            android:background="@color/colorGray"
+            android:background="@color/colorLtGray"
             app:layout_constraintHorizontal_bias="1.0"/>
 
     <Button
@@ -216,6 +247,6 @@
             android:layout_marginBottom="8dp"
     android:background="@color/colorWhite">
     </ListView>
-</androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
