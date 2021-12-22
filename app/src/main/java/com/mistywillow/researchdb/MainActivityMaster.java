@@ -1,17 +1,26 @@
 package com.mistywillow.researchdb;
 
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
+import android.os.Build;
 import android.os.Handler;
 import android.view.View;
 import android.widget.*;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.cursoradapter.widget.SimpleCursorAdapter;
 import com.mistywillow.researchdb.databases.MasterDatabase;
 import com.mistywillow.researchdb.masterdb.entity.MasterDatabaseList;
+
+import static android.Manifest.permission.*;
+import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
 
 public class MainActivityMaster extends AppCompatActivity {
 
@@ -28,13 +37,19 @@ public class MainActivityMaster extends AppCompatActivity {
     long mSelectedDatabaseId = 0;
     String mSelectedDatabaseName = "";
 
+    private static final int PERMISSION_REQUEST_CODE = 200;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_new);
 
+        if(!checkPermission())
+            requestPermission();
+
         sharedPreferences = getSharedPreferences(Globals.SHARED_PREF_FILE, MODE_PRIVATE);
+        CopyAssets.copyAssets(this, "databases", "Apologetic.db");
 
         mDBToAdd = this.findViewById(R.id.database_name);
         mAddDB = this.findViewById(R.id.addDatabase);
@@ -184,5 +199,73 @@ public class MainActivityMaster extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
         mCsr.close();
+    }
+
+    /** The following permissions check functionality was sourced from:
+     * https://www.journaldev.com/10409/android-runtime-permissions-example
+     */
+    private boolean checkPermission() {
+        int result = ContextCompat.checkSelfPermission(getApplicationContext(), INTERNET);
+        int result1 = ContextCompat.checkSelfPermission(getApplicationContext(), READ_EXTERNAL_STORAGE);
+        int result2 = ContextCompat.checkSelfPermission(getApplicationContext(), WRITE_EXTERNAL_STORAGE);
+
+        return result == PackageManager.PERMISSION_GRANTED && result1 == PackageManager.PERMISSION_GRANTED && result2 == PackageManager.PERMISSION_GRANTED;
+    }
+
+    private void requestPermission() {
+
+        ActivityCompat.requestPermissions(this, new String[]{INTERNET, READ_EXTERNAL_STORAGE, WRITE_EXTERNAL_STORAGE}, PERMISSION_REQUEST_CODE);
+
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        switch (requestCode) {
+            case PERMISSION_REQUEST_CODE:
+                if (grantResults.length > 0) {
+
+                    boolean internetAccepted = grantResults[0] == PackageManager.PERMISSION_GRANTED;
+                    boolean readAccepted = grantResults[1] == PackageManager.PERMISSION_GRANTED;
+                    boolean writeAccepted = grantResults[1] == PackageManager.PERMISSION_GRANTED;
+
+                    if (internetAccepted && readAccepted && writeAccepted)
+                        Toast.makeText(this, "Permission Granted: Internet, Read and Write.", Toast.LENGTH_LONG).show();
+                    else {
+
+                        Toast.makeText(this, "Permission Denied: Internet, Read and Write.", Toast.LENGTH_LONG).show();
+
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                            if (shouldShowRequestPermissionRationale(ACCESS_FINE_LOCATION)) {
+                                showMessageOKCancel("You need to allow access to both the permissions",
+                                        new DialogInterface.OnClickListener() {
+                                            @Override
+                                            public void onClick(DialogInterface dialog, int which) {
+                                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                                                    requestPermissions(new String[]{INTERNET, READ_EXTERNAL_STORAGE, WRITE_EXTERNAL_STORAGE},
+                                                            PERMISSION_REQUEST_CODE);
+                                                }
+                                            }
+                                        });
+                                return;
+                            }
+                        }
+
+                    }
+                }
+
+
+                break;
+        }
+    }
+
+
+    private void showMessageOKCancel(String message, DialogInterface.OnClickListener okListener) {
+        new AlertDialog.Builder(MainActivityMaster.this)
+                .setMessage(message)
+                .setPositiveButton("OK", okListener)
+                .setNegativeButton("Cancel", null)
+                .create()
+                .show();
     }
 }
