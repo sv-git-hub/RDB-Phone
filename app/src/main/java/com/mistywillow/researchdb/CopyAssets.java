@@ -33,7 +33,6 @@ public class CopyAssets {
                         out = new FileOutputStream(checkForFile);
                         copyFile(in, out);
 
-
                     } catch (IOException e) {
                         Log.e("tag", "Failed to copy asset file: " + filename, e);
                     } finally {
@@ -42,7 +41,7 @@ public class CopyAssets {
                                 in.close();
                                 in = null;
                             } catch (IOException e) {
-                                Log.e("CopyAssests", "Failed to close.");
+                                Log.e("CopyAssets", "Failed to close.");
                             }
                         }
                         if (out != null) {
@@ -51,7 +50,7 @@ public class CopyAssets {
                                 out.close();
                                 out = null;
                             } catch (IOException e) {
-                                Log.e("CopyAssests", "Failed to flush and close.");
+                                Log.e("CopyAssets", "Failed to flush and close.");
                             }
                         }
                     }
@@ -66,4 +65,5 @@ public class CopyAssets {
         while((read = in.read(buffer)) != -1){
             out.write(buffer, 0, read);
         }
-    }}
+    }
+}

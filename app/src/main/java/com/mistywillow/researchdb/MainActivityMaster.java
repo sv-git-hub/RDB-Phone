@@ -1,23 +1,29 @@
 package com.mistywillow.researchdb;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
+import android.net.Uri;
 import android.os.Build;
-import android.os.Handler;
+import android.util.Log;
 import android.view.View;
 import android.widget.*;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
-import androidx.cursoradapter.widget.SimpleCursorAdapter;
 import com.mistywillow.researchdb.databases.MasterDatabase;
 import com.mistywillow.researchdb.masterdb.entity.MasterDatabaseList;
+
+import java.io.*;
 
 import static android.Manifest.permission.*;
 import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
@@ -27,11 +33,12 @@ public class MainActivityMaster extends AppCompatActivity {
     SharedPreferences sharedPreferences;
     SharedPreferences.Editor settings;
 
+    ActivityResultLauncher<Intent> resultLauncher;
+
     MasterDatabase masterDB;
     EditText mDBToAdd;
-    Button mAddDB,mUseSelectedDatabase;
+    Button mAddDB,mUseSelectedDatabase, mImportDB;
     ListView mDatabaseList;
-    SimpleCursorAdapter mSCA;
     MDBCursorAdapter mdbCA;
     Cursor mCsr;
     long mSelectedDatabaseId = 0;
@@ -54,40 +61,66 @@ public class MainActivityMaster extends AppCompatActivity {
         mDBToAdd = this.findViewById(R.id.database_name);
         mAddDB = this.findViewById(R.id.addDatabase);
         mUseSelectedDatabase = this.findViewById(R.id.useSelectedDatabase);
+        mImportDB = this.findViewById(R.id.importDatabase);
         mDatabaseList = this.findViewById(R.id.database_list);
         masterDB = MasterDatabase.getInstance(this);
 
 
         setUpAddDBButton();
+        setupImportDBButton();
         setUpUseSelectedDatabaseButton();
         setOrRefreshDatabaseList();
-    }
 
-    private void setUpAddDBButton() {
-        mAddDB.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (mDBToAdd.getText().toString().length() > 0) {
-                    if (masterDB.getMasterDao().insert(new MasterDatabaseList(appendDB(mDBToAdd.getText().toString()))) > 0) {
-                        mDBToAdd.setText("");
-                        setOrRefreshDatabaseList();
-                    }
+        resultLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
+            if (result.getResultCode() == Activity.RESULT_OK && result.getData() != null){
+                Uri uri = result.getData().getData();
+                String sourcePath = RealPathUtil.getRealPath(this, uri);
+                String strDBName = sourcePath.substring(sourcePath.lastIndexOf("/")+1);
+                String destinationPath = this.getDatabasePath(strDBName).getPath();
+
+                try {
+                    InputStream source = new FileInputStream(sourcePath);
+                    OutputStream destination = new FileOutputStream(destinationPath);
+                    DatabaseManager.copyDatabase(source, destination);
+                    addDatabaseToList(strDBName);
+                }catch (FileNotFoundException f){
+                    Log.e("Import DB Error", f.toString());
                 }
             }
         });
     }
-    private void setUpUseSelectedDatabaseButton() {
-        mUseSelectedDatabase.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (mSelectedDatabaseId > 0) {
-                    startChecks();
 
-                    Intent intent = new Intent(view.getContext(),MainActivity.class); // <- Updated from UseSelectDatabase
-                    /*intent.putExtra(MainActivity.INTENT_EXTRA_DATABASEID, mSelectedDatabaseId);
-                    intent.putExtra(MainActivity.INTENT_EXTRA_DATABASENAME,mSelectedDatabaseName);*/
-                    startActivity(intent);
-                }
+    private void setUpAddDBButton() {
+        mAddDB.setOnClickListener(view -> {
+            if (mDBToAdd.getText().toString().length() > 0) {
+                addDatabaseToList(mDBToAdd.getText().toString());
+            }
+        });
+    }
+
+    private void addDatabaseToList(String dbName){
+        if (masterDB.getMasterDao().insert(new MasterDatabaseList(dbName)) > 0) {
+            mDBToAdd.setText("");
+            setOrRefreshDatabaseList();
+        }
+    }
+
+    private void setupImportDBButton(){
+        mImportDB.setOnClickListener(v -> {
+            Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+            intent.setType("*/*");
+            resultLauncher.launch(intent);
+        });
+    }
+    private void setUpUseSelectedDatabaseButton() {
+        mUseSelectedDatabase.setOnClickListener(view -> {
+            if (mSelectedDatabaseId > 0) {
+                startChecks();
+
+                Intent intent = new Intent(view.getContext(),MainActivity.class); // <- Updated from UseSelectDatabase
+                /*intent.putExtra(MainActivity.INTENT_EXTRA_DATABASEID, mSelectedDatabaseId);
+                intent.putExtra(MainActivity.INTENT_EXTRA_DATABASENAME,mSelectedDatabaseName);*/
+                startActivity(intent);
             }
         });
     }
@@ -130,36 +163,22 @@ public class MainActivityMaster extends AppCompatActivity {
             mdbCA = new MDBCursorAdapter(this, mCsr,0);
             mDatabaseList.setAdapter(mdbCA);
 
-            mDatabaseList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                /* Handle Clicking on an Item (i.e. prepare UseSelected Button) */
-                @SuppressLint("Range")
-                @Override
-                public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                    mSelectedDatabaseId = l;
-                    if (l > 0) {
-                        mSelectedDatabaseName = mCsr.getString(mCsr.getColumnIndex(MasterDatabaseList.COL_DATABASE_NAME));
-                        mUseSelectedDatabase.setText(mSelectedDatabaseName);
-                        mUseSelectedDatabase.setClickable(true);
-                    } else {
-                        mUseSelectedDatabase.setText(R.string.master_no_db_selected);
-                        mUseSelectedDatabase.setClickable(false);
-                    }
+            /* Handle Clicking on an Item (i.e. prepare UseSelected Button) */
+            mDatabaseList.setOnItemClickListener((adapterView, view, i, l) -> {
+                mSelectedDatabaseId = l;
+                if (l > 0) {
+                    mSelectedDatabaseName = mCsr.getString(mCsr.getColumnIndex(MasterDatabaseList.COL_DATABASE_NAME));
+                    mUseSelectedDatabase.setText(mSelectedDatabaseName);
+                    mUseSelectedDatabase.setClickable(true);
+                } else {
+                    mUseSelectedDatabase.setText(R.string.master_no_db_selected);
+                    mUseSelectedDatabase.setClickable(false);
                 }
             });
         } else {
             mdbCA.swapCursor(mCsr);
             //mSCA.swapCursor(mCsr);
         }
-    }
-
-    private String appendDB(String dbName){
-        int len = dbName.length();
-        if (!dbName.substring(len-3, len-1).toLowerCase().equals(".db"))
-            return dbName+".db";
-        else{
-            return dbName.replace(".DB", ".db");
-        }
-
     }
 
     private void startChecks(){
