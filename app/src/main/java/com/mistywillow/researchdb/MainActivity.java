@@ -17,8 +17,6 @@ import java.io.File;
 import java.util.*;
 
 public class MainActivity extends AppCompatActivity {
-    /*public static final String INTENT_EXTRA_DATABASEID = "database_id";
-    public static final String INTENT_EXTRA_DATABASENAME = "database_name";*/
 
     SharedPreferences sharedPreferences;
 

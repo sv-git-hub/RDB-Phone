@@ -30,7 +30,6 @@ public class EditNote extends AppCompatActivity {
     private List<String> updatedNoteDetails;
 
     private List<Files> viewNoteFiles;
-    private List<Files> newNoteFiles;
 
     private int nid;
 
@@ -98,7 +97,7 @@ public class EditNote extends AppCompatActivity {
             if (result.getResultCode() == Activity.RESULT_OK && result.getData() != null){
                 Uri uri = result.getData().getData();
                 String str = RealPathUtil.getRealPath(this, uri);
-                tableLayoutFiles.addView(BuildTableLayout.setupFilesTableRow(EditNote.this,tableLayoutFiles,"", str,false));
+                tableLayoutFiles.addView(BuildTableLayout.setupFilesTableRow(EditNote.this,tableLayoutFiles, str,false));
             }
         });
 
@@ -126,14 +125,11 @@ public class EditNote extends AppCompatActivity {
     }
 
     private void setupOnClickActions() {
-        btnAddFile.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-                intent.setType("*/*");
-                resultLauncher.launch(intent);
+        btnAddFile.setOnClickListener(v -> {
+            Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+            intent.setType("*/*");
+            resultLauncher.launch(intent);
 
-            }
         });
 
         sourceTitle.setOnFocusChangeListener((v, hasFocus) -> {
@@ -164,7 +160,7 @@ public class EditNote extends AppCompatActivity {
 
         }else if(item.getItemId() == R.id.update_note) {
             captureFieldsUponUpdate();
-            newNoteFiles = DBQueryTools.captureNoteFiles(viewNoteFiles, tableLayoutFiles);
+            List<Files> newNoteFiles = DBQueryTools.captureNoteFiles(viewNoteFiles, tableLayoutFiles);
             startActivity(DBQueryTools.updateNote(this, orgNoteTableIDs, viewNoteDetails, updatedNoteDetails,
                     viewNoteFiles, newNoteFiles, nid));
             Toast.makeText(this, "Update Note clicked!", Toast.LENGTH_SHORT).show();
@@ -195,11 +191,6 @@ public class EditNote extends AppCompatActivity {
 
     // CUSTOM METHODS
     private void loadAutoCompleteTextViews(){
-        /*ArrayAdapter<String> sourceTypeAdapter = DBQueryTools.captureSourceTypes(this, "simple");
-        sourceType.setThreshold(1);
-        sourceType.setInputType(0);
-        sourceType.setAdapter(sourceTypeAdapter);*/
-
         ArrayAdapter<String> summaryAdapter = DBQueryTools.captureSummaries(this);
         summary.setThreshold(1);
         summary.setAdapter(summaryAdapter);
@@ -261,12 +252,12 @@ public class EditNote extends AppCompatActivity {
     }
 
     private void populateFileData(List<Files> files){
-        tableLayoutFiles.addView(BuildTableLayout.setupFilesTableRow(this,tableLayoutFiles,"FileID", "FileName",true));
+        tableLayoutFiles.addView(BuildTableLayout.setupFilesTableRow(this,tableLayoutFiles, "FileName",true));
         if(files != null){
             if(files.size() > 0){
                 for (Files f: files) {
                     String fName = f.getFileName();
-                    tableLayoutFiles.addView(BuildTableLayout.setupFilesTableRow(this, tableLayoutFiles,"", fName,false));
+                    tableLayoutFiles.addView(BuildTableLayout.setupFilesTableRow(this, tableLayoutFiles, fName,false));
                 }
             }
         }

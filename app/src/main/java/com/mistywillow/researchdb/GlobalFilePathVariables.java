@@ -1,9 +1,5 @@
 package com.mistywillow.researchdb;
 
-import android.app.Application;
-import android.content.Context;
-import android.content.ContextWrapper;
-import android.content.SharedPreferences;
 import android.os.Environment;
 
 public class GlobalFilePathVariables {

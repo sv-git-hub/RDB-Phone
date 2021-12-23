@@ -1,9 +1,7 @@
 package com.mistywillow.researchdb;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -11,13 +9,15 @@ import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Build;
+import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
-import android.widget.*;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ListView;
+import android.widget.Toast;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
-import android.os.Bundle;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import com.mistywillow.researchdb.databases.MasterDatabase;
@@ -26,7 +26,6 @@ import com.mistywillow.researchdb.masterdb.entity.MasterDatabaseList;
 import java.io.*;
 
 import static android.Manifest.permission.*;
-import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
 
 public class MainActivityMaster extends AppCompatActivity {
 
@@ -118,8 +117,6 @@ public class MainActivityMaster extends AppCompatActivity {
                 startChecks();
 
                 Intent intent = new Intent(view.getContext(),MainActivity.class); // <- Updated from UseSelectDatabase
-                /*intent.putExtra(MainActivity.INTENT_EXTRA_DATABASEID, mSelectedDatabaseId);
-                intent.putExtra(MainActivity.INTENT_EXTRA_DATABASENAME,mSelectedDatabaseName);*/
                 startActivity(intent);
             }
         });

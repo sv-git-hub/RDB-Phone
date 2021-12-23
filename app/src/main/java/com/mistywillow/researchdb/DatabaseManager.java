@@ -1,20 +1,10 @@
 package com.mistywillow.researchdb;
 
-import android.content.Context;
-import android.content.res.AssetManager;
 import android.util.Log;
 
 import java.io.*;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 
 public class DatabaseManager {
-
-    private static void checkFolderExists(Context context, String folder){
-        File location = new File(context.getFilesDir() + "/" + folder);
-        if(!location.exists())
-            location.mkdir();
-    }
 
     public static void copyDatabase (InputStream in, OutputStream out) {
 

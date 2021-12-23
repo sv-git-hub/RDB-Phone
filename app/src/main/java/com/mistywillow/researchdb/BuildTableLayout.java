@@ -4,7 +4,6 @@ import android.content.Context;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.view.Gravity;
-import android.view.View;
 import android.widget.*;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -13,12 +12,12 @@ public class BuildTableLayout extends AppCompatActivity{
 
     // FILES ========================================================
 
-    public static TableRow setupFilesTableRow(Context context, TableLayout table, String fileID, String fileName, boolean bold) {
+    public static TableRow setupFilesTableRow(Context context, TableLayout table, String fileName, boolean bold) {
         TableRow row = new TableRow(context);
         LinearLayout.LayoutParams ll = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.MATCH_PARENT);
         row.setLayoutParams(ll);
         if(bold){
-            row.addView(setupFilesAddRowButton(context, table));
+            row.addView(setupFilesAddRowButton(context));
             row.addView(addRowTextViewToTable(context, fileName, true));
         }
         if (!bold) {
@@ -32,7 +31,7 @@ public class BuildTableLayout extends AppCompatActivity{
         return row;
     }
 
-    public static TextView setupFilesAddRowButton(Context context, TableLayout table){
+    public static TextView setupFilesAddRowButton(Context context){
         TextView btnAddRow = new TextView(context);
         TableRow.LayoutParams trLayoutParams = new TableRow.LayoutParams(0, TableRow.LayoutParams.MATCH_PARENT);
         trLayoutParams.setMargins(3,3,3,3);
@@ -81,9 +80,7 @@ public class BuildTableLayout extends AppCompatActivity{
         btnAddRow.setTypeface(Typeface.DEFAULT,Typeface.BOLD);
         btnAddRow.setGravity(Gravity.CENTER);
         btnAddRow.setPadding(5,5,5,5);
-        btnAddRow.setOnClickListener(v -> {
-            table.addView(setupAuthorsTableRow(context, table, "", "", "", "", false));
-        });
+        btnAddRow.setOnClickListener(v -> table.addView(setupAuthorsTableRow(context, table, "", "", "", "", false)));
         return btnAddRow;
     }
 
@@ -151,24 +148,5 @@ public class BuildTableLayout extends AppCompatActivity{
             }
         }
     }
-
-    /*public CheckBox addCheckBoxToTable(){
-        CheckBox checkBox = new CheckBox(this);
-        TableRow.LayoutParams trLayoutParams = new TableRow.LayoutParams();
-        trLayoutParams.setMargins(3,3,3,3);
-        trLayoutParams.width = 25;
-        trLayoutParams.height = 55;
-        checkBox.setLayoutParams(trLayoutParams);
-        checkBox.setPadding(3,3,3,3);
-        checkBox.setBackgroundColor(Color.WHITE);
-        checkBox.setGravity(Gravity.CENTER);
-        checkBox.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            if(isChecked){
-                deleteTableRows(tableLayoutAuthors);
-            }
-        });
-
-        return checkBox;
-    }*/
 
 }

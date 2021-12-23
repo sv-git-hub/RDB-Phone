@@ -26,12 +26,7 @@ public class PopupDialog{
         final AlertDialog alertDialog = alertDialogBuilder.create();
         alertDialog.show();
         Button ok = popup.findViewById(R.id.btn_OK);
-        ok.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                alertDialog.cancel();
-            }
-        });
+        ok.setOnClickListener(v -> alertDialog.cancel());
     }
 
     /* Initialize popup dialog view and ui controls in the popup dialog. */
@@ -92,29 +87,4 @@ public class PopupDialog{
         inputMessage.setText(message);
         return popupInputDialogView;
     }
-    /*public static void AlertSelectAuthor(Context context, String title, String message, List<Sources> sources){
-        // Create a AlertDialog Builder.
-        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
-        // Set title, icon, can not cancel properties.
-        alertDialogBuilder.setTitle(title);
-        alertDialogBuilder.setIcon(R.drawable.ic_launcher_background);
-        alertDialogBuilder.setCancelable(false);
-
-        // Set the inflated layout view object to the AlertDialog builder.
-        View popup = SelectAuthorTable(context, message, sources);
-        alertDialogBuilder.setView(popup);
-
-        // Create AlertDialog and show.
-        final AlertDialog alertDialog = alertDialogBuilder.create();
-        alertDialog.show();
-    }*/
-
-    /*private static View SelectAuthorTable(Context context, String message, List<Sources> sources){
-        LayoutInflater layoutInflater = LayoutInflater.from(context);
-        View popupSourcesDialog = layoutInflater.inflate(R.layout.popup_sources_dialog, null);
-        RecyclerView listAuthors = popupSourcesDialog.findViewById(R.id.ListAuthors);
-        listAuthors.setLayoutManager(new LinearLayoutManager(context));
-        listAuthors.setAdapter(new PopupAdapter(context, sources, (PopupAdapter.IPopupRecycler) context));
-        return popupSourcesDialog;
-    }*/
 }

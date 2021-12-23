@@ -14,9 +14,6 @@ import java.util.List;
 
 public class AuthorPopup extends AppCompatActivity implements PopupAdapter.IPopupRecycler {
 
-    private RecyclerView listAuthors;
-    private List<Sources> sources;
-    private TextView description;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -24,17 +21,17 @@ public class AuthorPopup extends AppCompatActivity implements PopupAdapter.IPopu
         setContentView(R.layout.popup_sources_dialog);
 
         Intent src = getIntent();
-        sources = src.getParcelableArrayListExtra("sources");
+        List<Sources> sources = src.getParcelableArrayListExtra("sources");
 
         String text = sources.get(0).getTitle() + ": This title is published by more than one author(s). " +
                 "Click on the author(s) that pertain to the source you want to reference. If this is a new " +
                 "author(s), then click on any option, then when you return to the screen, add the new authors " +
                 "in the Authors table, including whom may already be in the data base.";
 
-        description = findViewById(R.id.popupDescription);
+        TextView description = findViewById(R.id.popupDescription);
         description.setText(text);
 
-        listAuthors = findViewById(R.id.ListAuthors);
+        RecyclerView listAuthors = findViewById(R.id.ListAuthors);
         listAuthors.setLayoutManager(new LinearLayoutManager(this));
         PopupAdapter popupAdapter = new PopupAdapter(this, sources, this);
         listAuthors.setAdapter(popupAdapter);

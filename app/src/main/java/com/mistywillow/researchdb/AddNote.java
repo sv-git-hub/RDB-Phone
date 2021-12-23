@@ -2,7 +2,6 @@ package com.mistywillow.researchdb;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.net.Uri;
 import android.view.*;
 import android.widget.*;
@@ -85,7 +84,7 @@ public class AddNote extends AppCompatActivity {
         btnAddFile = findViewById(R.id.addFile);
 
         tableLayoutFiles = findViewById(R.id.table_files);
-        tableLayoutFiles.addView(BuildTableLayout.setupFilesTableRow(this,tableLayoutFiles,"FileID", "FilePath/FileName",true));
+        tableLayoutFiles.addView(BuildTableLayout.setupFilesTableRow(this,tableLayoutFiles, "FilePath/FileName",true));
         tableLayoutAuthors = findViewById(R.id.table_authors);
         tableLayoutAuthors.addView(BuildTableLayout.setupAuthorsTableRow(this,tableLayoutAuthors,"Organization/First", "Middle", "Last", "Suffix", true));
 
@@ -93,7 +92,7 @@ public class AddNote extends AppCompatActivity {
             if (result.getResultCode() == Activity.RESULT_OK && result.getData() != null){
                 Uri uri = result.getData().getData();
                 String str = RealPathUtil.getRealPath(this, uri);
-                tableLayoutFiles.addView(BuildTableLayout.setupFilesTableRow(AddNote.this,tableLayoutFiles,"", str,false));
+                tableLayoutFiles.addView(BuildTableLayout.setupFilesTableRow(AddNote.this,tableLayoutFiles, str,false));
             }
         });
 

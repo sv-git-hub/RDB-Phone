@@ -22,17 +22,4 @@ public class Globals {
     public static final int PAGE = 15;
     public static final int TIMESTAMP = 16;
     public static final int TOPIC = 17;
-
-    // USER_LOG PARAMETERS
-    public static final int FIRST_INSTALL = 0;
-    public static final int JAVA = 1;
-    public static final int ANDROID = 2;
-    public static final int VERSION = 3;
-    public static final int DEFAULT = 4;
-    public static final int DATABASE = 5;
-    public static final int DBPATH = 6;
-    public static final int PREV_DBPATH = 7;
-    public static final int MANUAL_DOCX = 8;
-    public static final int MANUAL_PDF = 9;
-    public static final int USER_LOG = 10;
 }
