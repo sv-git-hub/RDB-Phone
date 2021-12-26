@@ -1,0 +1,591 @@
+{
+  "formatVersion": 1,
+  "database": {
+    "version": 3,
+    "identityHash": "165deaca17e301ac8abd27235f8999f0",
+    "entities": [
+      {
+        "tableName": "Author_By_Source",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`AuthorID` INTEGER NOT NULL, `SourceID` INTEGER NOT NULL, PRIMARY KEY(`AuthorID`, `SourceID`), FOREIGN KEY(`AuthorID`) REFERENCES `Author`(`AuthorID`) ON UPDATE NO ACTION ON DELETE NO ACTION , FOREIGN KEY(`SourceID`) REFERENCES `Source`(`SourceID`) ON UPDATE NO ACTION ON DELETE NO ACTION )",
+        "fields": [
+          {
+            "fieldPath": "authorID",
+            "columnName": "AuthorID",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "sourceID",
+            "columnName": "SourceID",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "AuthorID",
+            "SourceID"
+          ],
+          "autoGenerate": false
+        },
+        "indices": [
+          {
+            "name": "index_Author_By_Source_AuthorID",
+            "unique": false,
+            "columnNames": [
+              "AuthorID"
+            ],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_Author_By_Source_AuthorID` ON `${TABLE_NAME}` (`AuthorID`)"
+          },
+          {
+            "name": "index_Author_By_Source_SourceID",
+            "unique": false,
+            "columnNames": [
+              "SourceID"
+            ],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_Author_By_Source_SourceID` ON `${TABLE_NAME}` (`SourceID`)"
+          }
+        ],
+        "foreignKeys": [
+          {
+            "table": "Author",
+            "onDelete": "NO ACTION",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "AuthorID"
+            ],
+            "referencedColumns": [
+              "AuthorID"
+            ]
+          },
+          {
+            "table": "Source",
+            "onDelete": "NO ACTION",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "SourceID"
+            ],
+            "referencedColumns": [
+              "SourceID"
+            ]
+          }
+        ]
+      },
+      {
+        "tableName": "Author",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`AuthorID` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `FirstName` TEXT, `MiddleName` TEXT, `LastName` TEXT, `Suffix` TEXT)",
+        "fields": [
+          {
+            "fieldPath": "authorID",
+            "columnName": "AuthorID",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "firstName",
+            "columnName": "FirstName",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "middleName",
+            "columnName": "MiddleName",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "lastName",
+            "columnName": "LastName",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "suffix",
+            "columnName": "Suffix",
+            "affinity": "TEXT",
+            "notNull": false
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "AuthorID"
+          ],
+          "autoGenerate": true
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "Comment",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`CommentID` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `Summary` TEXT, `Comment` TEXT, `Page` TEXT, `TimeStamp` TEXT, `Hyperlink` TEXT)",
+        "fields": [
+          {
+            "fieldPath": "commentID",
+            "columnName": "CommentID",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "summary",
+            "columnName": "Summary",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "comment",
+            "columnName": "Comment",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "page",
+            "columnName": "Page",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "timeStamp",
+            "columnName": "TimeStamp",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "hyperlink",
+            "columnName": "Hyperlink",
+            "affinity": "TEXT",
+            "notNull": false
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "CommentID"
+          ],
+          "autoGenerate": true
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "File",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`FileID` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `FileName` TEXT, `FileData` BLOB)",
+        "fields": [
+          {
+            "fieldPath": "fileID",
+            "columnName": "FileID",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "fileName",
+            "columnName": "FileName",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "fileData",
+            "columnName": "FileData",
+            "affinity": "BLOB",
+            "notNull": false
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "FileID"
+          ],
+          "autoGenerate": true
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "File_By_Note",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`NoteID` INTEGER NOT NULL, `FileID` INTEGER NOT NULL, PRIMARY KEY(`NoteID`, `FileID`), FOREIGN KEY(`NoteID`) REFERENCES `Notes`(`NoteID`) ON UPDATE NO ACTION ON DELETE NO ACTION , FOREIGN KEY(`FileID`) REFERENCES `File`(`FileID`) ON UPDATE NO ACTION ON DELETE NO ACTION )",
+        "fields": [
+          {
+            "fieldPath": "noteID",
+            "columnName": "NoteID",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "fileID",
+            "columnName": "FileID",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "NoteID",
+            "FileID"
+          ],
+          "autoGenerate": false
+        },
+        "indices": [
+          {
+            "name": "index_File_By_Note_NoteID",
+            "unique": false,
+            "columnNames": [
+              "NoteID"
+            ],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_File_By_Note_NoteID` ON `${TABLE_NAME}` (`NoteID`)"
+          },
+          {
+            "name": "index_File_By_Note_FileID",
+            "unique": false,
+            "columnNames": [
+              "FileID"
+            ],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_File_By_Note_FileID` ON `${TABLE_NAME}` (`FileID`)"
+          }
+        ],
+        "foreignKeys": [
+          {
+            "table": "Notes",
+            "onDelete": "NO ACTION",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "NoteID"
+            ],
+            "referencedColumns": [
+              "NoteID"
+            ]
+          },
+          {
+            "table": "File",
+            "onDelete": "NO ACTION",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "FileID"
+            ],
+            "referencedColumns": [
+              "FileID"
+            ]
+          }
+        ]
+      },
+      {
+        "tableName": "Notes",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`NoteID` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `SourceID` INTEGER NOT NULL, `CommentID` INTEGER NOT NULL, `QuestionID` INTEGER, `QuoteID` INTEGER, `TermID` INTEGER, `TopicID` INTEGER NOT NULL, `Deleted` INTEGER, FOREIGN KEY(`SourceID`) REFERENCES `Source`(`SourceID`) ON UPDATE NO ACTION ON DELETE NO ACTION , FOREIGN KEY(`CommentID`) REFERENCES `Comment`(`CommentID`) ON UPDATE NO ACTION ON DELETE NO ACTION , FOREIGN KEY(`TopicID`) REFERENCES `Topic`(`TopicID`) ON UPDATE NO ACTION ON DELETE NO ACTION )",
+        "fields": [
+          {
+            "fieldPath": "noteID",
+            "columnName": "NoteID",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "sourceID",
+            "columnName": "SourceID",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "commentID",
+            "columnName": "CommentID",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "questionID",
+            "columnName": "QuestionID",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "quoteID",
+            "columnName": "QuoteID",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "termID",
+            "columnName": "TermID",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "topicID",
+            "columnName": "TopicID",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "deleted",
+            "columnName": "Deleted",
+            "affinity": "INTEGER",
+            "notNull": false
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "NoteID"
+          ],
+          "autoGenerate": true
+        },
+        "indices": [
+          {
+            "name": "index_Notes_SourceID",
+            "unique": false,
+            "columnNames": [
+              "SourceID"
+            ],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_Notes_SourceID` ON `${TABLE_NAME}` (`SourceID`)"
+          },
+          {
+            "name": "index_Notes_CommentID",
+            "unique": false,
+            "columnNames": [
+              "CommentID"
+            ],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_Notes_CommentID` ON `${TABLE_NAME}` (`CommentID`)"
+          },
+          {
+            "name": "index_Notes_QuestionID",
+            "unique": false,
+            "columnNames": [
+              "QuestionID"
+            ],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_Notes_QuestionID` ON `${TABLE_NAME}` (`QuestionID`)"
+          },
+          {
+            "name": "index_Notes_QuoteID",
+            "unique": false,
+            "columnNames": [
+              "QuoteID"
+            ],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_Notes_QuoteID` ON `${TABLE_NAME}` (`QuoteID`)"
+          },
+          {
+            "name": "index_Notes_TermID",
+            "unique": false,
+            "columnNames": [
+              "TermID"
+            ],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_Notes_TermID` ON `${TABLE_NAME}` (`TermID`)"
+          },
+          {
+            "name": "index_Notes_TopicID",
+            "unique": false,
+            "columnNames": [
+              "TopicID"
+            ],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_Notes_TopicID` ON `${TABLE_NAME}` (`TopicID`)"
+          }
+        ],
+        "foreignKeys": [
+          {
+            "table": "Source",
+            "onDelete": "NO ACTION",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "SourceID"
+            ],
+            "referencedColumns": [
+              "SourceID"
+            ]
+          },
+          {
+            "table": "Comment",
+            "onDelete": "NO ACTION",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "CommentID"
+            ],
+            "referencedColumns": [
+              "CommentID"
+            ]
+          },
+          {
+            "table": "Topic",
+            "onDelete": "NO ACTION",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "TopicID"
+            ],
+            "referencedColumns": [
+              "TopicID"
+            ]
+          }
+        ]
+      },
+      {
+        "tableName": "Question",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`QuestionID` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `Question` TEXT)",
+        "fields": [
+          {
+            "fieldPath": "questionID",
+            "columnName": "QuestionID",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "question",
+            "columnName": "Question",
+            "affinity": "TEXT",
+            "notNull": false
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "QuestionID"
+          ],
+          "autoGenerate": true
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "Quote",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`QuoteID` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `Quote` TEXT)",
+        "fields": [
+          {
+            "fieldPath": "quoteID",
+            "columnName": "QuoteID",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "quote",
+            "columnName": "Quote",
+            "affinity": "TEXT",
+            "notNull": false
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "QuoteID"
+          ],
+          "autoGenerate": true
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "Source",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`SourceID` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `SourceType` TEXT, `Title` TEXT, `Year` INTEGER NOT NULL, `Month` INTEGER NOT NULL, `Day` INTEGER NOT NULL, `Volume` TEXT, `Edition` TEXT, `Issue` TEXT)",
+        "fields": [
+          {
+            "fieldPath": "sourceID",
+            "columnName": "SourceID",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "sourceType",
+            "columnName": "SourceType",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "title",
+            "columnName": "Title",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "year",
+            "columnName": "Year",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "month",
+            "columnName": "Month",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "day",
+            "columnName": "Day",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "volume",
+            "columnName": "Volume",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "edition",
+            "columnName": "Edition",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "issue",
+            "columnName": "Issue",
+            "affinity": "TEXT",
+            "notNull": false
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "SourceID"
+          ],
+          "autoGenerate": true
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "Term",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`TermID` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `Term` TEXT)",
+        "fields": [
+          {
+            "fieldPath": "termID",
+            "columnName": "TermID",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "term",
+            "columnName": "Term",
+            "affinity": "TEXT",
+            "notNull": false
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "TermID"
+          ],
+          "autoGenerate": true
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "Topic",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`TopicID` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `Topic` TEXT)",
+        "fields": [
+          {
+            "fieldPath": "topicID",
+            "columnName": "TopicID",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "topic",
+            "columnName": "Topic",
+            "affinity": "TEXT",
+            "notNull": false
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "TopicID"
+          ],
+          "autoGenerate": true
+        },
+        "indices": [],
+        "foreignKeys": []
+      }
+    ],
+    "views": [],
+    "setupQueries": [
+      "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '165deaca17e301ac8abd27235f8999f0')"
+    ]
+  }
+}
