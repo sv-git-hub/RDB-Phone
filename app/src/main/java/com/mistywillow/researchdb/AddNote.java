@@ -66,7 +66,7 @@ public class AddNote extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         TextView page = findViewById(R.id.toolbar_page);
-        page.setText(" ADD NOTE - " + GlobalFilePathVariables.DATABASE);
+        page.setText(" ADD NOTE - " + Globals.DATABASE);
 
         // AUTOCOMPLETE TEXT VIEWS
         sourceType = findViewById(R.id.viewType);
@@ -108,7 +108,7 @@ public class AddNote extends AppCompatActivity {
         newSourcesAuthorIDs = new ArrayList<>();
 
         // GET DATABASE INSTANCE
-        rdb = ResearchDatabase.getInstance(this, GlobalFilePathVariables.DATABASE);
+        rdb = ResearchDatabase.getInstance(this, Globals.DATABASE);
         intentLauncher = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
                 result ->{

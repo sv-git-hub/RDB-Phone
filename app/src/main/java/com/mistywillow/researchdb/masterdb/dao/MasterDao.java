@@ -4,10 +4,7 @@ import android.database.Cursor;
 import android.database.MatrixCursor;
 import android.provider.BaseColumns;
 import androidx.lifecycle.LiveData;
-import androidx.room.Dao;
-import androidx.room.Insert;
-import androidx.room.OnConflictStrategy;
-import androidx.room.Query;
+import androidx.room.*;
 import com.mistywillow.researchdb.masterdb.entity.MasterDatabaseList;
 
 import java.util.List;
@@ -16,8 +13,12 @@ import java.util.List;
 public abstract class MasterDao {
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     public abstract long insert(MasterDatabaseList masterDatabaseList);
+    @Delete
+    public abstract void delete(MasterDatabaseList masterDatabaseList);
     @Query("SELECT * FROM masterdatabaselist")
     public abstract List<MasterDatabaseList> getAllDatabases();
+    @Query("SELECT * FROM MasterDatabaseList WHERE databaseName = :databaseName")
+    public abstract MasterDatabaseList getDatabaseNamed(String databaseName);
 
     public Cursor getAllDatabasesAsCursor() {
         MatrixCursor matrixCursor = new MatrixCursor(

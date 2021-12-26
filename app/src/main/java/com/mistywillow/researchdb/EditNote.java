@@ -68,9 +68,9 @@ public class EditNote extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         TextView page = findViewById(R.id.toolbar_page);
-        page.setText(" EDIT NOTE - " + GlobalFilePathVariables.DATABASE);
+        page.setText(" EDIT NOTE - " + Globals.DATABASE);
 
-        ResearchDatabase rdb = ResearchDatabase.getInstance(this, GlobalFilePathVariables.DATABASE);
+        ResearchDatabase rdb = ResearchDatabase.getInstance(this, Globals.DATABASE);
 
         // AUTOCOMPLETE TEXT VIEWS
         sourceTitle = findViewById(R.id.viewSource);

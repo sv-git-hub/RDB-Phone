@@ -76,7 +76,7 @@ public class ViewNote extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         TextView page = findViewById(R.id.toolbar_page);
-        page.setText(" VIEW NOTE - " + GlobalFilePathVariables.DATABASE);
+        page.setText(" VIEW NOTE - " + Globals.DATABASE);
 
         sourceType = findViewById(R.id.viewType);
         topic = findViewById(R.id.viewTopic);
@@ -112,7 +112,7 @@ public class ViewNote extends AppCompatActivity {
         /*if(extras.containsKey("newTopicYN")){
             refreshMain = n.getLongExtra("newTopicYN",0);}*/
 
-        rdb = ResearchDatabase.getInstance(this, GlobalFilePathVariables.DATABASE);
+        rdb = ResearchDatabase.getInstance(this, Globals.DATABASE);
 
         NoteDetails details = rdb.getNotesDao().getNoteDetails(nNoteID);
         noteDetails.clear();

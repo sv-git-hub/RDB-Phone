@@ -10,11 +10,7 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.Selection;
-import android.text.TextWatcher;
 import android.util.Log;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -53,7 +49,7 @@ public class MainActivityMaster extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main_new);
+        setContentView(R.layout.activity_main_master);
 
         if(!checkPermission())
             requestPermission();
@@ -157,13 +153,13 @@ public class MainActivityMaster extends AppCompatActivity {
             settings.putString("database", mSelectedDatabaseName);
             settings.commit();
             settings.apply();
-            GlobalFilePathVariables.DATABASE = sharedPreferences.getString("database","");
+            Globals.DATABASE = sharedPreferences.getString("database","");
         }else{
             settings.putString("prevDB", sharedPreferences.getString("database", ""));
             settings.putString("database", mSelectedDatabaseName);
             settings.commit();
             settings.apply();
-            GlobalFilePathVariables.DATABASE = sharedPreferences.getString("database","");
+            Globals.DATABASE = sharedPreferences.getString("database","");
         }
     }
 

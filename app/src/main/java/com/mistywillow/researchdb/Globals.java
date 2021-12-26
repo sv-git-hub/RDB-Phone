@@ -3,6 +3,9 @@ package com.mistywillow.researchdb;
 public class Globals {
     // SHARED PREFERENCES
     public static final String SHARED_PREF_FILE = "AppSettings";
+    // DATABASE
+    public static long DB_ID;
+    public static String DATABASE;
     // NOTE ARRAY POSITION VARIABLES
     public static final int TYPE = 0;
     public static final int SUMMARY = 1;

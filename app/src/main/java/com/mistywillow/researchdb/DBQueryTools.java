@@ -53,7 +53,7 @@ public class DBQueryTools {
         return str.toString().trim();
     }
     public static ArrayAdapter<String> captureDBAuthors(Context context){
-        rdb = ResearchDatabase.getInstance(context, GlobalFilePathVariables.DATABASE);
+        rdb = ResearchDatabase.getInstance(context, Globals.DATABASE);
         List<Authors> authors = rdb.getAuthorsDao().getAuthors();
         List<String> orgAuthors = new ArrayList<>();
         for(Authors a: authors){
@@ -109,7 +109,7 @@ public class DBQueryTools {
         return rdb.getSourcesDao().getSourceByTitle(sourceTitle);
     }
     public static ArrayAdapter<String> captureDBSourcesWithAuthors(Context context){
-        rdb = ResearchDatabase.getInstance(context, GlobalFilePathVariables.DATABASE);
+        rdb = ResearchDatabase.getInstance(context, Globals.DATABASE);
         List<Sources> sources = rdb.getSourcesDao().getSources();
         List<String> orgSourceTitles = new ArrayList<>();
         for(Sources src : sources){
@@ -140,7 +140,7 @@ public class DBQueryTools {
             return new ArrayAdapter<>(context, R.layout.custom_dropdown_list, orgSourceTypes);
     }
     public static ArrayAdapter<String> captureDBSources(Context context){
-        rdb = ResearchDatabase.getInstance(context, GlobalFilePathVariables.DATABASE);
+        rdb = ResearchDatabase.getInstance(context, Globals.DATABASE);
         List<Sources> sources = rdb.getSourcesDao().getSources();
         List<String> orgSourceTitles = new ArrayList<>();
         for(Sources s : sources){
@@ -149,8 +149,8 @@ public class DBQueryTools {
         return new ArrayAdapter<>(context, R.layout.custom_dropdown_list, orgSourceTitles);
     }
     public static ArrayAdapter<String> captureDBTopics(Context context){
-        String temp = GlobalFilePathVariables.DATABASE;
-        rdb = ResearchDatabase.getInstance(context, GlobalFilePathVariables.DATABASE);
+        String temp = Globals.DATABASE;
+        rdb = ResearchDatabase.getInstance(context, Globals.DATABASE);
         List<Topics> topics = rdb.getTopicsDao().getTopics();
         List<String> orgTopics = new ArrayList<>();
         for(Topics t : topics){
@@ -160,7 +160,7 @@ public class DBQueryTools {
         //topic.setAdapter(topicsAdapter);
     }
     public static ArrayAdapter<String> captureDBQuestions(Context context){
-        rdb = ResearchDatabase.getInstance(context, GlobalFilePathVariables.DATABASE);
+        rdb = ResearchDatabase.getInstance(context, Globals.DATABASE);
         List<Questions> questions = rdb.getQuestionsDao().getQuestions();
         List<String> orgQuestions = new ArrayList<>();
         for(Questions q : questions){
@@ -169,7 +169,7 @@ public class DBQueryTools {
         return new ArrayAdapter<>(context, R.layout.custom_drowdown_list_wrap, orgQuestions);
     }
     public static ArrayAdapter<String> captureSummaries(Context context){
-        rdb = ResearchDatabase.getInstance(context, GlobalFilePathVariables.DATABASE);
+        rdb = ResearchDatabase.getInstance(context, Globals.DATABASE);
         List<Comments> summaries = rdb.getCommentsDao().getComments();
         List<String> orgSummaries = new ArrayList<>();
         for(Comments c : summaries){
@@ -414,7 +414,7 @@ public class DBQueryTools {
         // METHODS TO ADD OR UPDATE NOTES
     public static Intent addNewNote(Context context, List<Integer> data, List<Files> files){
 
-            rdb = ResearchDatabase.getInstance(context, GlobalFilePathVariables.DATABASE);
+            rdb = ResearchDatabase.getInstance(context, Globals.DATABASE);
             int noteID = 0;
             int srcID = data.get(1);
             int cmtID = data.get(2);
