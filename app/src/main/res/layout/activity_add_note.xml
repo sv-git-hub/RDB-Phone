@@ -18,7 +18,20 @@
             android:minHeight="?attr/actionBarSize"
             android:id="@+id/toolbar"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"/>
+            app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+                android:id="@+id/toolbar_page"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/toolbar_add"
+                android:textSize="12sp"
+                android:textStyle="bold|italic"
+                android:padding="2dp"
+                android:textAlignment="center"/>
+
+
+    </androidx.appcompat.widget.Toolbar>
 
     <ScrollView
             android:layout_width="match_parent"
@@ -202,6 +215,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:ems="10"
+                    android:hint="@string/hint_hyperlink"
                     android:autofillHints="@string/hint_hyperlink"
                     android:background="@color/colorWhite"
                     android:textSize="12sp"
@@ -256,7 +270,8 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/viewQuote"
                     android:layout_marginTop="5dp"
-                    android:layout_marginStart="5dp" android:textStyle="bold"/>
+                    android:layout_marginStart="5dp"
+                    android:textStyle="bold"/>
             <EditText
                     android:id="@+id/viewTerm"
                     android:layout_width="0dp"

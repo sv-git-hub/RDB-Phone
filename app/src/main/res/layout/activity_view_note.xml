@@ -17,7 +17,17 @@
             android:minHeight="?attr/actionBarSize"
             android:id="@+id/toolbar"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"/>
+            app:layout_constraintTop_toTopOf="parent">
+    <TextView
+            android:id="@+id/toolbar_page"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/toolbar_view"
+            android:textSize="12sp"
+            android:textStyle="bold|italic"
+            android:padding="2dp"
+            android:textAlignment="center"/>
+    </androidx.appcompat.widget.Toolbar>
 
     <ScrollView
             android:layout_width="match_parent"

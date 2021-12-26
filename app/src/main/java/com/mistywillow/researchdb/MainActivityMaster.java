@@ -10,7 +10,11 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.Selection;
+import android.text.TextWatcher;
 import android.util.Log;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -55,7 +59,6 @@ public class MainActivityMaster extends AppCompatActivity {
             requestPermission();
 
         sharedPreferences = getSharedPreferences(Globals.SHARED_PREF_FILE, MODE_PRIVATE);
-        CopyAssets.copyAssets(this, "databases", "Apologetic.db");
 
         mDBToAdd = this.findViewById(R.id.database_name);
         mAddDB = this.findViewById(R.id.addDatabase);
@@ -65,6 +68,7 @@ public class MainActivityMaster extends AppCompatActivity {
         masterDB = MasterDatabase.getInstance(this);
 
 
+        //setupAddDBEditText();
         setUpAddDBButton();
         setupImportDBButton();
         setUpUseSelectedDatabaseButton();
@@ -126,36 +130,6 @@ public class MainActivityMaster extends AppCompatActivity {
 
         mCsr = masterDB.getMasterDao().getAllDatabasesAsCursor();
 
-        /*if (mSCA == null) {
-            mSCA = new SimpleCursorAdapter(
-                    this.getApplicationContext(),
-                    android.R.layout.simple_list_item_1,
-                    mCsr,
-                    new String[]{MasterDatabaseList.COL_DATABASE_NAME},
-                    new int[]{android.R.id.text1},
-                    0
-            );
-            mDatabaseList.setAdapter(mSCA);
-            mDatabaseList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                // Handle Clicking on an Item (i.e. prepare UseSelected Button)
-                @SuppressLint("Range")
-                @Override
-                public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                    mSelectedDatabaseId = l;
-                    if (l > 0) {
-                        mSelectedDatabaseName = mCsr.getString(mCsr.getColumnIndex(MasterDatabaseList.COL_DATABASE_NAME));
-                        mUseSelectedDatabase.setText(mSelectedDatabaseName);
-                        mUseSelectedDatabase.setClickable(true);
-                    } else {
-                        mUseSelectedDatabase.setText(R.string.master_no_db_selected);
-                        mUseSelectedDatabase.setClickable(false);
-                    }
-                }
-            });
-        } else {
-            mSCA.swapCursor(mCsr);
-        }*/
-
         if (mdbCA == null){
             mdbCA = new MDBCursorAdapter(this, mCsr,0);
             mDatabaseList.setAdapter(mdbCA);
@@ -174,20 +148,19 @@ public class MainActivityMaster extends AppCompatActivity {
             });
         } else {
             mdbCA.swapCursor(mCsr);
-            //mSCA.swapCursor(mCsr);
         }
     }
 
     private void startChecks(){
         settings = sharedPreferences.edit();
         if(isFirstTime()) {
-            settings.putString("database", mUseSelectedDatabase.getText().toString());
+            settings.putString("database", mSelectedDatabaseName);
             settings.commit();
             settings.apply();
             GlobalFilePathVariables.DATABASE = sharedPreferences.getString("database","");
         }else{
             settings.putString("prevDB", sharedPreferences.getString("database", ""));
-            settings.putString("database", mUseSelectedDatabase.getText().toString());
+            settings.putString("database", mSelectedDatabaseName);
             settings.commit();
             settings.apply();
             GlobalFilePathVariables.DATABASE = sharedPreferences.getString("database","");

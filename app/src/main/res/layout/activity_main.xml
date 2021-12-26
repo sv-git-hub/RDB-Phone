@@ -16,7 +16,17 @@
             android:minHeight="?attr/actionBarSize"
             android:id="@+id/toolbar"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"/>
+            app:layout_constraintTop_toTopOf="parent">
+        <TextView
+                android:id="@+id/toolbar_page"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/toolbar_search"
+                android:textSize="12sp"
+                android:textStyle="bold|italic"
+                android:padding="2dp"
+                android:textAlignment="center"/>
+    </androidx.appcompat.widget.Toolbar>
 
     <AutoCompleteTextView
             android:layout_width="175dp"

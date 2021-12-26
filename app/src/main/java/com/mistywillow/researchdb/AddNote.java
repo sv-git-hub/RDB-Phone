@@ -1,8 +1,11 @@
 package com.mistywillow.researchdb;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
+import android.text.Html;
+import android.text.method.LinkMovementMethod;
 import android.view.*;
 import android.widget.*;
 import androidx.activity.result.ActivityResultLauncher;
@@ -45,13 +48,14 @@ public class AddNote extends AppCompatActivity {
 
     private TableLayout tableLayoutFiles;
     private TableLayout tableLayoutAuthors;
-    private Menu editMenu;
+    private Menu addMenu;
 
     private int selectedSourceID;
 
     private List<String> newNoteDetails;
     private List<Integer> newSourcesAuthorIDs;
 
+    @SuppressLint("SetTextI18n")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -60,6 +64,9 @@ public class AddNote extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         toolbar.setTitleTextColor(getColor(R.color.colorWhite));
         setSupportActionBar(toolbar);
+
+        TextView page = findViewById(R.id.toolbar_page);
+        page.setText(" ADD NOTE - " + GlobalFilePathVariables.DATABASE);
 
         // AUTOCOMPLETE TEXT VIEWS
         sourceType = findViewById(R.id.viewType);
@@ -173,16 +180,16 @@ public class AddNote extends AppCompatActivity {
     }
 
     private void setupMenuOptions() {
-        editMenu.findItem(R.id.clear).setEnabled(false);
-        editMenu.findItem(R.id.edit_note).setEnabled(true);
+        addMenu.findItem(R.id.clear).setEnabled(true);
+        addMenu.findItem(R.id.add_note).setEnabled(true);
     }
 
     // MENU METHODS
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.edit_menu, menu);
-        editMenu = menu;
+        inflater.inflate(R.menu.add_menu, menu);
+        addMenu = menu;
         setupMenuOptions();
         return true;
     }
@@ -190,10 +197,9 @@ public class AddNote extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if(item.getItemId() == R.id.clear){
-            //clearFields();
-            Toast.makeText(this, String.valueOf(editMenu.size()), Toast.LENGTH_SHORT).show();
+            clearFields();
 
-        }else if(item.getItemId() == R.id.update_note) {
+        }else if(item.getItemId() == R.id.add_note) {
             int srcID;
             if (!requiredFields()) {
                 return false;
@@ -238,26 +244,13 @@ public class AddNote extends AppCompatActivity {
                 }
             }
 
-            //List<Files> addFiles = captureNoteFiles();
             List<Files> addFiles = DBQueryTools.captureNoteFiles(null, tableLayoutFiles);
             startActivity(DBQueryTools.addNewNote(this, newNoteIDs, addFiles));
-
-        }else if(item.getItemId() == R.id.edit_note){
-            Toast.makeText(this, "Edit Note clicked!", Toast.LENGTH_SHORT).show();
-        }else if(item.getItemId() == R.id.mark_for_delete) {
-            Toast.makeText(this, "Mark Note for Delete clicked!", Toast.LENGTH_SHORT).show();
-        }else if(item.getItemId() == R.id.unMark_for_delete) {
-            Toast.makeText(this, "Un-mark Note for Delete clicked!", Toast.LENGTH_SHORT).show();
-        }else if(item.getItemId() == R.id.review_for_delete) {
-            Toast.makeText(this, "Review Notes for Delete clicked!", Toast.LENGTH_SHORT).show();
-        }else if(item.getItemId() == R.id.permanently_delete) {
-            Toast.makeText(this, "Permanently Delete Note clicked!", Toast.LENGTH_SHORT).show();
-        }else if(item.getItemId() == R.id.delete_database) {
-            Toast.makeText(this, "Delete Database clicked!", Toast.LENGTH_SHORT).show();
-        }else if(item.getItemId() == R.id.main_close) {
-            //closeApplication();
-        }else if(item.getItemId() == android.R.id.home)
             onBackPressed();
+        }else if(item.getItemId() == android.R.id.home) {
+            onBackPressed();
+        }
+
 
         return super.onOptionsItemSelected(item);
     }
@@ -417,6 +410,25 @@ public class AddNote extends AppCompatActivity {
         }
         PopupDialog.AlertMessage(AddNote.this, "Required Field", msg);
         return false;
+    }
+
+    private void clearFields() {
+        sourceType.setSelection(0);
+        topic.setText(null);
+        question.setText(null);
+        summary.setText(null);
+        quote.setText(null);
+        term.setText(null);
+        sourceTitle.setText(null);
+        author.setText(null);
+        comment.setText(null);
+        date.setText(null);
+        volume.setText(null);
+        edition.setText(null);
+        issue.setText(null);
+        pgs_paras.setText(null);
+        timeStamp.setText(null);
+        hyperlink.setText(null);
     }
 
 }

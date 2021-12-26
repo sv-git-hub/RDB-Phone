@@ -1,5 +1,6 @@
 package com.mistywillow.researchdb;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.view.*;
@@ -29,6 +30,7 @@ public class MainActivity extends AppCompatActivity {
 
     private List<Integer> noteIDsFromCustomSearch;
 
+    @SuppressLint("SetTextI18n")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,6 +40,9 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         toolbar.setTitleTextColor(getColor(R.color.colorWhite));
         setSupportActionBar(toolbar);
+
+        TextView page = findViewById(R.id.toolbar_page);
+        page.setText(" SEARCH - " + GlobalFilePathVariables.DATABASE);
 
         sharedPreferences = getSharedPreferences(Globals.SHARED_PREF_FILE, MODE_PRIVATE);
 
@@ -51,17 +56,12 @@ public class MainActivity extends AppCompatActivity {
         // PREVENTS KEYBOARD POPPING UP ON ACTIVITY LOAD
         this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 
-            // GET ASSETS
-            //CopyAssets.copyAssets(this, "user_log", "userInfo.txt");
-            //CopyAssets.copyAssets(this, "databases", GlobalFilePathVariables.DATABASE);
-
         /**
          * THE MAIN ACTIVITY MASTER SHOULD PASS VARIABLES TO THE DATABASE HERE TO OPEN THE EXISTING DB
          */
 
         // MY DATABASE:
-        //String temp = sharedPreferences.getString("database","");
-            researchDatabase = ResearchDatabase.getInstance(this, sharedPreferences.getString("database",""));
+            researchDatabase = ResearchDatabase.getInstance(this, GlobalFilePathVariables.DATABASE);
 
             // TOPIC LIST
             ArrayAdapter<String> topicsAdapter = DBQueryTools.captureDBTopics(this);
@@ -106,6 +106,12 @@ public class MainActivity extends AppCompatActivity {
                 rListNotes.setAdapter(null);
                 return false;
             });
+    }
+
+    private boolean ifAllSearchesBlank(){
+        if(topic.getText().toString().equals("") && !question.getText().toString().equals("") && !customSearch.getText().toString().equals(""))
+            return true;
+        return false;
     }
 
     @Override
@@ -168,7 +174,7 @@ public class MainActivity extends AppCompatActivity {
         }else if(item.getItemId() == R.id.edit_note){
             String path = this.getFilesDir().getPath();
             Toast.makeText(this, "Path: " + path, Toast.LENGTH_LONG).show();
-            //Toast.makeText(this, "Edit Note for Delete clicked!", Toast.LENGTH_SHORT).show();
+
         }else if(item.getItemId() == R.id.mark_for_delete) {
             Toast.makeText(this, "Mark Note for Delete clicked!", Toast.LENGTH_SHORT).show();
         }else if(item.getItemId() == R.id.unMark_for_delete) {

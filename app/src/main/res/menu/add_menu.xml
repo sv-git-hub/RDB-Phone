@@ -19,23 +19,6 @@
                 </menu>
             </item>
 
-
-            <item android:id="@+id/main_note"
-                  android:title="@string/menu_title_note">
-                <menu>
-                    <item android:id="@+id/note_import"
-                          android:title="@string/menu_title_note_import"/>
-                    <item android:id="@+id/note_export"
-                          android:title="@string/menu_title_note_export">
-                        <menu>
-                            <item android:id="@+id/export_selection"
-                                  android:title="@string/menu_title_export_selection"/>
-                            <item android:id="@+id/export_results"
-                                  android:title="@string/menu_title_export_results"/>
-                        </menu>
-                    </item>
-                </menu>
-            </item>
             <item android:id="@+id/main_print"
                   android:title="@string/menu_title_print"/>
             <item android:id="@+id/main_close"
@@ -44,26 +27,12 @@
 
     </item>
 
-    <item android:id="@+id/main_edit"
-          android:title="@string/menu_title_edit"
-          app:showAsAction="never">
-        <menu>
-            <item android:id="@+id/clear"
-                  android:title="@string/menu_title_clear"/>
-            <item android:id="@+id/add_note"
-                  android:title="@string/menu_title_add_note"/>
-            <item android:id="@+id/edit_note"
-                  android:title="@string/menu_title_edit_note"/>
-            <item android:id="@+id/mark_for_delete"
-                  android:title="@string/menu_title_mark_note_for_delete"/>
-            <item android:id="@+id/unMark_for_delete"
-                  android:title="@string/menu_title_unmark_note_for_delete"/>
-            <item android:id="@+id/review_for_delete"
-                  android:title="@string/menu_title_review_notes_for_delete"/>
-            <item android:id="@+id/permanently_delete"
-                  android:title="@string/menu_title_permanently_delete_note"/>
-        </menu>
-    </item>
+    <item android:id="@+id/add_note"
+          android:title="@string/menu_title_add_note"/>
+
+    <item android:id="@+id/clear"
+          android:title="@string/menu_title_clear"/>
+
 
     <item android:id="@+id/main_help"
           android:title="@string/menu_title_help"

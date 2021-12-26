@@ -18,6 +18,7 @@
     <string name="master_label_select">Select Database</string>
     <string name="master_how_to_select_db">"Click to select a database from the list then click the button when the database name appears:"</string>
     <string name="master_no_db_selected">No Database Selected</string>
+    <string name="allowCharacters">ABCDEFGHIJKLMNOPQRSTUVWXYZ_abcdefghijklmnopqrstuvwxyz.0123456789</string>
 
     <!-- MAIN MASTER RECYCLERVIEW -->
     <string name="master_delete">X</string>
@@ -26,6 +27,12 @@
     <string name="menu_title_file">File</string>
     <string name="menu_title_edit">Edit</string>
     <string name="menu_title_help">Help</string>
+
+    <!-- TOOLBAR -->
+    <string name="toolbar_search">SEARCH</string>
+    <string name="toolbar_add">ADD NOTE</string>
+    <string name="toolbar_edit">EDIT NOTE</string>
+    <string name="toolbar_view">VIEW NOTE</string>
 
     <!-- FILE -->
     <string name="menu_title_database">Database</string>

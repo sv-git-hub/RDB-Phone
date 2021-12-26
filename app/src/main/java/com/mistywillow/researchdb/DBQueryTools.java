@@ -2,11 +2,13 @@ package com.mistywillow.researchdb;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.*;
+import androidx.sqlite.db.SimpleSQLiteQuery;
 import com.mistywillow.researchdb.databases.ResearchDatabase;
 import com.mistywillow.researchdb.researchdb.entities.*;
 
@@ -16,6 +18,7 @@ import java.io.FileInputStream;
 import java.util.*;
 
 public class DBQueryTools {
+
 
 
     private static ResearchDatabase rdb = null;
@@ -146,6 +149,7 @@ public class DBQueryTools {
         return new ArrayAdapter<>(context, R.layout.custom_dropdown_list, orgSourceTitles);
     }
     public static ArrayAdapter<String> captureDBTopics(Context context){
+        String temp = GlobalFilePathVariables.DATABASE;
         rdb = ResearchDatabase.getInstance(context, GlobalFilePathVariables.DATABASE);
         List<Topics> topics = rdb.getTopicsDao().getTopics();
         List<String> orgTopics = new ArrayList<>();
@@ -436,8 +440,23 @@ public class DBQueryTools {
             a.putExtra("Authors", DBQueryTools.concatenateAuthors(DBQueryTools.getAuthorsBySourceID(srcID)));
 
             return a;
-
     }
+
+    // Counts Topics: If the topic count is the last new topic and the count = 1 then returning to the
+    // MainActivity should be a refresh.
+    public static long countTopic(int iTopic){
+        long lastPKID = getSpecificQuery("SELECT TopicID FROM Topic WHERE TopicID ORDER BY TopicID DESC LIMIT 1");
+        long numOfTheTopic = getSpecificQuery("SELECT Count(TopicID) FROM Notes Where TopicID = " + iTopic);
+        //if last topic id = the new note topic id and is the first and only one, then refresh MainActivity
+        if(lastPKID == (long)iTopic && numOfTheTopic == 1)
+            return 1;
+        return 0;
+    }
+
+    public static long getSpecificQuery(String query){
+        return rdb.getTopicsDao().getTableSequenceValue(new SimpleSQLiteQuery(query));
+    }
+
     public static void addNewNoteFiles(int noteID, List<Files> nf){
         if(nf.size()>0) {
             for (Files f : nf) {
@@ -446,8 +465,6 @@ public class DBQueryTools {
             }
         }
     }
-
-
 
     public static Intent updateNote(Context context, Notes orgNoteTableIDs, List<String> original, List<String> update,
                                     List<Files> orgFiles, List<Files> newFiles, int vNoteID){

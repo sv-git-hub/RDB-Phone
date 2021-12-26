@@ -2,6 +2,7 @@ package com.mistywillow.researchdb.databases;
 
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import androidx.room.*;
 import com.mistywillow.researchdb.researchdb.*;
 import com.mistywillow.researchdb.researchdb.entities.*;
@@ -30,14 +31,13 @@ public abstract class ResearchDatabase extends RoomDatabase {
     };*/
 
     public static ResearchDatabase getInstance(Context context, String dbName){
-        if(INSTANCE == null){
-                synchronized (ResearchDatabase.class) {
-                    INSTANCE = Room.databaseBuilder(context, ResearchDatabase.class, dbName)
-                            .allowMainThreadQueries()
-                            .build();
-                    //.addMigrations(MIGRATION_1_2, MIGRATION_2_3)
-                    //.createFromAsset("databases/" + dbName)
-                }
+        INSTANCE = null;
+        synchronized (ResearchDatabase.class) {
+            INSTANCE = Room.databaseBuilder(context, ResearchDatabase.class, dbName)
+                    .allowMainThreadQueries()
+                    .build();
+            //.addMigrations(MIGRATION_1_2, MIGRATION_2_3)
+            //.createFromAsset("databases/" + dbName)
         }
         return INSTANCE;
     }

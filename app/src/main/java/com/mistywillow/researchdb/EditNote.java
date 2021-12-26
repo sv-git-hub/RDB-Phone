@@ -1,5 +1,6 @@
 package com.mistywillow.researchdb;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
@@ -56,6 +57,7 @@ public class EditNote extends AppCompatActivity {
     private TableLayout tableLayoutFiles;
     private Menu editMenu;
 
+    @SuppressLint("SetTextI18n")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,6 +66,9 @@ public class EditNote extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         toolbar.setTitleTextColor(getColor(R.color.colorWhite));
         setSupportActionBar(toolbar);
+
+        TextView page = findViewById(R.id.toolbar_page);
+        page.setText(" EDIT NOTE - " + GlobalFilePathVariables.DATABASE);
 
         ResearchDatabase rdb = ResearchDatabase.getInstance(this, GlobalFilePathVariables.DATABASE);
 

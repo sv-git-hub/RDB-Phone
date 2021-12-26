@@ -1,5 +1,6 @@
 package com.mistywillow.researchdb;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Typeface;
@@ -61,7 +62,10 @@ public class ViewNote extends AppCompatActivity {
     String nSource = null;
     String nAuthors = null;
 
+    long refreshMain = 0;
 
+
+    @SuppressLint("SetTextI18n")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -70,6 +74,9 @@ public class ViewNote extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         toolbar.setTitleTextColor(getColor(R.color.colorWhite));
         setSupportActionBar(toolbar);
+
+        TextView page = findViewById(R.id.toolbar_page);
+        page.setText(" VIEW NOTE - " + GlobalFilePathVariables.DATABASE);
 
         sourceType = findViewById(R.id.viewType);
         topic = findViewById(R.id.viewTopic);
@@ -96,11 +103,14 @@ public class ViewNote extends AppCompatActivity {
 
         // RECEIVE INTENT FROM NOTE ADAPTER PASSING SELECTED NOTE ID
         Intent n = getIntent();
+        Bundle extras = n.getExtras();
         nNoteID = n.getIntExtra("ID", 0);
         nType = n.getStringExtra("Type");
         nSummary = n.getStringExtra("Summary");
         nSource = n.getStringExtra("Source");
         nAuthors = n.getStringExtra("Authors");
+        /*if(extras.containsKey("newTopicYN")){
+            refreshMain = n.getLongExtra("newTopicYN",0);}*/
 
         rdb = ResearchDatabase.getInstance(this, GlobalFilePathVariables.DATABASE);
 
@@ -230,16 +240,6 @@ public class ViewNote extends AppCompatActivity {
         createFile(fPath.getAbsolutePath() + "/" + file.getFileName(), file.getFileData());
     }
 
-    private void buildFiles(File location){
-        Log.d("ViewNote:buildFiles", location.getAbsolutePath());
-        int i = 0;
-        for (Files f: noteFiles) {
-           Log.d("ViewNote:buildFiles",f.getFileName());
-            createFile(location.getAbsolutePath() + "/" + f.getFileName(), fileBytes.get(i));
-            i++;
-        }
-}
-
     private void createFile(String fileName, byte[] fileBytes){
         FileOutputStream fos = null;
         try {
@@ -343,8 +343,19 @@ public class ViewNote extends AppCompatActivity {
     }
 
     @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
+    }
+
+    @Override
     public void onBackPressed() {
-          super.onBackPressed();
+        if(DBQueryTools.countTopic(rdb.getTopicsDao().getTopicID(topic.getText().toString())) == 1){
+            Intent intent = new Intent(this, MainActivity.class);
+            startActivity(intent);
+        }else {
+            super.onBackPressed();
+        }
     }
 
     @Override
