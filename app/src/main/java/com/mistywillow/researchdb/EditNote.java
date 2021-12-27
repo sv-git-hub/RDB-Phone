@@ -160,28 +160,12 @@ public class EditNote extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        if(item.getItemId() == R.id.clear){
-            Toast.makeText(this, String.valueOf(editMenu.size()), Toast.LENGTH_SHORT).show();
-
-        }else if(item.getItemId() == R.id.update_note) {
+        if(item.getItemId() == R.id.update_note) {
             captureFieldsUponUpdate();
             List<Files> newNoteFiles = DBQueryTools.captureNoteFiles(viewNoteFiles, tableLayoutFiles);
             startActivity(DBQueryTools.updateNote(this, orgNoteTableIDs, viewNoteDetails, updatedNoteDetails,
                     viewNoteFiles, newNoteFiles, nid));
-            Toast.makeText(this, "Update Note clicked!", Toast.LENGTH_SHORT).show();
 
-        }else if(item.getItemId() == R.id.edit_note){
-            Toast.makeText(this, "Edit Note for Delete clicked!", Toast.LENGTH_SHORT).show();
-        }else if(item.getItemId() == R.id.mark_for_delete) {
-            Toast.makeText(this, "Mark Note for Delete clicked!", Toast.LENGTH_SHORT).show();
-        }else if(item.getItemId() == R.id.unMark_for_delete) {
-            Toast.makeText(this, "Unmark Note for Delete clicked!", Toast.LENGTH_SHORT).show();
-        }else if(item.getItemId() == R.id.review_for_delete) {
-            Toast.makeText(this, "Review Notes for Delete clicked!", Toast.LENGTH_SHORT).show();
-        }else if(item.getItemId() == R.id.permanently_delete) {
-            Toast.makeText(this, "Permanently Delete Note clicked!", Toast.LENGTH_SHORT).show();
-        }else if(item.getItemId() == R.id.delete_database) {
-            Toast.makeText(this, "Delete Database clicked!", Toast.LENGTH_SHORT).show();
         }else if(item.getItemId() == R.id.main_close) {
             finishAndRemoveTask();
         }else if(item.getItemId() == android.R.id.home)
@@ -190,8 +174,6 @@ public class EditNote extends AppCompatActivity {
     }
 
     private void setupMenuOptions() {
-        editMenu.findItem(R.id.clear).setEnabled(false);
-        editMenu.findItem(R.id.edit_note).setEnabled(false);
     }
 
     // CUSTOM METHODS

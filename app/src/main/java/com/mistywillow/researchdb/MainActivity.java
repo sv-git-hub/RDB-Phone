@@ -151,10 +151,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setupMenuOptionsNotAvailable() {
-        mainMenu.findItem(R.id.clear).setEnabled(true);
-        mainMenu.findItem(R.id.add_note).setEnabled(true);
-        mainMenu.findItem(R.id.note_import).setEnabled(false);
+        mainMenu.findItem(R.id.new_database).setEnabled(true);
         mainMenu.findItem(R.id.delete_database).setEnabled(true);
+        mainMenu.findItem(R.id.add_note).setEnabled(true);
+        mainMenu.findItem(R.id.import_note).setEnabled(false);
+        mainMenu.findItem(R.id.clear).setEnabled(true);
     }
 
     @Override
@@ -164,8 +165,6 @@ public class MainActivity extends AppCompatActivity {
             startActivity(addDB);
 
         }else if(item.getItemId() == R.id.delete_database) {
-            Toast.makeText(this, "Delete Database clicked!", Toast.LENGTH_SHORT).show();
-
             try {
                 MasterDatabase mdb = MasterDatabase.getInstance(this);
                 MasterDatabaseList curMDB = mdb.getMasterDao().getDatabaseNamed(Globals.DATABASE);
@@ -178,13 +177,14 @@ public class MainActivity extends AppCompatActivity {
             }catch (Exception del){
                 Log.e("Menu - Delete Database - MainActivity", del.toString());
             }
+            Toast.makeText(this, "Delete Database clicked!", Toast.LENGTH_SHORT).show();
 
         }else if(item.getItemId() == R.id.add_note) {
             Intent launchAdd = new Intent(this, AddNote.class);
             startActivity(launchAdd);
 
-        }else if(item.getItemId() == R.id.note_import) {
-            Toast.makeText(this, "Delete Database clicked!", Toast.LENGTH_SHORT).show();
+        }else if(item.getItemId() == R.id.import_note) {
+            Toast.makeText(this, "Import Note clicked!", Toast.LENGTH_SHORT).show();
 
         }else if(item.getItemId() == R.id.clear) {
             clearFields();
@@ -235,7 +235,7 @@ public class MainActivity extends AppCompatActivity {
         rListNotes.setLayoutManager(new LinearLayoutManager(MainActivity.this));
         rListNotes.setAdapter(new NoteAdapter(MainActivity.this, sourcesTable));
         mainMenu.findItem(R.id.clear).setEnabled(true);
-        mainMenu.findItem(R.id.note_export).setEnabled(true);
+
     }
 
     private void completeSearch(Boolean all, String criteria){

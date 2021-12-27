@@ -62,6 +62,7 @@ public class MainActivityMaster extends AppCompatActivity {
         mImportDB = this.findViewById(R.id.importDatabase);
         mDatabaseList = this.findViewById(R.id.database_list);
         masterDB = MasterDatabase.getInstance(this);
+        mDBToAdd.addTextChangedListener(new FileExtensionTextWatcher(mDBToAdd, "db"));
 
 
         //setupAddDBEditText();

@@ -2,32 +2,7 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
       xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <item android:id="@+id/main_file"
-          android:title="@string/menu_title_file"
-          app:showAsAction="never">
-
-        <menu>
-            <item android:id="@+id/main_database"
-                  android:title="@string/menu_title_database">
-                <menu>
-                    <item android:id="@+id/new_database"
-                          android:title="@string/menu_title_open_create_database"/>
-                    <item android:id="@+id/delete_database"
-                          android:title="@string/menu_title_delete_database"/>
-                    <item android:id="@+id/backup_database"
-                          android:title="@string/menu_title_backup_database"/>
-                </menu>
-            </item>
-
-            <item android:id="@+id/main_print"
-                  android:title="@string/menu_title_print"/>
-            <item android:id="@+id/main_close"
-                  android:title="@string/menu_title_close"/>
-        </menu>
-
-    </item>
-
-    <item android:id="@+id/add_note"
+     <item android:id="@+id/add_note"
           android:title="@string/menu_title_add_note"/>
 
     <item android:id="@+id/clear"

@@ -138,20 +138,12 @@ public class ViewNote extends AppCompatActivity {
     }
 
     private void setupMenuOptionsNotAvailable() {
-        viewMenu.findItem(R.id.clear).setEnabled(false);
-        viewMenu.findItem(R.id.add_note).setEnabled(false);
     }
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         Intent menuIntent;
-        if(item.getItemId() == R.id.clear) {
-            //clearFields();
-            Toast.makeText(this, "Clear Fields clicked!", Toast.LENGTH_SHORT).show();
-        }else if(item.getItemId() == R.id.add_note) {
-            Toast.makeText(this, "Add Note clicked!", Toast.LENGTH_SHORT).show();
-
-        }else if(item.getItemId() == R.id.edit_note){
+        if(item.getItemId() == R.id.edit_note){
             menuIntent = new Intent(this, EditNote.class);
             menuIntent.putExtra("NoteID", nNoteID);
             menuIntent.putExtra("NoteDetails", new ArrayList<>(noteDetails));
@@ -163,12 +155,8 @@ public class ViewNote extends AppCompatActivity {
             Toast.makeText(this, "Mark Note for Delete clicked!", Toast.LENGTH_SHORT).show();
         }else if(item.getItemId() == R.id.unMark_for_delete) {
             Toast.makeText(this, "Unmark Note for Delete clicked!", Toast.LENGTH_SHORT).show();
-        }else if(item.getItemId() == R.id.review_for_delete) {
-            Toast.makeText(this, "Review Notes for Delete clicked!", Toast.LENGTH_SHORT).show();
         }else if(item.getItemId() == R.id.permanently_delete) {
             Toast.makeText(this, "Permanently Delete Note clicked!", Toast.LENGTH_SHORT).show();
-        }else if(item.getItemId() == R.id.delete_database) {
-            Toast.makeText(this, "Delete Database clicked!", Toast.LENGTH_SHORT).show();
         }else if(item.getItemId() == R.id.main_close) {
             finishAndRemoveTask();
         }

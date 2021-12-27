@@ -20,7 +20,7 @@
             <item android:id="@+id/main_note"
                   android:title="@string/menu_title_note">
                 <menu>
-                    <item android:id="@+id/note_import"
+                    <item android:id="@+id/import_note"
                           android:title="@string/menu_title_note_import"/>
                 </menu>
             </item>

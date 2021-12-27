@@ -180,8 +180,9 @@ public class AddNote extends AppCompatActivity {
     }
 
     private void setupMenuOptions() {
-        addMenu.findItem(R.id.clear).setEnabled(true);
         addMenu.findItem(R.id.add_note).setEnabled(true);
+        addMenu.findItem(R.id.clear).setEnabled(true);
+
     }
 
     // MENU METHODS
