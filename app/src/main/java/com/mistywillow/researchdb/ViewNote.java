@@ -18,6 +18,7 @@ import androidx.appcompat.widget.Toolbar;
 import com.mistywillow.researchdb.databases.ResearchDatabase;
 import android.widget.*;
 import com.mistywillow.researchdb.researchdb.entities.Files;
+import com.mistywillow.researchdb.researchdb.entities.Notes;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -109,8 +110,6 @@ public class ViewNote extends AppCompatActivity {
         nSummary = n.getStringExtra("Summary");
         nSource = n.getStringExtra("Source");
         nAuthors = n.getStringExtra("Authors");
-        /*if(extras.containsKey("newTopicYN")){
-            refreshMain = n.getLongExtra("newTopicYN",0);}*/
 
         rdb = ResearchDatabase.getInstance(this, Globals.DATABASE);
 
@@ -128,6 +127,21 @@ public class ViewNote extends AppCompatActivity {
     }
 
     // MENU METHODS
+
+    @Override
+    public boolean onMenuOpened(int featureId, Menu menu){
+        super.onMenuOpened(R.menu.view_menu, viewMenu);
+        Notes notes = rdb.getNotesDao().getNote(nNoteID);
+        if(notes.getDeleted() == 0) {
+            viewMenu.findItem(R.id.mark_for_delete).setEnabled(true);
+            viewMenu.findItem(R.id.unMark_for_delete).setEnabled(false);
+        }else{
+            viewMenu.findItem(R.id.mark_for_delete).setEnabled(false);
+            viewMenu.findItem(R.id.unMark_for_delete).setEnabled(true);
+        }
+        return true;
+
+    }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
@@ -138,6 +152,14 @@ public class ViewNote extends AppCompatActivity {
     }
 
     private void setupMenuOptionsNotAvailable() {
+        Notes notes = rdb.getNotesDao().getNote(nNoteID);
+        if(notes.getDeleted() == 0) {
+            viewMenu.findItem(R.id.mark_for_delete).setEnabled(true);
+            viewMenu.findItem(R.id.unMark_for_delete).setEnabled(false);
+        }else{
+            viewMenu.findItem(R.id.mark_for_delete).setEnabled(false);
+            viewMenu.findItem(R.id.unMark_for_delete).setEnabled(true);
+        }
     }
 
     @Override
@@ -147,16 +169,27 @@ public class ViewNote extends AppCompatActivity {
             menuIntent = new Intent(this, EditNote.class);
             menuIntent.putExtra("NoteID", nNoteID);
             menuIntent.putExtra("NoteDetails", new ArrayList<>(noteDetails));
+
             if(noteFiles.size() > 0)
                 menuIntent.putParcelableArrayListExtra("NoteFiles", new ArrayList<>(noteFiles));
             startActivity(menuIntent);
 
         }else if(item.getItemId() == R.id.mark_for_delete) {
-            Toast.makeText(this, "Mark Note for Delete clicked!", Toast.LENGTH_SHORT).show();
+            rdb.getNotesDao().markNoteToDelete(nNoteID);
+            PopupDialog.AlertMessage(this, "Note Marked to Delete",
+                    "You have marked this note for deletion but it is not deleted to avoid accidental deletion. " +
+                            "To fully delete this note select 'Permanently Delete Note.' You can also unmark it or review " +
+                            "it for deletion at a later time.");
+
         }else if(item.getItemId() == R.id.unMark_for_delete) {
-            Toast.makeText(this, "Unmark Note for Delete clicked!", Toast.LENGTH_SHORT).show();
+            rdb.getNotesDao().unMarkNoteToDelete(nNoteID);
+            PopupDialog.AlertMessage(this, "Note Unmarked to Delete",
+                    "You have unmarked this note for deletion.");
+
         }else if(item.getItemId() == R.id.permanently_delete) {
-            Toast.makeText(this, "Permanently Delete Note clicked!", Toast.LENGTH_SHORT).show();
+            //Notes delNote = rdb.getNotesDao().getNote(nNoteID);
+
+
         }else if(item.getItemId() == R.id.main_close) {
             finishAndRemoveTask();
         }

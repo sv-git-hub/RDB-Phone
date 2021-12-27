@@ -11,9 +11,9 @@
     <style name="AppThemeLauncher" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
         <item name="android:windowBackground">@drawable/splash</item>
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
+        <item name="colorPrimary">@color/colorDkGray</item>
+        <item name="colorPrimaryDark">@color/colorMedGray</item>
+        <item name="colorAccent">@color/colorGray</item>
     </style>
     
     <!-- Master Info/instruction TextView -->

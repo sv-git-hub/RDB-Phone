@@ -6,6 +6,7 @@ import com.mistywillow.researchdb.NoteDetails;
 import com.mistywillow.researchdb.researchdb.entities.Notes;
 import com.mistywillow.researchdb.SourcesTable;
 
+import javax.xml.transform.Source;
 import java.util.List;
 
 @Dao
@@ -16,6 +17,9 @@ public interface NotesDao {
 
     @Update
     void updateNote(Notes note);
+
+    @Delete
+    void deleteNote(Notes notes);
 
     @Query("SELECT * FROM NOTES WHERE NoteID = :noteID")
     Notes getNote(int noteID);
@@ -42,6 +46,21 @@ public interface NotesDao {
             "LEFT JOIN Source as s ON n.SourceID = s.SourceID " +
             "LEFT JOIN Question as q ON n.QuestionID = q.QuestionID WHERE n.NoteID IN(:noteIDs) AND n.Deleted = 0")
     List<SourcesTable> getAllNotesOnNoteIDs(List<Integer> noteIDs);
+
+    // Mark Note for Deletion
+    @Query("UPDATE Notes SET Deleted = 1 WHERE Notes.NoteID = :noteID")
+    void markNoteToDelete(int noteID);
+
+    // UnMark note for Deletion
+    @Query("UPDATE Notes SET Deleted = 0 WHERE Notes.NoteID = :noteID")
+    void unMarkNoteToDelete(int noteID);
+
+    // Retrieve Note Marked for Deletion
+    @Query("SELECT n.NoteID, s.SourceID, s.SourceType, s.Title, c.Summary FROM Comment as c " +
+            "LEFT JOIN Notes as n ON n.CommentID = c.CommentID " +
+            "LEFT JOIN Source as s ON n.SourceID = s.SourceID " +
+            "WHERE n.Deleted = 1")
+    List<SourcesTable>getAllNotesMarkedToDelete();
 
     @RawQuery
     List<Integer> getNotesOnCustomSearch(SimpleSQLiteQuery query);

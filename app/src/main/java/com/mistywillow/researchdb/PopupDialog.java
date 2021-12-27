@@ -15,7 +15,7 @@ public class PopupDialog{
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
         // Set title, icon, can not cancel properties.
         alertDialogBuilder.setTitle(title);
-        alertDialogBuilder.setIcon(R.drawable.ic_launcher_background);
+        alertDialogBuilder.setIcon(R.drawable.img_rdb_icon);
         alertDialogBuilder.setCancelable(false);
 
         // Set the inflated layout view object to the AlertDialog builder.
@@ -46,7 +46,7 @@ public class PopupDialog{
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
         // Set title, icon, can not cancel properties.
         alertDialogBuilder.setTitle(title);
-        alertDialogBuilder.setIcon(R.drawable.ic_launcher_background);
+        alertDialogBuilder.setIcon(R.drawable.img_rdb_icon);
         alertDialogBuilder.setCancelable(false);
 
         // Set the inflated layout view object to the AlertDialog builder.

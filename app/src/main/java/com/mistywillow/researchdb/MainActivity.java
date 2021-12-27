@@ -155,6 +155,7 @@ public class MainActivity extends AppCompatActivity {
         mainMenu.findItem(R.id.delete_database).setEnabled(true);
         mainMenu.findItem(R.id.add_note).setEnabled(true);
         mainMenu.findItem(R.id.import_note).setEnabled(false);
+        mainMenu.findItem(R.id.review_notes).setEnabled(true);
         mainMenu.findItem(R.id.clear).setEnabled(true);
     }
 
@@ -185,6 +186,9 @@ public class MainActivity extends AppCompatActivity {
 
         }else if(item.getItemId() == R.id.import_note) {
             Toast.makeText(this, "Import Note clicked!", Toast.LENGTH_SHORT).show();
+
+        }else if(item.getItemId() == R.id.review_notes) {
+            loadNotes(captureNotes(researchDatabase.getNotesDao().getAllNotesMarkedToDelete()));
 
         }else if(item.getItemId() == R.id.clear) {
             clearFields();
