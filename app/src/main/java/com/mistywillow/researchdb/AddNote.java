@@ -64,7 +64,7 @@ public class AddNote extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         TextView page = findViewById(R.id.toolbar_page);
-        page.setText(" ADD NOTE - " + Globals.DATABASE);
+        page.setText(" ADD NOTE\r\n" + Globals.DATABASE);
 
         // AUTOCOMPLETE TEXT VIEWS
         sourceType = findViewById(R.id.viewType);

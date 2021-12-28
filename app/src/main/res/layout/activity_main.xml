@@ -25,7 +25,7 @@
                 android:textSize="12sp"
                 android:textStyle="bold|italic"
                 android:padding="2dp"
-                android:textAlignment="center"/>
+                android:textAlignment="viewStart"/>
     </androidx.appcompat.widget.Toolbar>
 
     <AutoCompleteTextView
@@ -44,6 +44,7 @@
             app:layout_constraintStart_toStartOf="parent"
             android:layout_marginStart="8dp"
             android:background="#FAFAFA"/>
+    <!--android:imeOptions="actionDone"-->
 
     <EditText
             android:layout_width="0dp"

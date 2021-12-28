@@ -118,6 +118,8 @@
     <!-- POPUP -->
     <string name="lbl_ok">OK</string>
     <string name="lbl_cancel">Cancel</string>
+    <string name="lbl_yes">Yes</string>
+    <string name="lbl_no">No</string>
     <string name="list_authors">listAuthors</string>
 
     <!-- Buttons -->

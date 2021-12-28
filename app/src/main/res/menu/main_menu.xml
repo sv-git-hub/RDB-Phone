@@ -2,20 +2,13 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
       xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <item android:id="@+id/main_file"
-          android:title="@string/menu_title_file"
-          app:showAsAction="never">
-
+    <item android:id="@+id/main_database"
+    android:title="@string/menu_title_database">
         <menu>
-            <item android:id="@+id/main_database"
-            android:title="@string/menu_title_database">
-                <menu>
-                    <item android:id="@+id/new_database"
-                          android:title="@string/menu_title_open_create_database"/>
-                    <item android:id="@+id/delete_database"
-                          android:title="@string/menu_title_delete_database"/>
-                </menu>
-            </item>
+            <item android:id="@+id/new_database"
+                  android:title="@string/menu_title_open_create_database"/>
+            <item android:id="@+id/delete_database"
+                  android:title="@string/menu_title_delete_database"/>
         </menu>
     </item>
 
@@ -33,9 +26,6 @@
 
     <item android:id="@+id/clear"
           android:title="@string/menu_title_clear"/>
-
-    <item android:id="@+id/main_close"
-          android:title="@string/menu_title_close"/>
 
     <item android:id="@+id/main_help"
           android:title="@string/menu_title_help"

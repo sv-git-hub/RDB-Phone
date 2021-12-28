@@ -77,7 +77,7 @@ public class ViewNote extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         TextView page = findViewById(R.id.toolbar_page);
-        page.setText(" VIEW NOTE - " + Globals.DATABASE);
+        page.setText(" VIEW NOTE\r\n" + Globals.DATABASE);
 
         sourceType = findViewById(R.id.viewType);
         topic = findViewById(R.id.viewTopic);
@@ -140,7 +140,6 @@ public class ViewNote extends AppCompatActivity {
             viewMenu.findItem(R.id.unMark_for_delete).setEnabled(true);
         }
         return true;
-
     }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -188,11 +187,6 @@ public class ViewNote extends AppCompatActivity {
 
         }else if(item.getItemId() == R.id.permanently_delete) {
             Notes delNote = rdb.getNotesDao().getNote(nNoteID);
-            
-
-
-        }else if(item.getItemId() == R.id.main_close) {
-            finishAndRemoveTask();
         }
 
         return super.onOptionsItemSelected(item);

@@ -68,7 +68,7 @@ public class EditNote extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         TextView page = findViewById(R.id.toolbar_page);
-        page.setText(" EDIT NOTE - " + Globals.DATABASE);
+        page.setText(" EDIT NOTE\r\n" + Globals.DATABASE);
 
         ResearchDatabase rdb = ResearchDatabase.getInstance(this, Globals.DATABASE);
 
@@ -166,8 +166,6 @@ public class EditNote extends AppCompatActivity {
             startActivity(DBQueryTools.updateNote(this, orgNoteTableIDs, viewNoteDetails, updatedNoteDetails,
                     viewNoteFiles, newNoteFiles, nid));
 
-        }else if(item.getItemId() == R.id.main_close) {
-            finishAndRemoveTask();
         }else if(item.getItemId() == android.R.id.home)
             onBackPressed();
         return super.onOptionsItemSelected(item);
