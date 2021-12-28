@@ -1,10 +1,10 @@
 <resources>
     <string name="app_name">ResearchDB</string>
 
-    <string name="menu_database_instructions">ResearchDB is a sophisticated notes application to help you document important
-        creditable sources which support your ideas, interest, or beliefs – and maybe even important research. ResearchDB requires
-        you to document your sources for credibility and allows you to include links and attach a variety of files. You simply create
-        a database on a subject or idea and begin documenting.</string>
+    <string name="menu_database_instructions">\t\t\tResearchDB is a sophisticated notes application to help you document important
+        information, ideas, interest, and maybe even important research. ResearchDB is unique in that it requires you to document
+        your sources and allows you to include supporting links and attachments. You simply create a database on a subject or idea
+        and begin documenting.</string>
 
     <!-- MAIN MASTER ACTIVITY -->
     <string name="master_how_to_enter_db">Enter a new database name below and click the Add Database button:</string>
@@ -13,10 +13,10 @@
     <string name="master_hint">e.g., My_Database or MyDatabase</string>
     <string name="master_add_db">Add Database</string>
     <string name="master_label_import">Import Database</string>
-    <string name="master_how_to_import_db">"Click the Import Database button to load a ResearchDB database:"</string>
+    <string name="master_how_to_import_db">"Click the Import Database button to load a ResearchDB database."</string>
     <string name="master_import_db">Import Database</string>
     <string name="master_label_select">Select Database</string>
-    <string name="master_how_to_select_db">"Click to select a database from the list then click the button when the database name appears:"</string>
+    <string name="master_how_to_select_db">"Click to select a database from the list below:"</string>
     <string name="master_no_db_selected">No Database Selected</string>
     <string name="allowCharacters">ABCDEFGHIJKLMNOPQRSTUVWXYZ_abcdefghijklmnopqrstuvwxyz.0123456789</string>
 

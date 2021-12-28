@@ -2,6 +2,7 @@ package com.mistywillow.researchdb;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -11,6 +12,8 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -36,7 +39,7 @@ public class MainActivityMaster extends AppCompatActivity {
 
     MasterDatabase masterDB;
     EditText mDBToAdd;
-    Button mAddDB,mUseSelectedDatabase, mImportDB;
+    Button mAddDB, mImportDB;
     ListView mDatabaseList;
     MDBCursorAdapter mdbCA;
     Cursor mCsr;
@@ -58,7 +61,7 @@ public class MainActivityMaster extends AppCompatActivity {
 
         mDBToAdd = this.findViewById(R.id.database_name);
         mAddDB = this.findViewById(R.id.addDatabase);
-        mUseSelectedDatabase = this.findViewById(R.id.useSelectedDatabase);
+        //mUseSelectedDatabase = this.findViewById(R.id.useSelectedDatabase);
         mImportDB = this.findViewById(R.id.importDatabase);
         mDatabaseList = this.findViewById(R.id.database_list);
         masterDB = MasterDatabase.getInstance(this);
@@ -68,9 +71,10 @@ public class MainActivityMaster extends AppCompatActivity {
         //setupAddDBEditText();
         setUpAddDBButton();
         setupImportDBButton();
-        setUpUseSelectedDatabaseButton();
+        //setUpUseSelectedDatabaseButton();
         setOrRefreshDatabaseList();
 
+        // resultLauncher Imports the database and add it to the list to be selected
         resultLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
             if (result.getResultCode() == Activity.RESULT_OK && result.getData() != null){
                 Uri uri = result.getData().getData();
@@ -90,11 +94,25 @@ public class MainActivityMaster extends AppCompatActivity {
         });
     }
 
+    private static void hideKeyboardFrom(Context context, View view) {
+        InputMethodManager imm = (InputMethodManager) context.getSystemService(MainActivityMaster.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+    }
+
     private void setUpAddDBButton() {
         mAddDB.setOnClickListener(view -> {
             if (mDBToAdd.getText().toString().length() > 0) {
+                hideKeyboardFrom(MainActivityMaster.this, view);
                 addDatabaseToList(mDBToAdd.getText().toString());
             }
+        });
+    }
+
+    private void setupImportDBButton(){
+        mImportDB.setOnClickListener(v -> {
+            Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+            intent.setType("*/*");
+            resultLauncher.launch(intent);
         });
     }
 
@@ -105,14 +123,7 @@ public class MainActivityMaster extends AppCompatActivity {
         }
     }
 
-    private void setupImportDBButton(){
-        mImportDB.setOnClickListener(v -> {
-            Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-            intent.setType("*/*");
-            resultLauncher.launch(intent);
-        });
-    }
-    private void setUpUseSelectedDatabaseButton() {
+    /*private void setUpUseSelectedDatabaseButton() {
         mUseSelectedDatabase.setOnClickListener(view -> {
             if (mSelectedDatabaseId > 0) {
                 startChecks();
@@ -121,7 +132,7 @@ public class MainActivityMaster extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-    }
+    }*/
 
     private void setOrRefreshDatabaseList() {
 
@@ -136,12 +147,17 @@ public class MainActivityMaster extends AppCompatActivity {
                 mSelectedDatabaseId = l;
                 if (l > 0) {
                     mSelectedDatabaseName = mCsr.getString(mCsr.getColumnIndex(MasterDatabaseList.COL_DATABASE_NAME));
+                    startChecks();
+                    Intent intent = new Intent(view.getContext(),MainActivity.class); // <- Updated from UseSelectDatabase
+                    startActivity(intent);
+
+                    /*mSelectedDatabaseName = mCsr.getString(mCsr.getColumnIndex(MasterDatabaseList.COL_DATABASE_NAME));
                     mUseSelectedDatabase.setText(mSelectedDatabaseName);
-                    mUseSelectedDatabase.setClickable(true);
-                } else {
+                    mUseSelectedDatabase.setClickable(true);*/
+                } /*else {
                     mUseSelectedDatabase.setText(R.string.master_no_db_selected);
                     mUseSelectedDatabase.setClickable(false);
-                }
+                }*/
             });
         } else {
             mdbCA.swapCursor(mCsr);
@@ -199,9 +215,8 @@ public class MainActivityMaster extends AppCompatActivity {
     }
 
     private void requestPermission() {
-
-        ActivityCompat.requestPermissions(this, new String[]{INTERNET, READ_EXTERNAL_STORAGE, WRITE_EXTERNAL_STORAGE}, PERMISSION_REQUEST_CODE);
-
+        ActivityCompat.requestPermissions(this, new String[]{INTERNET, READ_EXTERNAL_STORAGE,
+                WRITE_EXTERNAL_STORAGE}, PERMISSION_REQUEST_CODE);
     }
 
     @Override
@@ -244,7 +259,6 @@ public class MainActivityMaster extends AppCompatActivity {
                 break;
         }
     }
-
 
     private void showMessageOKCancel(String message, DialogInterface.OnClickListener okListener) {
         new AlertDialog.Builder(MainActivityMaster.this)

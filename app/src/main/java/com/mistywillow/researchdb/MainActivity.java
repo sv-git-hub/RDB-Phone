@@ -245,7 +245,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void loadNotes(List<SourcesTable> sourcesTable){
-        hideKeyboardFrom(this, topic);
+        hideKeyboardFrom(MainActivity.this, topic);
         rListNotes.setLayoutManager(new LinearLayoutManager(MainActivity.this));
         rListNotes.setAdapter(new NoteAdapter(MainActivity.this, sourcesTable));
         Toast.makeText(this, String.valueOf(sourcesTable.size()), Toast.LENGTH_LONG).show();
