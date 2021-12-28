@@ -176,18 +176,19 @@ public class ViewNote extends AppCompatActivity {
 
         }else if(item.getItemId() == R.id.mark_for_delete) {
             rdb.getNotesDao().markNoteToDelete(nNoteID);
-            PopupDialog.AlertMessage(this, "Note Marked to Delete",
+            PopupDialog.AlertMessageOK(this, "Note Marked to Delete",
                     "You have marked this note for deletion but it is not deleted to avoid accidental deletion. " +
                             "To fully delete this note select 'Permanently Delete Note.' You can also unmark it or review " +
                             "it for deletion at a later time.");
 
         }else if(item.getItemId() == R.id.unMark_for_delete) {
             rdb.getNotesDao().unMarkNoteToDelete(nNoteID);
-            PopupDialog.AlertMessage(this, "Note Unmarked to Delete",
+            PopupDialog.AlertMessageOK(this, "Note Unmarked to Delete",
                     "You have unmarked this note for deletion.");
 
         }else if(item.getItemId() == R.id.permanently_delete) {
-            //Notes delNote = rdb.getNotesDao().getNote(nNoteID);
+            Notes delNote = rdb.getNotesDao().getNote(nNoteID);
+            
 
 
         }else if(item.getItemId() == R.id.main_close) {

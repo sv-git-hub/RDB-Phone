@@ -4,8 +4,6 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
-import android.text.Html;
-import android.text.method.LinkMovementMethod;
 import android.view.*;
 import android.widget.*;
 import androidx.activity.result.ActivityResultLauncher;
@@ -116,7 +114,7 @@ public class AddNote extends AppCompatActivity {
                         assert result.getData() != null;
                         Sources src = result.getData().getParcelableExtra("source");
                         if(src == null){
-                            PopupDialog.AlertMessage(AddNote.this, "Error: Author Choice",
+                            PopupDialog.AlertMessageOK(AddNote.this, "Error: Author Choice",
                                     "An issue occurred and an author choice was not returned.");
                             return;
                         }
@@ -409,7 +407,7 @@ public class AddNote extends AppCompatActivity {
                 return true;
             }
         }
-        PopupDialog.AlertMessage(AddNote.this, "Required Field", msg);
+        PopupDialog.AlertMessageOK(AddNote.this, "Required Field", msg);
         return false;
     }
 

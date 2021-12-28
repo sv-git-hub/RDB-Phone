@@ -8,20 +8,20 @@ public class DateTimestampManager {
     public static void validateTopic(Context context, String checkTopic){
         String regEx = "^([\\w'-]*)$|^([\\w'-]* [\\w'-]*:?[\\w'-]*)$|^([\\w'-]* [\\w'-]* [\\w'-]*:?[\\w'-]*)$";
         if (!checkTopic.matches(regEx)) {
-            PopupDialog.AlertMessage(context,"Error: Invalid Topic", "Keep your topic one to three words. No special characters.");
+            PopupDialog.AlertMessageOK(context,"Error: Invalid Topic", "Keep your topic one to three words. No special characters.");
         }
     }
 
     public static void validateSearchTimeStamp(Context context, String checkTimeStamp){
         if (!checkTimeStamp.isEmpty() && !checkTimeStamp.matches("^((\\d\\d):([0-5]\\d):([0-5]\\d))$")){
-            PopupDialog.AlertMessage(context,"Error: Invalid TimeStamp","Please enter the following format or leave blank.\n\n" +
+            PopupDialog.AlertMessageOK(context,"Error: Invalid TimeStamp","Please enter the following format or leave blank.\n\n" +
                     "Example: 00:00:01 or 01:45:59 = hh:mm:ss");
         }
     }
 
     public static void validateDate(Context context, String date){
         if (!date.equals("") && !date.matches ("^([12][\\d][\\d][\\d])$|^(0[1-9]|1[012])/(0[1-9]|[12][0-9]|3[01])/([12][\\d][\\d][\\d])$|^((0[1-9]|1[012])/([12][\\d][\\d][\\d]))$|^([\\d]?[\\d]?[\\d]?[\\d])([A][.][D][.]|[B][.][C][.]|[B][.][C][.][E][.])$")){
-            PopupDialog.AlertMessage(context, "Error: Invalid Date Format","Please enter an acceptable format or leave blank. Examples:\n\n" +
+            PopupDialog.AlertMessageOK(context, "Error: Invalid Date Format","Please enter an acceptable format or leave blank. Examples:\n\n" +
                     "mm/dd/yyyy\nmm/yyyy\nyyyy");
         }
     }

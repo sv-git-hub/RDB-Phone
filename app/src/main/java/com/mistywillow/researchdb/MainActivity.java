@@ -3,7 +3,6 @@ package com.mistywillow.researchdb;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.util.Log;
 import android.view.*;
 import android.view.inputmethod.EditorInfo;
 import android.widget.*;
@@ -14,9 +13,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.sqlite.db.SimpleSQLiteQuery;
-import com.mistywillow.researchdb.databases.MasterDatabase;
 import com.mistywillow.researchdb.databases.ResearchDatabase;
-import com.mistywillow.researchdb.masterdb.entity.MasterDatabaseList;
 
 import java.io.File;
 import java.util.*;
@@ -33,6 +30,8 @@ public class MainActivity extends AppCompatActivity {
     private Menu mainMenu;
 
     private List<Integer> noteIDsFromCustomSearch;
+
+    public static int deleteDB;
 
     @SuppressLint("SetTextI18n")
     @Override
@@ -166,19 +165,8 @@ public class MainActivity extends AppCompatActivity {
             startActivity(addDB);
 
         }else if(item.getItemId() == R.id.delete_database) {
-            try {
-                MasterDatabase mdb = MasterDatabase.getInstance(this);
-                MasterDatabaseList curMDB = mdb.getMasterDao().getDatabaseNamed(Globals.DATABASE);
-                mdb.getMasterDao().delete(curMDB);
-                this.deleteDatabase(Globals.DATABASE);
-
-                Intent home = new Intent(MainActivity.this, MainActivityMaster.class);
-                startActivity(home);
-
-            }catch (Exception del){
-                Log.e("Menu - Delete Database - MainActivity", del.toString());
-            }
-            Toast.makeText(this, "Delete Database clicked!", Toast.LENGTH_SHORT).show();
+            PopupDialog.DeleteDatabaseYN(this, "Delete Database",
+                    "Do you want to delete database: " + sharedPreferences.getString("database", ""));
 
         }else if(item.getItemId() == R.id.add_note) {
             Intent launchAdd = new Intent(this, AddNote.class);
