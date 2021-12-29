@@ -11,6 +11,7 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -94,6 +95,7 @@ public class MainActivityMaster extends AppCompatActivity {
         });
     }
 
+    /**https://stackoverflow.com/questions/1109022/how-do-you-close-hide-the-android-soft-keyboard-programmatically*/
     private static void hideKeyboardFrom(Context context, View view) {
         InputMethodManager imm = (InputMethodManager) context.getSystemService(MainActivityMaster.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
@@ -123,17 +125,6 @@ public class MainActivityMaster extends AppCompatActivity {
         }
     }
 
-    /*private void setUpUseSelectedDatabaseButton() {
-        mUseSelectedDatabase.setOnClickListener(view -> {
-            if (mSelectedDatabaseId > 0) {
-                startChecks();
-
-                Intent intent = new Intent(view.getContext(),MainActivity.class); // <- Updated from UseSelectDatabase
-                startActivity(intent);
-            }
-        });
-    }*/
-
     private void setOrRefreshDatabaseList() {
 
         mCsr = masterDB.getMasterDao().getAllDatabasesAsCursor();
@@ -150,14 +141,7 @@ public class MainActivityMaster extends AppCompatActivity {
                     startChecks();
                     Intent intent = new Intent(view.getContext(),MainActivity.class); // <- Updated from UseSelectDatabase
                     startActivity(intent);
-
-                    /*mSelectedDatabaseName = mCsr.getString(mCsr.getColumnIndex(MasterDatabaseList.COL_DATABASE_NAME));
-                    mUseSelectedDatabase.setText(mSelectedDatabaseName);
-                    mUseSelectedDatabase.setClickable(true);*/
-                } /*else {
-                    mUseSelectedDatabase.setText(R.string.master_no_db_selected);
-                    mUseSelectedDatabase.setClickable(false);
-                }*/
+                }
             });
         } else {
             mdbCA.swapCursor(mCsr);
@@ -204,8 +188,7 @@ public class MainActivityMaster extends AppCompatActivity {
     }
 
     /** The following permissions check functionality was sourced from:
-     * https://www.journaldev.com/10409/android-runtime-permissions-example
-     */
+     * https://www.journaldev.com/10409/android-runtime-permissions-example*/
     private boolean checkPermission() {
         int result = ContextCompat.checkSelfPermission(getApplicationContext(), INTERNET);
         int result1 = ContextCompat.checkSelfPermission(getApplicationContext(), READ_EXTERNAL_STORAGE);

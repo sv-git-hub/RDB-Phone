@@ -41,6 +41,7 @@
     <string name="menu_title_close">Close</string>
 
     <string name="menu_title_open_create_database">Open/Create Database</string>
+    <string name="menu_title_export_database">Export Database</string>
     <string name="menu_title_delete_database">Delete Database</string>
     <string name="menu_title_backup_database">Backup Database</string>
 
@@ -120,6 +121,7 @@
     <string name="lbl_cancel">Cancel</string>
     <string name="lbl_yes">Yes</string>
     <string name="lbl_no">No</string>
+    <string name="lbl_browse">Browse</string>
     <string name="list_authors">listAuthors</string>
 
     <!-- Buttons -->

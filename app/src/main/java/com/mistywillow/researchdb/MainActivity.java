@@ -4,6 +4,9 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Environment;
+import android.provider.MediaStore;
+import android.util.Log;
 import android.view.*;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
@@ -18,7 +21,7 @@ import androidx.sqlite.db.SimpleSQLiteQuery;
 import com.mistywillow.researchdb.databases.ResearchDatabase;
 import com.mistywillow.researchdb.researchdb.entities.Notes;
 
-import java.io.File;
+import java.io.*;
 import java.util.*;
 
 public class MainActivity extends AppCompatActivity {
@@ -188,6 +191,9 @@ public class MainActivity extends AppCompatActivity {
             Intent addDB = new Intent(getApplicationContext(), MainActivityMaster.class);
             startActivity(addDB);
 
+        }else if(item.getItemId() == R.id.export_database) {
+            exportDatabase();
+
         }else if(item.getItemId() == R.id.delete_database) {
             PopupDialog.DeleteDatabaseYN(this, "Delete Database",
                     "Do you want to delete database: " + sharedPreferences.getString("database", ""));
@@ -197,6 +203,9 @@ public class MainActivity extends AppCompatActivity {
             startActivity(launchAdd);
 
         }else if(item.getItemId() == R.id.import_note) {
+            Intent xml = new Intent(Intent.ACTION_GET_CONTENT);
+            xml.setType("*/*.xml");
+
             Toast.makeText(this, "Import Note clicked!", Toast.LENGTH_SHORT).show();
 
         }else if(item.getItemId() == R.id.review_notes) {
@@ -208,6 +217,22 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private void exportDatabase(){
+        String sourcePath = this.getDatabasePath(Globals.DATABASE).getPath();
+        String destinationPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS) + "/" + Globals.DATABASE;
+
+        try {
+            InputStream source = new FileInputStream(sourcePath);
+            OutputStream destination = new FileOutputStream(destinationPath);
+            DatabaseManager.copyDatabase(source, destination);
+            PopupDialog.AlertMessageOK(this, "Export Database Successful!", Globals.DATABASE +
+                    " was successfully copied to your Downloads folder for sharing.");
+        }catch (FileNotFoundException f){
+            Log.e("Export Database", f.toString());
+
+        }
     }
 
     @Override
@@ -250,7 +275,6 @@ public class MainActivity extends AppCompatActivity {
         rListNotes.setAdapter(new NoteAdapter(MainActivity.this, sourcesTable));
         Toast.makeText(this, String.valueOf(sourcesTable.size()), Toast.LENGTH_LONG).show();
         mainMenu.findItem(R.id.clear).setEnabled(true);
-
     }
 
     private void completeSearch(Boolean all, String criteria){
