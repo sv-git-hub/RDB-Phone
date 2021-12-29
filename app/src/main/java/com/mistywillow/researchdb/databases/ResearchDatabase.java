@@ -31,7 +31,7 @@ public abstract class ResearchDatabase extends RoomDatabase {
     };*/
 
     public static ResearchDatabase getInstance(Context context, String dbName){
-        INSTANCE = null;
+        INSTANCE = null; // Necessary to allow for multiple database connections. May cause and need to resolve possible leak issue
         synchronized (ResearchDatabase.class) {
             INSTANCE = Room.databaseBuilder(context, ResearchDatabase.class, dbName)
                     .allowMainThreadQueries()

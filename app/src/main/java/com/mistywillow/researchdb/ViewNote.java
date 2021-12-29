@@ -192,6 +192,9 @@ public class ViewNote extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    /** Cache references used creating to and reading from cache
+     * https://c1ctech.com/android-read-and-write-internal-storage-example/
+     * https://stackoverflow.com/questions/23830157/open-file-in-cache-directory-with-action-view*/
     private TableRow setupTableRow(String fileID, String fileName, boolean bold) {
 
         TableRow row = new TableRow(this);
@@ -215,8 +218,8 @@ public class ViewNote extends AppCompatActivity {
 
 
                 checkFolderExists(this, "note_files");
-
-                File filePaths = new File(getFilesDir().toString() + "/note_files/");
+                File filePaths = new File(getCacheDir().toString() + "/note_files/");
+                //File filePaths = new File(getFilesDir().toString() + "/note_files/");
                 Log.d("File: filePaths", filePaths.getAbsolutePath());
 
                 File newFile = new File(filePaths, result);
@@ -236,7 +239,8 @@ public class ViewNote extends AppCompatActivity {
     }
 
     public static void checkFolderExists(Context context, String folder){
-        File location = new File(context.getFilesDir() + "/" + folder);
+        File location = new File(context.getCacheDir() + "/" + folder);
+        //File location = new File(context.getFilesDir() + "/" + folder);
         if(!location.exists()) {
             if(location.mkdir())
                 Toast.makeText(context, "Directory " + folder + " was created!", Toast.LENGTH_SHORT).show();
