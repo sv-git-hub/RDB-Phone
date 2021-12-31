@@ -8,6 +8,8 @@
     <item android:id="@+id/clear"
           android:title="@string/menu_title_clear"/>
 
+    <item android:id="@+id/import_note"
+          android:title="@string/menu_title_note_import"/>
 
     <item android:id="@+id/main_help"
           android:title="@string/menu_title_help"

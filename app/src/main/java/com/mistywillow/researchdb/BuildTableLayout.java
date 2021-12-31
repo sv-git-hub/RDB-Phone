@@ -3,6 +3,7 @@ package com.mistywillow.researchdb;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.util.Log;
 import android.view.Gravity;
 import android.widget.*;
 import androidx.appcompat.app.AppCompatActivity;
@@ -49,21 +50,40 @@ public class BuildTableLayout extends AppCompatActivity{
 
     // AUTHORS ======================================================
 
-    public static TableRow setupAuthorsTableRow (Context context, TableLayout table, String first, String middle, String last, String suffix, boolean bold){
+    public static TableRow setupAuthorsTableRow (Context context, TableLayout table, String first, String middle, String last, String suffix,
+                                                 boolean bool_AddNames, boolean bool_DeleteBtn){
         TableRow row = new TableRow(context);
-        if(bold) {
-            row.addView(setupAuthorsAddRowButton(context, table));
-            row.addView(addRowTextViewToTable(context, first, true));
-            row.addView(addRowTextViewToTable(context, middle, true));
-            row.addView(addRowTextViewToTable(context, last, true));
-            row.addView(addRowTextViewToTable(context, suffix, true));
+        if(bool_AddNames) {
+            if (bool_DeleteBtn) {
+                row.addView(setupDeleteRowButton(context, table, ""));
+                Log.e("BuildTableLayout", "setupDeleteRowButton");
+                row.addView(addEditTextToTable(context, first));
+                row.setClickable(true);
+                row.addView(addEditTextToTable(context, middle));
+                row.setClickable(true);
+                row.addView(addEditTextToTable(context, last));
+                row.setClickable(true);
+                row.addView(addEditTextToTable(context, suffix));
+                row.setClickable(true);
+            }else{
+                row.addView(setupAuthorsAddRowButton(context, table));
+                Log.e("BuildTableLayout", "setupAuthorsAddRowButton");
+
+                row.addView(addRowTextViewToTable(context, first, true));
+                row.addView(addRowTextViewToTable(context, middle, true));
+                row.addView(addRowTextViewToTable(context, last, true));
+                row.addView(addRowTextViewToTable(context, suffix, true));
+                Log.e("BuildTableLayout", "addRowTextViewToTable");
+            }
+
         }
-        if(!bold) {
+        if(!bool_AddNames) {
             String tag = "";
             row.addView(setupDeleteRowButton(context, table, tag));
             for(int r=1; r<5;r++) {
                 row.addView(addEditTextToTable(context, ""));
                 row.setClickable(true);
+                Log.e("BuildTableLayout", "addEditTextToTable");
             }
         }
         return row;
@@ -80,7 +100,7 @@ public class BuildTableLayout extends AppCompatActivity{
         btnAddRow.setTypeface(Typeface.DEFAULT,Typeface.BOLD);
         btnAddRow.setGravity(Gravity.CENTER);
         btnAddRow.setPadding(5,5,5,5);
-        btnAddRow.setOnClickListener(v -> table.addView(setupAuthorsTableRow(context, table, "", "", "", "", false)));
+        btnAddRow.setOnClickListener(v -> table.addView(setupAuthorsTableRow(context, table, "", "", "", "", false, false)));
         return btnAddRow;
     }
 
@@ -115,7 +135,7 @@ public class BuildTableLayout extends AppCompatActivity{
         editText.setLayoutParams(trLayoutParams);
         editText.setBackgroundColor(Color.WHITE);
         editText.setText(value);
-        editText.setTextSize(14);
+        editText.setTextSize(12);
         editText.setGravity(Gravity.CENTER);
         editText.setSingleLine();
         editText.setPadding(5, 5, 5, 5);

@@ -2,6 +2,7 @@ package com.mistywillow.researchdb.researchdb.entities;
 
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
+import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
 @Entity(tableName = "Author")
@@ -16,6 +17,13 @@ public class Authors {
 
     public Authors(int authorID, String firstName, String middleName, String lastName, String suffix){
         this.authorID = authorID;
+        this.firstName = firstName;
+        this.middleName = middleName;
+        this.lastName = lastName;
+        this.suffix = suffix;
+    }
+    @Ignore
+    public Authors(String firstName, String middleName, String lastName, String suffix){
         this.firstName = firstName;
         this.middleName = middleName;
         this.lastName = lastName;

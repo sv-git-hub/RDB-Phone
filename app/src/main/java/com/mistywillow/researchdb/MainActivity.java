@@ -1,9 +1,11 @@
 package com.mistywillow.researchdb;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Log;
@@ -11,6 +13,8 @@ import android.view.*;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.*;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
@@ -36,6 +40,9 @@ public class MainActivity extends AppCompatActivity {
     private Menu mainMenu;
 
     private List<Integer> noteIDsFromCustomSearch;
+
+    private ActivityResultLauncher<Intent> xmlLauncher;
+    private List<HashMap<String, List<String>>> xmlNote;
 
     public static int deleteDB;
 
@@ -116,6 +123,22 @@ public class MainActivity extends AppCompatActivity {
                 rListNotes.setAdapter(null);
                 return false;
             });
+
+        xmlLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
+            if (result.getResultCode() == Activity.RESULT_OK && result.getData() != null){
+                Uri uri = result.getData().getData();
+                String str = RealPathUtil.getRealPath(this, uri);
+                Toast.makeText(this, str, Toast.LENGTH_LONG).show();
+
+                try {
+                    ReadXMLFileDOMParser parser = new ReadXMLFileDOMParser(str);
+                    xmlNote = parser.getImportNotes();
+                    Toast.makeText(this, "PARSER SUCCESS", Toast.LENGTH_LONG).show();
+                }catch (Exception e){
+                    Log.e("ReadXMLFileDOMParser", e.toString());
+                }
+            }
+        });
     }
 
     public static void hideKeyboardFrom(Context context, View view) {
@@ -204,9 +227,8 @@ public class MainActivity extends AppCompatActivity {
 
         }else if(item.getItemId() == R.id.import_note) {
             Intent xml = new Intent(Intent.ACTION_GET_CONTENT);
-            xml.setType("*/*.xml");
-
-            Toast.makeText(this, "Import Note clicked!", Toast.LENGTH_SHORT).show();
+            xml.setType("*/*");
+            xmlLauncher.launch(xml);
 
         }else if(item.getItemId() == R.id.review_notes) {
             loadNotes(captureNotes(researchDatabase.getNotesDao().getAllNotesMarkedToDelete()));
