@@ -45,7 +45,7 @@
             android:layout_marginTop="5dp"
             android:layout_marginBottom="5dp"
             app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintVertical_bias="0.0">
+            app:layout_constraintVertical_bias="1.0">
 
         <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
@@ -387,7 +387,8 @@
                     android:layout_height="wrap_content"
                     android:background="@color/colorWhite"
                     android:padding="5dp"
-                    android:inputType="date"
+                    android:inputType="text"
+                    android:digits="@string/allowDateCharacters"
                     android:imeOptions="actionDone"
                     android:hint="@string/hint_date"
                     android:autofillHints="@string/autoHint_date"
@@ -395,7 +396,7 @@
                     android:singleLine="true" android:textSize="12sp"
                     app:layout_constraintStart_toEndOf="@+id/lbl_View_Date"
                     app:layout_constraintBaseline_toBaselineOf="@+id/lbl_View_Date"
-                    android:layout_marginStart="5dp" />
+                    android:layout_marginStart="5dp" tools:ignore="TextFields"/>
             <TextView
                     android:id="@+id/lbl_View_Volume"
                     android:text="@string/lbl_note_volume"

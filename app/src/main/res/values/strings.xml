@@ -19,6 +19,7 @@
     <string name="master_how_to_select_db">"Click to select a database from the list below:"</string>
     <string name="master_no_db_selected">No Database Selected</string>
     <string name="allowCharacters">ABCDEFGHIJKLMNOPQRSTUVWXYZ_abcdefghijklmnopqrstuvwxyz.0123456789</string>
+    <string name="allowDateCharacters">0123456789/</string>
 
     <!-- MAIN MASTER RECYCLERVIEW -->
     <string name="master_delete">X</string>
