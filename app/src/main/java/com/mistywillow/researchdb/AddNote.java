@@ -141,12 +141,17 @@ public class AddNote extends AppCompatActivity {
                 String str = RealPathUtil.getRealPath(this, uri);
                 Toast.makeText(this, str, Toast.LENGTH_LONG).show();
 
-                try {
-                    ReadXMLFileDOMParser parser = new ReadXMLFileDOMParser(str);
-                    loadImportedNoteDetails(parser.getImportNotes());
-                    Toast.makeText(this, "PARSER SUCCESS", Toast.LENGTH_LONG).show();
-                }catch (Exception e){
-                    Log.e("ReadXMLFileDOMParser", e.toString());
+                if(str.endsWith(".xml")) {
+                    try {
+                        ReadXMLFileDOMParser parser = new ReadXMLFileDOMParser(str);
+                        loadImportedNoteDetails(parser.getImportNotes());
+                        Toast.makeText(this, "PARSER SUCCESS", Toast.LENGTH_LONG).show();
+                    } catch (Exception e) {
+                        Log.e("ReadXMLFileDOMParser", e.toString());
+                        PopupDialog.AlertMessageOK(this, "Wrong Note Type", "Only ResearchDB notes can be imported and must end in '.xml'");
+                    }
+                }else{
+                    PopupDialog.AlertMessageOK(this, "Wrong Note Type", "Only ResearchDB notes can be imported and must end in '.xml'");
                 }
             }
         });

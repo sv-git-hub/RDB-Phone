@@ -83,14 +83,21 @@ public class MainActivityMaster extends AppCompatActivity {
                 String strDBName = sourcePath.substring(sourcePath.lastIndexOf("/")+1);
                 String destinationPath = this.getDatabasePath(strDBName).getPath();
 
-                try {
-                    InputStream source = new FileInputStream(sourcePath);
-                    OutputStream destination = new FileOutputStream(destinationPath);
-                    DatabaseManager.copyDatabase(source, destination);
-                    addDatabaseToList(strDBName);
-                }catch (FileNotFoundException f){
-                    Log.e("Import DB Error", f.toString());
+                if(strDBName.endsWith(".db")) {
+                    try {
+                        InputStream source = new FileInputStream(sourcePath);
+                        OutputStream destination = new FileOutputStream(destinationPath);
+                        DatabaseManager.copyDatabase(source, destination);
+                        addDatabaseToList(strDBName);
+                    } catch (FileNotFoundException f) {
+                        Log.e("Import DB Error", f.toString());
+                        Log.e("MainActivityMaster Database Type Issue", strDBName + " was the cause of this issue");
+                        PopupDialog.AlertMessageOK(this, "Wrong Database Type", "Only ResearchDB databases can be imported and must end in '.db'");
+                    }
+                }else{
+                    PopupDialog.AlertMessageOK(this, "Wrong Database Type", "Only ResearchDB databases can be imported and must end in '.db'");
                 }
+
             }
         });
     }
