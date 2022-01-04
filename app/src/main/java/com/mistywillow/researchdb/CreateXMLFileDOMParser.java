@@ -35,7 +35,7 @@ public class CreateXMLFileDOMParser {
 
     public CreateXMLFileDOMParser(String fileName){
         setFileName(fileName);
-        //xmlFilePath = GlobalVariables.USER_DESKTOP + getFileName();
+        xmlFilePath = Globals.DOWNLOADS_FOLDER + "/" + getFileName();
         try{
             DocumentBuilderFactory docBuilderFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder docBuilder = docBuilderFactory.newDocumentBuilder();
@@ -51,7 +51,7 @@ public class CreateXMLFileDOMParser {
 
     public CreateXMLFileDOMParser(String fileName, HashMap map){
         setFileName(fileName);
-        //xmlFilePath = GlobalVariables.USER_DESKTOP + getFileName();
+        xmlFilePath = Globals.DOWNLOADS_FOLDER + "/" + getFileName();
         try{
             DocumentBuilderFactory docBuilderFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder docBuilder = docBuilderFactory.newDocumentBuilder();

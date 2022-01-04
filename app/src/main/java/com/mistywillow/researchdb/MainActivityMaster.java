@@ -62,17 +62,13 @@ public class MainActivityMaster extends AppCompatActivity {
 
         mDBToAdd = this.findViewById(R.id.database_name);
         mAddDB = this.findViewById(R.id.addDatabase);
-        //mUseSelectedDatabase = this.findViewById(R.id.useSelectedDatabase);
         mImportDB = this.findViewById(R.id.importDatabase);
         mDatabaseList = this.findViewById(R.id.database_list);
         masterDB = MasterDatabase.getInstance(this);
         mDBToAdd.addTextChangedListener(new FileExtensionTextWatcher(mDBToAdd, "db"));
 
-
-        //setupAddDBEditText();
         setUpAddDBButton();
         setupImportDBButton();
-        //setUpUseSelectedDatabaseButton();
         setOrRefreshDatabaseList();
 
         // resultLauncher Imports the database and add it to the list to be selected

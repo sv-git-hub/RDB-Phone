@@ -243,7 +243,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void exportDatabase(){
         String sourcePath = this.getDatabasePath(Globals.DATABASE).getPath();
-        String destinationPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS) + "/" + Globals.DATABASE;
+        String destinationPath = Globals.DOWNLOADS_FOLDER + "/" + Globals.DATABASE;
 
         try {
             InputStream source = new FileInputStream(sourcePath);

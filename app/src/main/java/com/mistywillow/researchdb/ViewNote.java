@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.net.Uri;
+import android.os.Environment;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
 import android.util.Log;
@@ -23,9 +24,8 @@ import com.mistywillow.researchdb.researchdb.entities.Notes;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 import static androidx.core.content.FileProvider.getUriForFile;
 
@@ -173,6 +173,10 @@ public class ViewNote extends AppCompatActivity {
                 menuIntent.putParcelableArrayListExtra("NoteFiles", new ArrayList<>(noteFiles));
             startActivity(menuIntent);
 
+        }else if(item.getItemId() == R.id.export_note) {
+            exportToXML(ExportNoteToXML.exportNote(this, nNoteID, noteDetails, noteFiles));
+
+
         }else if(item.getItemId() == R.id.mark_for_delete) {
             rdb.getNotesDao().markNoteToDelete(nNoteID);
             PopupDialog.AlertMessageOK(this, "Note Marked to Delete",
@@ -186,10 +190,19 @@ public class ViewNote extends AppCompatActivity {
                     "You have unmarked this note for deletion.");
 
         }else if(item.getItemId() == R.id.permanently_delete) {
-            Notes delNote = rdb.getNotesDao().getNote(nNoteID);
+            //Notes delNote = rdb.getNotesDao().getNote(nNoteID);
+            //Environment.getStorageDirectory().toPath();
+            Toast.makeText(this, getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS).toString(), Toast.LENGTH_LONG).show();
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private void exportToXML(HashMap<String, Object[]> allNotes){
+        HashMap<Integer, HashMap<String, Object[]>> notes = new HashMap<>();
+        notes.put(nNoteID, new HashMap<>(allNotes));
+        String timeStamp = DateTimestampManager.currentTimestamp();
+        new CreateXMLFileDOMParser(Globals.DATABASE + "_notes_" + timeStamp + ".xml", notes);
     }
 
     /** Cache references used creating to and reading from cache

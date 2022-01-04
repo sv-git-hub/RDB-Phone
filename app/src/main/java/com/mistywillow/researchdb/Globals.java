@@ -1,8 +1,11 @@
 package com.mistywillow.researchdb;
 
+import android.os.Environment;
+
 public class Globals {
     // SHARED PREFERENCES
     public static final String SHARED_PREF_FILE = "AppSettings";
+    public static final String DOWNLOADS_FOLDER = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString();
     // DATABASE
     public static long DB_ID;
     public static String DATABASE;

@@ -1,7 +1,12 @@
 package com.mistywillow.researchdb;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.widget.TextView;
+
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class DateTimestampManager {
 
@@ -45,5 +50,13 @@ public class DateTimestampManager {
             returnDT[2] = tempDate[1]; // Day
         }
         return returnDT;
+    }
+
+    public static String currentTimestamp(){
+        Date date = new Date();
+        Timestamp ts=new Timestamp(date.getTime());
+        @SuppressLint("SimpleDateFormat")
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss");
+        return formatter.format(ts);
     }
 }

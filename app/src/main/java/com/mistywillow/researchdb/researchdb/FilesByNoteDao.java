@@ -21,6 +21,11 @@ public interface FilesByNoteDao {
             "WHERE fbn.NoteID=:noteID")
     List<Files> getFilesByNote(final int noteID);
 
+    @Query("SELECT f.FileID, f.FileName, f.FileData FROM File AS f \n" +
+            "LEFT JOIN File_By_Note AS fbn ON f.FileID=fbn.FileID \n" +
+            "WHERE fbn.NoteID=:noteID")
+    List<Files> getFilesByNoteForXML(final int noteID);
+
     @Query("SELECT Notes.NoteID, SourceID, CommentID, QuestionID, QuoteID, TermID, TopicID, Deleted FROM Notes \n" +
             "LEFT JOIN File_By_Note ON Notes.NoteID=File_By_Note.NoteID\n" +
             "WHERE File_By_Note.FileID=:fileID")

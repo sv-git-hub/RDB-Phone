@@ -24,7 +24,7 @@ public interface AuthorsDao {
     Authors getAuthor(int authorID);
 
     // GETS ALL AUTHORS PERTAINING TO A SINGLE SOURCE
-    @Query("SELECT a.AuthorID, a.FirstName, a.MiddleName, a.LastName, a.Suffix FROM Author as a " +
+    @Query("SELECT a.AuthorID, a.FirstName, a.MiddleName, a.LastName FROM Author as a " +
             "LEFT JOIN Author_By_Source as abs ON abs.AuthorID = a.AuthorID " +
             "WHERE abs.SourceID = :sourceID")
     List<Authors> getSourceAuthors(int sourceID);
