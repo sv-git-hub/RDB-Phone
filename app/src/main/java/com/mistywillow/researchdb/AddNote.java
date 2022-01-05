@@ -230,6 +230,9 @@ public class AddNote extends AppCompatActivity {
             xmlLauncher.launch(xml);
 
         }else if(item.getItemId() == R.id.add_note) {
+            if (!requiredFields()) {
+                return false;
+            }
             addNewNote();
             onBackPressed();
 
@@ -242,9 +245,6 @@ public class AddNote extends AppCompatActivity {
 
     private void addNewNote(){
         int srcID;
-        if (!requiredFields()) {
-            return;
-        }
         captureNoteDetails();
 
         if (selectedSourceID > 0)
@@ -293,8 +293,8 @@ public class AddNote extends AppCompatActivity {
 
         data.forEach((n) ->{
             // SOURCE INFORMATION
-            sourceType.setSelection(typePosition(n.get("Source").get(0)));
-            sourceTitle.setText(n.get("Source").get(1));
+            sourceType.setSelection(typePosition(Objects.requireNonNull(n.get("Source")).get(0)));
+            sourceTitle.setText(Objects.requireNonNull(n.get("Source")).get(1));
             volume.setText(n.get("Source").get(5)); // Volume
             edition.setText(n.get("Source").get(6)); // Edition
             issue.setText(n.get("Source").get(7)); // Issue
@@ -305,14 +305,14 @@ public class AddNote extends AppCompatActivity {
             date.setText(temp.trim());
 
             // TOPIC, QUESTION, TERM, QUOTE
-            topic.setText(n.get("Topic").get(0));
+            topic.setText(Objects.requireNonNull(n.get("Topic")).get(0));
             question.setText(n.get("Question").get(0));
             quote.setText(n.get("Quote").get(0));
             term.setText(n.get("Term").get(0));
 
             // COMMENT
-            summary.setText(n.get("Comment").get(0)); // Summary
-            comment.setText(n.get("Comment").get(1)); // Comment
+            summary.setText(Objects.requireNonNull(n.get("Comment")).get(0)); // Summary
+            comment.setText(Objects.requireNonNull(n.get("Comment")).get(1)); // Comment
             pgs_paras.setText(n.get("Comment").get(2)); // Page(s)/Para(s)
             timeStamp.setText(n.get("Comment").get(3)); // TimeStamp
             hyperlink.setText(n.get("Comment").get(4)); // Hyperlink
@@ -320,7 +320,7 @@ public class AddNote extends AppCompatActivity {
             // AUTHOR(s)
             if(rdb.getSourcesDao().countByTitle(n.get("Source").get(1)) == 0){
 
-                n.get("Author").forEach(a -> {
+                Objects.requireNonNull(n.get("Author")).forEach(a -> {
                     Log.e("AddNote.importNote", "Looping author " + a.split("\\*")[0]);
                     String[] arr = a.split("\\*");
                     if (arr.length == 4)
@@ -341,6 +341,7 @@ public class AddNote extends AppCompatActivity {
             // FILE(s)
             if(n.containsKey("File")) {
                 List<Files> files = new ArrayList<>();
+
                 n.get("File").forEach(f -> {
                     String[] ary = f.split("\\*", 2);
                     String cacheFilePath = getCacheDir().getPath() + "/" + ary[0];
@@ -560,6 +561,18 @@ public class AddNote extends AppCompatActivity {
         pgs_paras.setText(null);
         timeStamp.setText(null);
         hyperlink.setText(null);
+        if(tableLayoutFiles.getChildCount() > 1)
+            deleteTableRows(tableLayoutFiles);
+        if(tableLayoutAuthors.getChildCount() > 1)
+            deleteTableRows(tableLayoutAuthors);
     }
 
+    public static void deleteTableRows(TableLayout table){
+        if(table.getChildCount() > 1){
+            for (int i=table.getChildCount(); i > 0; i--){
+                TableRow tblRow = (TableRow) table.getChildAt(i);
+                table.removeView(tblRow);
+            }
+        }
+    }
 }

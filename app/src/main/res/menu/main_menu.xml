@@ -19,8 +19,6 @@
         <menu>
             <item android:id="@+id/add_note"
                     android:title="@string/menu_title_add_note"/>
-            <item android:id="@+id/import_note"
-                  android:title="@string/menu_title_note_import"/>
             <item android:id="@+id/review_notes"
                   android:title="@string/menu_title_review_notes_for_delete"/>
         </menu>

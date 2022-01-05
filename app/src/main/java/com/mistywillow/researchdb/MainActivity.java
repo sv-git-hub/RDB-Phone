@@ -1,20 +1,14 @@
 package com.mistywillow.researchdb;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.net.Uri;
-import android.os.Environment;
-import android.provider.MediaStore;
 import android.util.Log;
 import android.view.*;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.*;
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
@@ -23,7 +17,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.sqlite.db.SimpleSQLiteQuery;
 import com.mistywillow.researchdb.databases.ResearchDatabase;
-import com.mistywillow.researchdb.researchdb.entities.Notes;
 
 import java.io.*;
 import java.util.*;
@@ -40,11 +33,6 @@ public class MainActivity extends AppCompatActivity {
     private Menu mainMenu;
 
     private List<Integer> noteIDsFromCustomSearch;
-
-    private ActivityResultLauncher<Intent> xmlLauncher;
-    private List<HashMap<String, List<String>>> xmlNote;
-
-    public static int deleteDB;
 
     @SuppressLint("SetTextI18n")
     @Override
@@ -71,11 +59,6 @@ public class MainActivity extends AppCompatActivity {
 
         // PREVENTS KEYBOARD POPPING UP ON ACTIVITY LOAD
         keyboardHideClose();
-        //this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
-
-        /**
-         * THE MAIN ACTIVITY MASTER SHOULD PASS VARIABLES TO THE DATABASE HERE TO OPEN THE EXISTING DB
-         */
 
         // MY DATABASE:
             researchDatabase = ResearchDatabase.getInstance(this, Globals.DATABASE);
@@ -113,7 +96,6 @@ public class MainActivity extends AppCompatActivity {
                         rListNotes.setAdapter(null);
                         completeSearch(false, customSearch.getText().toString());
                         loadNotes(captureNotes(researchDatabase.getNotesDao().getAllNotesOnNoteIDs(noteIDsFromCustomSearch)));
-                        //Toast.makeText(getApplicationContext(), String.valueOf(noteIDsFromCustomSearch.size()), Toast.LENGTH_SHORT).show();
                     }
                 return false;
             });
@@ -123,22 +105,6 @@ public class MainActivity extends AppCompatActivity {
                 rListNotes.setAdapter(null);
                 return false;
             });
-
-        xmlLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
-            if (result.getResultCode() == Activity.RESULT_OK && result.getData() != null){
-                Uri uri = result.getData().getData();
-                String str = RealPathUtil.getRealPath(this, uri);
-                Toast.makeText(this, str, Toast.LENGTH_LONG).show();
-
-                try {
-                    ReadXMLFileDOMParser parser = new ReadXMLFileDOMParser(str);
-                    xmlNote = parser.getImportNotes();
-                    Toast.makeText(this, "PARSER SUCCESS", Toast.LENGTH_LONG).show();
-                }catch (Exception e){
-                    Log.e("ReadXMLFileDOMParser", e.toString());
-                }
-            }
-        });
     }
 
     public static void hideKeyboardFrom(Context context, View view) {
@@ -186,7 +152,6 @@ public class MainActivity extends AppCompatActivity {
         mainMenu.findItem(R.id.new_database).setEnabled(true);
         mainMenu.findItem(R.id.delete_database).setEnabled(true);
         mainMenu.findItem(R.id.add_note).setEnabled(true);
-        mainMenu.findItem(R.id.import_note).setEnabled(false);
         mainMenu.findItem(R.id.review_notes).setEnabled(true);
         mainMenu.findItem(R.id.clear).setEnabled(true);
     }
@@ -199,6 +164,7 @@ public class MainActivity extends AppCompatActivity {
             mainMenu.findItem(R.id.review_notes).setEnabled(true);
         }else{
             mainMenu.findItem(R.id.review_notes).setEnabled(false);}
+
         if (topic.getText().toString().equals("") && question.getText().toString().equals("") &&
                 customSearch.getText().toString().equals("") && rListNotes.getAdapter()==null) {
             mainMenu.findItem(R.id.clear).setEnabled(false);
@@ -224,11 +190,6 @@ public class MainActivity extends AppCompatActivity {
         }else if(item.getItemId() == R.id.add_note) {
             Intent launchAdd = new Intent(this, AddNote.class);
             startActivity(launchAdd);
-
-        }else if(item.getItemId() == R.id.import_note) {
-            Intent xml = new Intent(Intent.ACTION_GET_CONTENT);
-            xml.setType("*/*");
-            xmlLauncher.launch(xml);
 
         }else if(item.getItemId() == R.id.review_notes) {
             loadNotes(captureNotes(researchDatabase.getNotesDao().getAllNotesMarkedToDelete()));
