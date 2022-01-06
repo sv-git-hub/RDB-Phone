@@ -46,14 +46,15 @@
     <string name="menu_title_delete_database">Delete Database</string>
     <string name="menu_title_backup_database">Backup Database</string>
 
-    <string name="menu_title_note_import">Import</string>
-    <string name="menu_title_note_export">Export</string>
+    <string name="menu_title_add_note">Add Note</string>
+    <string name="menu_title_note_import">Import Note</string>
+    <string name="menu_title_note_export">Export Note</string>
     <string name="menu_title_export_selection">Selection</string>
     <string name="menu_title_export_results">Search Results</string>
 
     <!-- EDIT -->
     <string name="menu_title_clear">Clear Fields</string>
-    <string name="menu_title_add_note">Add Note</string>
+    <string name="menu_title_add_import_note">Add/Import Note</string>
     <string name="menu_title_edit_note">Edit Note</string>
     <string name="menu_title_update_note">Update Note</string>
     <string name="menu_title_mark_note_for_delete">Mark Note for Delete</string>

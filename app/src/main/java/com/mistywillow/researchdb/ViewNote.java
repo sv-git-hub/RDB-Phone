@@ -135,9 +135,11 @@ public class ViewNote extends AppCompatActivity {
         if(notes.getDeleted() == 0) {
             viewMenu.findItem(R.id.mark_for_delete).setEnabled(true);
             viewMenu.findItem(R.id.unMark_for_delete).setEnabled(false);
+            viewMenu.findItem(R.id.permanently_delete).setEnabled(false);
         }else{
             viewMenu.findItem(R.id.mark_for_delete).setEnabled(false);
             viewMenu.findItem(R.id.unMark_for_delete).setEnabled(true);
+            viewMenu.findItem(R.id.permanently_delete).setEnabled(true);
         }
         return true;
     }
@@ -190,9 +192,13 @@ public class ViewNote extends AppCompatActivity {
                     "You have unmarked this note for deletion.");
 
         }else if(item.getItemId() == R.id.permanently_delete) {
-            //Notes delNote = rdb.getNotesDao().getNote(nNoteID);
+            DBQueryTools.deleteNote(ViewNote.this, nNoteID);
+            Intent intent = new Intent(this, MainActivity.class);
+            startActivity(intent);
+
             //Environment.getStorageDirectory().toPath();
-            Toast.makeText(this, getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS).toString(), Toast.LENGTH_LONG).show();
+            //Toast.makeText(this, getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS).toString(), Toast.LENGTH_LONG).show();
+
         }
 
         return super.onOptionsItemSelected(item);

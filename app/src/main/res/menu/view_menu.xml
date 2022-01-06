@@ -15,15 +15,6 @@
                   android:title="@string/menu_title_unmark_note_for_delete"/>
             <item android:id="@+id/permanently_delete"
                   android:title="@string/menu_title_permanently_delete_note"/>
-            <item android:id="@+id/note_export"
-                  android:title="@string/menu_title_note_export">
-                <menu>
-                    <item android:id="@+id/export_selection"
-                          android:title="@string/menu_title_export_selection"/>
-                    <item android:id="@+id/export_results"
-                          android:title="@string/menu_title_export_results"/>
-                </menu>
-            </item>
         </menu>
     </item>
 

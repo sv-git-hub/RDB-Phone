@@ -4,6 +4,8 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.*;
 import android.view.inputmethod.EditorInfo;
@@ -34,7 +36,7 @@ public class MainActivity extends AppCompatActivity {
 
     private List<Integer> noteIDsFromCustomSearch;
 
-    @SuppressLint("SetTextI18n")
+    @SuppressLint({"SetTextI18n", "ClickableViewAccessibility"})
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -74,6 +76,8 @@ public class MainActivity extends AppCompatActivity {
                     loadNotes(captureNotes(researchDatabase.getNotesDao().getNotesOnTopic(topic.getText().toString())));
                 }
             });
+            topic.setOnKeyListener(new AutoOnKeyListener(topic));
+            topic.setOnFocusChangeListener(new AutoOnFocusChangeListener(topic));
 
             // QUESTION LIST
             ArrayAdapter<String> acQuestionAdapt = DBQueryTools.captureDBQuestions(this);
@@ -87,6 +91,8 @@ public class MainActivity extends AppCompatActivity {
                     loadNotes(captureNotes(researchDatabase.getNotesDao().getNotesOnQuestion(question.getText().toString())));
                 }
             });
+            question.setOnKeyListener(new AutoOnKeyListener(question));
+            question.setOnFocusChangeListener(new AutoOnFocusChangeListener(question));
 
             // CUSTOM SEARCH
             customSearch.setOnEditorActionListener((v, actionId, event) -> {
@@ -151,7 +157,7 @@ public class MainActivity extends AppCompatActivity {
     private void setupMenuOptionsNotAvailable() {
         mainMenu.findItem(R.id.new_database).setEnabled(true);
         mainMenu.findItem(R.id.delete_database).setEnabled(true);
-        mainMenu.findItem(R.id.add_note).setEnabled(true);
+        mainMenu.findItem(R.id.add_import_note).setEnabled(true);
         mainMenu.findItem(R.id.review_notes).setEnabled(true);
         mainMenu.findItem(R.id.clear).setEnabled(true);
     }
@@ -187,7 +193,7 @@ public class MainActivity extends AppCompatActivity {
             PopupDialog.DeleteDatabaseYN(this, "Delete Database",
                     "Do you want to delete database: " + sharedPreferences.getString("database", ""));
 
-        }else if(item.getItemId() == R.id.add_note) {
+        }else if(item.getItemId() == R.id.add_import_note) {
             Intent launchAdd = new Intent(this, AddNote.class);
             startActivity(launchAdd);
 

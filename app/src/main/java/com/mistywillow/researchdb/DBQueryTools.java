@@ -557,6 +557,133 @@ public class DBQueryTools {
 
     }
 
+    public static void deleteNote(Context context, int noteID){
+        rdb = ResearchDatabase.getInstance(context, Globals.DATABASE);
+        List<String> arrTables  = Arrays.asList("Files", "Notes", "Source", "Topic", "Comment", "Question", "Quote", "Term");
+
+        Notes noteIDs = rdb.getNotesDao().getNote(noteID);
+        int srcID = noteIDs.getSourceID();
+        int notesSrcCount = rdb.getNotesDao().countSourcesByID(srcID); // How many times source is used in Notes
+        int absSourceAuthorCount = rdb.getAuthorBySourceDao().countAuthorsBySourceID(srcID); // How many authors of the source
+        int notesTopicCount = rdb.getNotesDao().countTopicByID(noteIDs.getTopicID());
+        int notesQuestionCount = rdb.getNotesDao().countQuestionByID(noteIDs.getQuestionID());
+        List<Authors> authors = rdb.getAuthorBySourceDao().getAuthorsForSource(srcID); // List of Source Authors
+        List<Files> files = rdb.getFilesByNoteDao().getFilesByNote(noteID); // Number of files linked to the source
+
+        try {
+            //long save = rdb.getNotesDao().savePoint(new SimpleSQLiteQuery("SAVEPOINT 'theKraken'"));
+            for(String tbl : arrTables) {
+                int authorID = 0;
+                Sources source = rdb.getSourcesDao().getSource(srcID);
+
+                // File need deleted first due to a NoteID foreign key dependency
+                if (tbl.equals("Files") && files.size() >= 1) {
+                    Log.d("DBQueryTools.deleteNote", "Enter Files");
+                    for (Files file : files) {
+                        rdb.getFilesByNoteDao().delete(new FilesByNote(noteID, file.getFileID()));
+                        rdb.getFilesDao().deleteFile(file);
+                        Log.d("DBQueryTools.deleteNote", "File deleted");
+                    }
+
+                    // Notes contain all foreign keys and need deleted first after files have been checked
+                } else if (tbl.equals("Notes")) {
+                    Log.d("DBQueryTools.deleteNote", "Enter Notes");
+                    rdb.getNotesDao().deleteNote(noteIDs);
+                    Log.d("DBQueryTools.deleteNote", "Note deleted");
+
+                }else if (tbl.equals("Source")) {
+                    Log.d("DBQueryTools.deleteNote", "Enter Source");
+                    // Only 1 occurrence of Source and 1 author for the source
+                    if (notesSrcCount == 1 && absSourceAuthorCount == 1) {
+                        Log.d("DBQueryTools.deleteNote", "Enter 1 Source 1 Author");
+                        // We only have one author
+                        authorID = authors.get(0).getAuthorID();
+
+                        // The author is used 1 time
+                        if (rdb.getAuthorBySourceDao().countAuthorIsUsed(authorID) == 1) {
+                            Log.d("DBQueryTools.deleteNote", "Enter Author used 1 time");
+                            rdb.getAuthorBySourceDao().deleteABS(new AuthorBySource(authorID, srcID));
+                            Authors author = rdb.getAuthorsDao().getAuthor(authorID);
+                            rdb.getAuthorsDao().deleteAuthor(author);
+                            rdb.getSourcesDao().deleteSource(source);
+                            Log.d("DBQueryTools.deleteNote", "Author and Source deleted");
+
+                        } else { // Keep the author but delete the source and source/author reference in ABS
+                            Log.d("DBQueryTools.deleteNote", "Enter keep Author delete source");
+                            rdb.getAuthorBySourceDao().deleteABS(new AuthorBySource(authorID, srcID));
+                            rdb.getSourcesDao().deleteSource(source);
+                            Log.d("DBQueryTools.deleteNote", "Only reference and Source deleted");
+                        }
+
+                        // Source is used once with multiple authors
+                    } else if (notesSrcCount == 1 && absSourceAuthorCount > 1) {
+                        Log.d("DBQueryTools.deleteNote", "Enter 1 Source multi-Author");
+                        for (Authors author : authors) {
+                            authorID = author.getAuthorID();
+
+                            // Author is only used once delete the author and source reference
+                            int absAuthorUsed = rdb.getAuthorBySourceDao().countAuthorIsUsed(author.getAuthorID());
+                            if(absAuthorUsed == 1) {
+                                Log.d("DBQueryTools.deleteNote", "Enter Author used 1 time");
+                                rdb.getAuthorBySourceDao().deleteABS(new AuthorBySource(authorID, srcID));
+                                rdb.getAuthorsDao().deleteAuthor(author);
+                                Log.d("DBQueryTools.deleteNote", "Author deleted");
+
+                                // Author is used elsewhere, delete just the source reference
+                            } else {
+                                rdb.getAuthorBySourceDao().deleteABS(new AuthorBySource(authorID, srcID));
+                                Log.d("DBQueryTools.deleteNote", "Only Author reference deleted");
+                            }
+                        }
+                        rdb.getSourcesDao().deleteSource(source);
+                        Log.d("DBQueryTools.deleteNote", "Source deleted");
+                    }else{
+                        Log.d("DBQueryTools.deleteNote", "Nothing (Source/Authors) deleted");
+                    }
+
+                } else if (tbl.equals("Topic") && notesTopicCount == 1) {
+                    Log.d("DBQueryTools.deleteNote", "Enter Topic");
+                    Topics topic = rdb.getTopicsDao().getTopic(noteIDs.getTopicID());
+                    rdb.getTopicsDao().deleteTopic(topic);
+                    Log.d("DBQueryTools.deleteNote", "Topic deleted");
+
+                } else if(tbl.equals("Comment") && noteIDs.getCommentID() != 0){
+                    Log.d("DBQueryTools.deleteNote", "Enter Comment");
+                    Comments comment = rdb.getCommentsDao().getComment(noteIDs.getCommentID());
+                    rdb.getCommentsDao().deleteComment(comment);
+                    Log.d("DBQueryTools.deleteNote", "Comment deleted");
+
+                }else if (tbl.equals("Question") && noteIDs.getQuestionID() != 0 && notesQuestionCount == 1) {
+                    Log.d("DBQueryTools.deleteNote", "Enter Question");
+                    Questions question = rdb.getQuestionsDao().getQuestion(noteIDs.getQuestionID());
+                    rdb.getQuestionsDao().deleteQuestion(question);
+                    Log.d("DBQueryTools.deleteNote", "Question deleted");
+
+                } else if (tbl.equals("Quote") && noteIDs.getQuoteID() != 0) {
+                    Log.d("DBQueryTools.deleteNote", "Enter Quote");
+                    Quotes quote = rdb.getQuotesDao().getQuote(noteIDs.getQuoteID());
+                    rdb.getQuotesDao().deleteQuote(quote);
+                    Log.d("DBQueryTools.deleteNote", "Quote deleted");
+
+                } else if (tbl.equals("Term") && noteIDs.getTermID() != 0) {
+                    Log.d("DBQueryTools.deleteNote", "Enter Term");
+                    Terms term = rdb.getTermsDao().getTerm(noteIDs.getTermID());
+                    rdb.getTermsDao().deleteTerm(term);
+                    Log.d("DBQueryTools.deleteNote", "Term deleted");
+                }
+
+            }
+            //long release = rdb.getNotesDao().releaseSavePoint(new SimpleSQLiteQuery("RELEASE SAVEPOINT 'theKraken'"));
+            Toast.makeText(context, "Note Deleted Successfully!!!", Toast.LENGTH_LONG).show();
+        }catch (Exception e){
+            Log.e("DBQueryTools.deleteNote", e.toString());
+        }
+
+
+
+
+    }
+
         // METHODS - OTHER
     public static String concatenateDate(String month, String day, String year){
         StringBuilder sb = new StringBuilder();

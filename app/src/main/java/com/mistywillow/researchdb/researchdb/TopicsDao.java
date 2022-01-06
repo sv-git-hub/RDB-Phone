@@ -33,8 +33,8 @@ public interface TopicsDao {
     @Query("SELECT last_insert_rowid()")
     int lastTopicsPKID();
 
-    @Query("SELECT COUNT(*) FROM Topic WHERE Topic = :topic")
-    int getCountOfTopic(String topic);
+    @Query("SELECT COUNT(*) FROM Topic WHERE TopicID = :id")
+    int getCountByTopicID(int id);
 
     @RawQuery
     long getTableSequenceValue(SupportSQLiteQuery query);

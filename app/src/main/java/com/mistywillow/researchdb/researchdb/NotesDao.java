@@ -2,6 +2,7 @@ package com.mistywillow.researchdb.researchdb;
 
 import androidx.room.*;
 import androidx.sqlite.db.SimpleSQLiteQuery;
+import androidx.sqlite.db.SupportSQLiteQuery;
 import com.mistywillow.researchdb.NoteDetails;
 import com.mistywillow.researchdb.researchdb.entities.Notes;
 import com.mistywillow.researchdb.SourcesTable;
@@ -78,6 +79,9 @@ public interface NotesDao {
     @Query("SELECT last_insert_rowid()")
     int lastNotePKID();
 
+    @Query("SELECT COUNT(*) FROM Notes WHERE SourceID = :id")
+    int countSourcesByID(int id);
+
     @Query("SELECT COUNT(*) FROM Notes WHERE QuestionID = :id")
     int countQuestionByID(int id);
 
@@ -89,4 +93,10 @@ public interface NotesDao {
 
     @Query("SELECT COUNT(*) FROM Notes WHERE TopicID = :id")
     int countTopicByID(int id);
+
+    @RawQuery
+    long savePoint(SupportSQLiteQuery query);
+
+    @RawQuery
+    long releaseSavePoint(SupportSQLiteQuery query);
 }

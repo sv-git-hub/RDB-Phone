@@ -33,22 +33,6 @@ public class CreateXMLFileDOMParser {
         this.fileName = fileName;
     }
 
-    public CreateXMLFileDOMParser(String fileName){
-        setFileName(fileName);
-        xmlFilePath = Globals.DOWNLOADS_FOLDER + "/" + getFileName();
-        try{
-            DocumentBuilderFactory docBuilderFactory = DocumentBuilderFactory.newInstance();
-            DocumentBuilder docBuilder = docBuilderFactory.newDocumentBuilder();
-            docBuilder.setEntityResolver(new Resolver());
-            doc = docBuilder.newDocument();
-        }catch(ParserConfigurationException ex){
-            ex.printStackTrace();
-        }
-
-        createNote();
-        createFile();
-    }
-
     public CreateXMLFileDOMParser(String fileName, HashMap map){
         setFileName(fileName);
         xmlFilePath = Globals.DOWNLOADS_FOLDER + "/" + getFileName();

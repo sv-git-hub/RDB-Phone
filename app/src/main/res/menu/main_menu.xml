@@ -14,15 +14,11 @@
         </menu>
     </item>
 
-    <item android:id="@+id/main_note"
-          android:title="@string/menu_title_note">
-        <menu>
-            <item android:id="@+id/add_note"
-                    android:title="@string/menu_title_add_note"/>
-            <item android:id="@+id/review_notes"
-                  android:title="@string/menu_title_review_notes_for_delete"/>
-        </menu>
-    </item>
+
+    <item android:id="@+id/add_import_note"
+            android:title="@string/menu_title_add_import_note"/>
+    <item android:id="@+id/review_notes"
+          android:title="@string/menu_title_review_notes_for_delete"/>
 
     <item android:id="@+id/clear"
           android:title="@string/menu_title_clear"/>

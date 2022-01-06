@@ -14,6 +14,10 @@ public interface AuthorBySourceDao {
     @Insert
     long insert(AuthorBySource authorBySource);
 
+    @Delete
+    void deleteABS(AuthorBySource authorBySource);
+
+
     @Query("SELECT Author.AuthorID, FirstName, MiddleName, LastName, Suffix FROM Author\n" +
             "LEFT JOIN Author_By_Source ON Author.AuthorID=Author_By_Source.AuthorID\n" +
             "WHERE Author_By_Source.SourceID = :sourceID")
@@ -23,6 +27,12 @@ public interface AuthorBySourceDao {
             "INNER JOIN Author_By_Source ON s.SourceID=Author_By_Source.SourceID " +
             "WHERE Author_By_Source.AuthorID = :authorID")
     List<Sources> getSourcesByAuthor(final int authorID);
+
+   @Query("SELECT COUNT(*) FROM Author_By_Source WHERE SourceID = :id")
+   int countAuthorsBySourceID(int id);
+
+    @Query("SELECT COUNT(*) FROM Author_By_Source WHERE AuthorID = :id")
+    int countAuthorIsUsed(int id);
 
     @Transaction
     @Query("SELECT * FROM Author")

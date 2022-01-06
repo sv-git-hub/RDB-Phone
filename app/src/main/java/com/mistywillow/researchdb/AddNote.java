@@ -203,8 +203,15 @@ public class AddNote extends AppCompatActivity {
         });
     }
 
+    /*@Override
+    public boolean onMenuOpened(int featureId, Menu menu) {
+        super.onMenuOpened(R.menu.add_menu, addMenu);
+        return true;
+    }*/
+
     private void setupMenuOptions() {
         addMenu.findItem(R.id.add_note).setEnabled(true);
+        addMenu.findItem(R.id.import_note).setEnabled(true);
         addMenu.findItem(R.id.clear).setEnabled(true);
 
     }
@@ -398,18 +405,26 @@ public class AddNote extends AppCompatActivity {
         ArrayAdapter<String> sourceTitleAdapter = DBQueryTools.captureDBSources(this);
         sourceTitle.setThreshold(1);
         sourceTitle.setAdapter(sourceTitleAdapter);
+        sourceTitle.setOnFocusChangeListener(new AutoOnFocusChangeListener(sourceTitle));
+        sourceTitle.setOnKeyListener(new AutoOnKeyListener(sourceTitle));
 
         ArrayAdapter<String> summaryAdapter = DBQueryTools.captureSummaries(this);
         summary.setThreshold(1);
         summary.setAdapter(summaryAdapter);
+        summary.setOnFocusChangeListener(new AutoOnFocusChangeListener(summary));
+        summary.setOnKeyListener(new AutoOnKeyListener(summary));
 
         ArrayAdapter<String> topicsAdapter = DBQueryTools.captureDBTopics(this);
         topic.setThreshold(1);
         topic.setAdapter(topicsAdapter);
+        topic.setOnFocusChangeListener(new AutoOnFocusChangeListener(topic));
+        topic.setOnKeyListener(new AutoOnKeyListener(topic));
 
         ArrayAdapter<String> acQuestionAdapt = DBQueryTools.captureDBQuestions(this);
         question.setThreshold(1);
         question.setAdapter(acQuestionAdapt);
+        question.setOnFocusChangeListener(new AutoOnFocusChangeListener(question));
+        question.setOnKeyListener(new AutoOnKeyListener(question));
     }
 
     private void captureNoteDetails(){
