@@ -58,7 +58,7 @@
     <string name="menu_title_edit_note">Edit Note</string>
     <string name="menu_title_update_note">Update Note</string>
     <string name="menu_title_mark_note_for_delete">Mark Note for Delete</string>
-    <string name="menu_title_unmark_note_for_delete">Unmark Note for Delete</string>
+    <string name="menu_title_unmark_note_for_delete">Un-Mark Note for Delete</string>
     <string name="menu_title_review_notes_for_delete">Review Notes for Delete</string>
     <string name="menu_title_permanently_delete_note">Permanently Delete Note</string>
 
@@ -111,7 +111,7 @@
     <string name="hint_issue">Issue</string>
     <string name="hint_pgs_paras">Pg(s)/Para(s)</string>
     <string name="hint_timestamp">hh:mm:ss</string>
-    <string name="hint_custom_Search">Custom Search Term(s)</string>
+    <string name="hint_custom_Search">Search (Checkbox Exact)</string>
 
 
     <string name="add_topic">Add or Select a Topic</string>

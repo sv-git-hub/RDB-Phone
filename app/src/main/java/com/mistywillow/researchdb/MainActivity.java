@@ -34,6 +34,8 @@ public class MainActivity extends AppCompatActivity {
     private ResearchDatabase researchDatabase;
     private Menu mainMenu;
 
+    private CheckBox exact;
+
     private List<Integer> noteIDsFromCustomSearch;
 
     @SuppressLint({"SetTextI18n", "ClickableViewAccessibility"})
@@ -52,6 +54,7 @@ public class MainActivity extends AppCompatActivity {
 
         sharedPreferences = getSharedPreferences(Globals.SHARED_PREF_FILE, MODE_PRIVATE);
 
+        exact = findViewById(R.id.cbx_exact);
         topic = findViewById(R.id.listTopic);
         question = findViewById(R.id.listQuestion);
         customSearch = findViewById(R.id.txtCustom);
@@ -100,7 +103,7 @@ public class MainActivity extends AppCompatActivity {
                     if(!customSearch.getText().toString().trim().equals("")){
                         noteIDsFromCustomSearch = new ArrayList<>();
                         rListNotes.setAdapter(null);
-                        completeSearch(false, customSearch.getText().toString());
+                        completeSearch(exact.isChecked(), customSearch.getText().toString());
                         loadNotes(captureNotes(researchDatabase.getNotesDao().getAllNotesOnNoteIDs(noteIDsFromCustomSearch)));
                     }
                 return false;
@@ -134,7 +137,7 @@ public class MainActivity extends AppCompatActivity {
         if(!customSearch.getText().toString().trim().equals("")){
             noteIDsFromCustomSearch = new ArrayList<>();
             rListNotes.setAdapter(null);
-            completeSearch(false, customSearch.getText().toString());
+            completeSearch(exact.isChecked(), customSearch.getText().toString());
             loadNotes(captureNotes(researchDatabase.getNotesDao().getAllNotesOnNoteIDs(noteIDsFromCustomSearch)));
         }
     }
