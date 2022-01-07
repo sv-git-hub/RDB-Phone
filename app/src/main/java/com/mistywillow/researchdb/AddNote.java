@@ -203,17 +203,14 @@ public class AddNote extends AppCompatActivity {
         });
     }
 
-    /*@Override
+    @Override
     public boolean onMenuOpened(int featureId, Menu menu) {
         super.onMenuOpened(R.menu.add_menu, addMenu);
+        if(!requiredFields(false))
+            addMenu.findItem(R.id.add_note).setEnabled(false);
+        else
+            addMenu.findItem(R.id.add_note).setEnabled(true);
         return true;
-    }*/
-
-    private void setupMenuOptions() {
-        addMenu.findItem(R.id.add_note).setEnabled(true);
-        addMenu.findItem(R.id.import_note).setEnabled(true);
-        addMenu.findItem(R.id.clear).setEnabled(true);
-
     }
 
     // MENU METHODS
@@ -222,7 +219,7 @@ public class AddNote extends AppCompatActivity {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.add_menu, menu);
         addMenu = menu;
-        setupMenuOptions();
+        //setupMenuOptions();
         return true;
     }
 
@@ -237,7 +234,7 @@ public class AddNote extends AppCompatActivity {
             xmlLauncher.launch(xml);
 
         }else if(item.getItemId() == R.id.add_note) {
-            if (!requiredFields()) {
+            if (!requiredFields(true)) {
                 return false;
             }
             addNewNote();
@@ -512,7 +509,7 @@ public class AddNote extends AppCompatActivity {
         issue.setText(null);
     }
 
-    private boolean requiredFields(){
+    private boolean requiredFields(Boolean useMessageTF){
         String msg;
 
         if (topic.getText().toString().equals("")){
@@ -555,7 +552,8 @@ public class AddNote extends AppCompatActivity {
                 return true;
             }
         }
-        PopupDialog.AlertMessageOK(AddNote.this, "Required Field", msg);
+        if(useMessageTF)
+            PopupDialog.AlertMessageOK(AddNote.this, "Required Field", msg);
         return false;
     }
 
