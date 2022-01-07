@@ -452,6 +452,9 @@ public class AddNote extends AppCompatActivity {
         if (sources.size() == 0) {
             author.setText(R.string.add_author_phrase);
             selectedSourceID = 0;
+            tableLayoutAuthors.addView(BuildTableLayout.setupAuthorsTableRow(this, tableLayoutAuthors,
+                    "", "", "", "", false, true));
+            tableLayoutAuthors.requestFocus();
             setZeroSourceDetails();
 
         } else if (sources.size() > 1){

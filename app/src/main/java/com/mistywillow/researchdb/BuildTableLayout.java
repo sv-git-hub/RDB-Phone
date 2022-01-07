@@ -93,8 +93,8 @@ public class BuildTableLayout extends AppCompatActivity{
         TableRow row = new TableRow(context);
         if(bool_AddNames) {
             if (bool_DeleteBtn) {
-                row.addView(setupAuthorDeleteRowButton(context, table, ""));
-                Log.e("BuildTableLayout", "setupDeleteRowButton");
+                row.addView(setupAuthorDeleteRowButton(context, table, DateTimestampManager.currentTimestamp()));
+                Log.e("BuildTableLayout", "setupAuthorDeleteRowButton");
                 row.addView(addEditTextToTable(context, first));
                 row.setClickable(true);
                 row.addView(addEditTextToTable(context, middle));
@@ -116,8 +116,7 @@ public class BuildTableLayout extends AppCompatActivity{
 
         }
         if(!bool_AddNames) {
-            String tag = "";
-            row.addView(setupFileDeleteRowButton(context, table, tag));
+            row.addView(setupAuthorDeleteRowButton(context, table, DateTimestampManager.currentTimestamp()));
             for(int r=1; r<5;r++) {
                 row.addView(addEditTextToTable(context, ""));
                 row.setClickable(true);
@@ -184,7 +183,7 @@ public class BuildTableLayout extends AppCompatActivity{
     public static void deleteTableRows(TableLayout table, String tag){
         for (int i=1; i < table.getChildCount(); i++){
             TableRow tblRow = (TableRow) table.getChildAt(i);
-            if(tblRow.getTag().toString().equals(tag)) {
+            if(tblRow.getChildAt(0).getTag().toString().equals(tag)) {
                 table.removeView(tblRow);
                 break;
             }
