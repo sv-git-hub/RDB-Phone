@@ -294,7 +294,11 @@ public class AddNote extends AppCompatActivity {
     }
 
     private void loadImportedNoteDetails(List<HashMap<String, List<String>>> data){
-
+        if(data.size() > 1){
+            PopupDialog.AlertMessageOK(this, "Multiple Note Import",
+                    "At present, only one note at a time can be imported.");
+            return;
+        }
         data.forEach((n) ->{
             // SOURCE INFORMATION
             sourceType.setSelection(typePosition(Objects.requireNonNull(n.get("Source")).get(0)));
@@ -373,6 +377,7 @@ public class AddNote extends AppCompatActivity {
                     }
                 });
             }
+
         });
     }
 
