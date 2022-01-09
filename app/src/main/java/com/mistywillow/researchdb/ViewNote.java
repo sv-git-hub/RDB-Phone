@@ -233,12 +233,10 @@ public class ViewNote extends AppCompatActivity {
 
                 MimeTypeMap myMime = MimeTypeMap.getSingleton();
                 String mimeType = myMime.getMimeTypeFromExtension(getFileExtension(nFile.getFileName()));
-                //String mimeType = myMime.getMimeTypeFromExtension(getFileExtension(result));
 
 
                 checkFolderExists(this, "note_files");
                 File filePaths = new File(getCacheDir().toString() + "/note_files/");
-                //File filePaths = new File(getFilesDir().toString() + "/note_files/");
                 Log.d("File: filePaths", filePaths.getAbsolutePath());
 
                 File newFile = new File(filePaths, result);
@@ -246,7 +244,6 @@ public class ViewNote extends AppCompatActivity {
 
                 if(!newFile.exists()){
                     buildFile(filePaths, nFile);
-                    //buildFiles(filePaths);
                 }
 
                 Uri contentUri = getUriForFile(ViewNote.this, "com.mistywillow.fileprovider", newFile);

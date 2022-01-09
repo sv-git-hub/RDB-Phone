@@ -4,12 +4,14 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.*;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
+import android.webkit.MimeTypeMap;
 import android.widget.*;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -22,6 +24,8 @@ import com.mistywillow.researchdb.databases.ResearchDatabase;
 
 import java.io.*;
 import java.util.*;
+
+import static androidx.core.content.FileProvider.getUriForFile;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -206,9 +210,36 @@ public class MainActivity extends AppCompatActivity {
         }else if(item.getItemId() == R.id.clear) {
             clearFields();
             mainMenu.findItem(R.id.clear).setEnabled(false);
+
+        }else if(item.getItemId() == R.id.main_help) {
+            getHelp();
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private void getHelp(){
+        MimeTypeMap myMime = MimeTypeMap.getSingleton();
+        File helpFile = new File(getCacheDir()+ "/ResearchDB.pdf");
+        Log.e("filename:", helpFile.getName());
+        String mimeType = myMime.getMimeTypeFromExtension(getFileExtension(helpFile.getName()));
+        Uri contentUri = getUriForFile(MainActivity.this, "com.mistywillow.fileprovider", helpFile);
+        Log.d("File: contentUri", Objects.requireNonNull(contentUri.getPath()));
+        openFile(contentUri, mimeType);
+    }
+
+    private String getFileExtension(String fileName){
+        String[] ext = fileName.split("[.]");
+        return ext[ext.length-1];
+    }
+
+
+    private void openFile(Uri uri, String mime){
+        Log.d("ViewNote:openFile", mime+":"+uri.toString());
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+        intent.setDataAndType(uri,mime);
+        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+        startActivity(intent);
     }
 
     private void exportDatabase(){
@@ -334,7 +365,4 @@ public class MainActivity extends AppCompatActivity {
         }
         return sb.toString();
     }
-
-
-
 }

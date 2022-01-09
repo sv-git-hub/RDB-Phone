@@ -59,6 +59,7 @@ public class MainActivityMaster extends AppCompatActivity {
             requestPermission();
 
         sharedPreferences = getSharedPreferences(Globals.SHARED_PREF_FILE, MODE_PRIVATE);
+        CopyAssets.copyAssets(this, "ResearchDB.pdf");
 
         mDBToAdd = this.findViewById(R.id.database_name);
         mAddDB = this.findViewById(R.id.addDatabase);

@@ -16,20 +16,18 @@ public class CopyAssets {
             location.mkdir();
     }
 
-    public static void copyAssets(Context context, String folder, String filename) {
+    public static void copyAssets(Context context, String filename) {
         AssetManager assetManager = context.getAssets();
         String checkForFile = "";
 
-                checkFolderExists(context, folder);
-
                 InputStream in = null;
                 OutputStream out = null;
-                checkForFile = context.getFilesDir().getAbsolutePath() + "/" + folder + "/" + filename;
+                checkForFile = context.getCacheDir().getAbsolutePath() + "/" + filename;
 
                 if(!Files.exists(Paths.get(checkForFile))) {
                     try {
 
-                        in = assetManager.open(folder + "/" + filename);
+                        in = assetManager.open(filename);
                         out = new FileOutputStream(checkForFile);
                         copyFile(in, out);
 
@@ -39,7 +37,6 @@ public class CopyAssets {
                         if (in != null) {
                             try {
                                 in.close();
-                                in = null;
                             } catch (IOException e) {
                                 Log.e("CopyAssets", "Failed to close.");
                             }
@@ -48,7 +45,6 @@ public class CopyAssets {
                             try {
                                 out.flush();
                                 out.close();
-                                out = null;
                             } catch (IOException e) {
                                 Log.e("CopyAssets", "Failed to flush and close.");
                             }
