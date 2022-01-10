@@ -173,6 +173,9 @@ public class MainActivity extends AppCompatActivity {
     public boolean onMenuOpened(int featureId, Menu menu){
         super.onMenuOpened(R.menu.main_menu, mainMenu);
         List<SourcesTable> numNotes = researchDatabase.getNotesDao().getAllNotesMarkedToDelete();
+        if(!new File(this.getCacheDir().getAbsolutePath() + "/ResearchDB.pdf").exists())
+            CopyAssets.copyAssets(this, "ResearchDB.pdf");
+
         if(numNotes.size() > 0) {
             mainMenu.findItem(R.id.review_notes).setEnabled(true);
         }else{
