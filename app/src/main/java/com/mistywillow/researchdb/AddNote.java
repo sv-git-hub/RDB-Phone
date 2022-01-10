@@ -187,6 +187,10 @@ public class AddNote extends AppCompatActivity {
             if(sourceTitle.getText().length() !=0 && !sourceTitle.hasFocus()){
                 if (tableLayoutAuthors.getChildCount() > 1) {
                     author.setText(R.string.add_author_phrase);
+                    // If selected Source was found but a new author added, the there is a duplicate but new Source
+                    if (selectedSourceID > 0) {
+                        selectedSourceID = 0;
+                    }
                 }else if(tableLayoutAuthors.getChildCount() == 1 && bottom != oldBottom){
                     populateSourceDetails(DBQueryTools.getSourcesByTitle(sourceTitle.getText().toString()));
                 }

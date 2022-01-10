@@ -144,7 +144,8 @@ public class DBQueryTools {
         List<Sources> sources = rdb.getSourcesDao().getSources();
         List<String> orgSourceTitles = new ArrayList<>();
         for(Sources s : sources){
-            orgSourceTitles.add(s.getTitle());
+            if(!orgSourceTitles.contains(s.getTitle()))
+                orgSourceTitles.add(s.getTitle());
         }
         return new ArrayAdapter<>(context, R.layout.custom_dropdown_list, orgSourceTitles);
     }
