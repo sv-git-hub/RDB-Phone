@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.util.Log;
 import android.view.*;
+import android.view.inputmethod.EditorInfo;
 import android.widget.*;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
@@ -172,9 +173,14 @@ public class AddNote extends AppCompatActivity {
         sourceTitle.setOnItemClickListener((parent, view, position, id) ->
                 populateSourceDetails(DBQueryTools.getSourcesByTitle(sourceTitle.getText().toString())));
 
-        sourceTitle.setOnFocusChangeListener((v, hasFocus) -> {
-            if(!hasFocus)
-                populateSourceDetails(DBQueryTools.getSourcesByTitle(sourceTitle.getText().toString()));
+        sourceTitle.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if ((event != null && (event.getKeyCode() == KeyEvent.KEYCODE_ENTER)) || (actionId == EditorInfo.IME_ACTION_DONE)) {
+                    //do what you want on the press of 'done'
+                    populateSourceDetails(DBQueryTools.getSourcesByTitle(sourceTitle.getText().toString()));
+                }
+                return false;
+            }
         });
 
         tableLayoutAuthors.addOnLayoutChangeListener((v, left, top, right, bottom, oldLeft, oldTop, oldRight, oldBottom) -> {

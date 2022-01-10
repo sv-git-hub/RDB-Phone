@@ -2,33 +2,15 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
       xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <item android:id="@+id/main_note"
-          android:title="@string/menu_title_note">
-        <menu>
-            <item android:id="@+id/edit_note"
-                  android:title="@string/menu_title_edit_note"/>
-            <item android:id="@+id/export_note"
-                  android:title="@string/menu_title_note_export"/>
-            <item android:id="@+id/mark_for_delete"
-                  android:title="@string/menu_title_mark_note_for_delete"/>
-            <item android:id="@+id/unMark_for_delete"
-                  android:title="@string/menu_title_unmark_note_for_delete"/>
-            <item android:id="@+id/permanently_delete"
-                  android:title="@string/menu_title_permanently_delete_note"/>
-        </menu>
-    </item>
-
-    <item android:id="@+id/main_help"
-          android:title="@string/menu_title_help"
-          app:showAsAction="never">
-
-        <menu>
-            <item android:id="@+id/main_manual"
-                  android:title="@string/menu_title_manual"/>
-            <item android:id="@+id/main_about"
-                  android:title="@string/menu_title_about"/>
-        </menu>
-
-    </item>
+    <item android:id="@+id/edit_note"
+          android:title="@string/menu_title_edit_note"/>
+    <item android:id="@+id/export_note"
+          android:title="@string/menu_title_note_export"/>
+    <item android:id="@+id/mark_for_delete"
+          android:title="@string/menu_title_mark_note_for_delete"/>
+    <item android:id="@+id/unMark_for_delete"
+          android:title="@string/menu_title_unmark_note_for_delete"/>
+    <item android:id="@+id/permanently_delete"
+          android:title="@string/menu_title_permanently_delete_note"/>
 
 </menu>

@@ -26,7 +26,7 @@ public class DateTimestampManager {
 
     public static void validateDate(Context context, String date){
         if (!date.equals("") && !date.matches ("^([12][\\d][\\d][\\d])$|^(0[1-9]|1[012])/(0[1-9]|[12][0-9]|3[01])/([12][\\d][\\d][\\d])$|^((0[1-9]|1[012])/([12][\\d][\\d][\\d]))$|^([\\d]?[\\d]?[\\d]?[\\d])([A][.][D][.]|[B][.][C][.]|[B][.][C][.][E][.])$")){
-            PopupDialog.AlertMessageOK(context, "Error: Invalid Date Format","Please enter an acceptable format or leave blank. Examples:\n\n" +
+            PopupDialog.AlertMessageOK(context, "Error: Invalid Date Format","Please enter an acceptable format or today if none available. Examples:\n\n" +
                     "mm/dd/yyyy\nmm/yyyy\nyyyy");
         }
     }

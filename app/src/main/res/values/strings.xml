@@ -10,7 +10,7 @@
     <string name="master_how_to_enter_db">Enter a new database name below and click the Add Database button:</string>
     <string name="master_label_create">Create Database</string>
     <string name="master_enter_db">"Enter a new database name here:"</string>
-    <string name="master_hint">e.g., My_Database or MyDatabase</string>
+    <string name="master_hint">e.g., My_Database</string>
     <string name="master_add_db">Add Database</string>
     <string name="master_label_import">Import Database</string>
     <string name="master_how_to_import_db">"Click the Import Database button to load a ResearchDB database."</string>
