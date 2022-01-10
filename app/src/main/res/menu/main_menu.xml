@@ -24,7 +24,7 @@
           android:title="@string/menu_title_clear"/>
 
     <item android:id="@+id/main_help"
-          android:title="@string/menu_title_help">
+          android:title="@string/master_guide">
 
     </item>
 </menu>

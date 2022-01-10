@@ -25,6 +25,7 @@
     <string name="master_delete">X</string>
 
     <!-- MENU and MENU ITEMS -->
+    <string name="master_guide">Guide</string>
     <string name="menu_title_file">File</string>
     <string name="menu_title_edit">Edit</string>
     <string name="menu_title_help">Help</string>

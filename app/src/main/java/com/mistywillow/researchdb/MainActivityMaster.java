@@ -15,6 +15,7 @@ import android.os.Environment;
 import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.webkit.MimeTypeMap;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -28,8 +29,10 @@ import com.mistywillow.researchdb.databases.MasterDatabase;
 import com.mistywillow.researchdb.masterdb.entity.MasterDatabaseList;
 
 import java.io.*;
+import java.util.Objects;
 
 import static android.Manifest.permission.*;
+import static androidx.core.content.FileProvider.getUriForFile;
 
 public class MainActivityMaster extends AppCompatActivity {
 
@@ -40,7 +43,7 @@ public class MainActivityMaster extends AppCompatActivity {
 
     MasterDatabase masterDB;
     EditText mDBToAdd;
-    Button mAddDB, mImportDB;
+    Button mAddDB, mImportDB, mGuide;
     ListView mDatabaseList;
     MDBCursorAdapter mdbCA;
     Cursor mCsr;
@@ -61,6 +64,7 @@ public class MainActivityMaster extends AppCompatActivity {
         sharedPreferences = getSharedPreferences(Globals.SHARED_PREF_FILE, MODE_PRIVATE);
         CopyAssets.copyAssets(this, "ResearchDB.pdf");
 
+        mGuide = this.findViewById(R.id.guide_btn);
         mDBToAdd = this.findViewById(R.id.database_name);
         mAddDB = this.findViewById(R.id.addDatabase);
         mImportDB = this.findViewById(R.id.importDatabase);
@@ -68,6 +72,7 @@ public class MainActivityMaster extends AppCompatActivity {
         masterDB = MasterDatabase.getInstance(this);
         mDBToAdd.addTextChangedListener(new FileExtensionTextWatcher(mDBToAdd, "db"));
 
+        setupGuideButton();
         setUpAddDBButton();
         setupImportDBButton();
         setOrRefreshDatabaseList();
@@ -103,6 +108,10 @@ public class MainActivityMaster extends AppCompatActivity {
     private static void hideKeyboardFrom(Context context, View view) {
         InputMethodManager imm = (InputMethodManager) context.getSystemService(MainActivityMaster.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+    }
+
+    private void setupGuideButton(){
+        mGuide.setOnClickListener(v -> getHelp());
     }
 
     private void setUpAddDBButton() {
@@ -177,6 +186,30 @@ public class MainActivityMaster extends AppCompatActivity {
         } else {
             return false;
         }
+    }
+
+    private void getHelp(){
+        MimeTypeMap myMime = MimeTypeMap.getSingleton();
+        File helpFile = new File(getCacheDir()+ "/ResearchDB.pdf");
+        Log.e("filename:", helpFile.getName());
+        String mimeType = myMime.getMimeTypeFromExtension(getFileExtension(helpFile.getName()));
+        Uri contentUri = getUriForFile(MainActivityMaster.this, "com.mistywillow.fileprovider", helpFile);
+        Log.d("File: contentUri", Objects.requireNonNull(contentUri.getPath()));
+        openFile(contentUri, mimeType);
+    }
+
+    private String getFileExtension(String fileName){
+        String[] ext = fileName.split("[.]");
+        return ext[ext.length-1];
+    }
+
+
+    private void openFile(Uri uri, String mime){
+        Log.d("ViewNote:openFile", mime+":"+uri.toString());
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+        intent.setDataAndType(uri,mime);
+        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+        startActivity(intent);
     }
 
     @Override
