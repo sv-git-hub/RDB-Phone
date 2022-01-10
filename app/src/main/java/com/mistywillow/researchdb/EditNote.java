@@ -134,18 +134,7 @@ public class EditNote extends AppCompatActivity {
             Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
             intent.setType("*/*");
             resultLauncher.launch(intent);
-
         });
-
-        sourceTitle.setOnFocusChangeListener((v, hasFocus) -> {
-            if(!hasFocus){
-                author.setText(DBQueryTools.concatenateAuthors(DBQueryTools.getAuthorsBySourceID(orgNoteTableIDs.getSourceID())));
-            }
-            if(author.getText().toString().equals("Select an Author or Add new below")){
-                Toast.makeText(this, "TODO: New Author Needed or Selected.", Toast.LENGTH_SHORT).show();
-            }
-        });
-
     }
 
     // MENU METHODS
@@ -154,7 +143,6 @@ public class EditNote extends AppCompatActivity {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.edit_menu, menu);
         editMenu = menu;
-        setupMenuOptions();
         return true;
     }
 
@@ -171,7 +159,11 @@ public class EditNote extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    private void setupMenuOptions() {
+    @Override
+    public boolean onMenuOpened(int featureId, Menu menu) {
+        super.onMenuOpened(R.menu.edit_menu, editMenu);
+        editMenu.findItem(R.id.update_note).setEnabled(requiredFields());
+        return true;
     }
 
     // CUSTOM METHODS
@@ -250,5 +242,26 @@ public class EditNote extends AppCompatActivity {
 
     private String buildHyperlink(String link){
         return "<a href=\"" + link + "\">" + link + "</a> ";
+    }
+
+    private boolean requiredFields(){
+        String msg;
+
+        if (topic.getText().toString().equals("")){
+            msg = "Please select or enter a topic.";
+        } else {
+
+            if (comment.getText().toString().equals("")) {
+                msg = "Please enter a comment. Comments are specific details related to the topic and summary.";
+
+            } else if (summary.getText().toString().equals("")) {
+                msg = "Please enter a summary point. This expands upon your Topic entry or selection.";
+
+            } else {
+                return true;
+            }
+        }
+        PopupDialog.AlertMessageOK(EditNote.this, "Required Field", msg);
+        return false;
     }
 }

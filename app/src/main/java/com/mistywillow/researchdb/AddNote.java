@@ -140,13 +140,12 @@ public class AddNote extends AppCompatActivity {
             if (result.getResultCode() == Activity.RESULT_OK && result.getData() != null){
                 Uri uri = result.getData().getData();
                 String str = RealPathUtil.getRealPath(this, uri);
-                Toast.makeText(this, str, Toast.LENGTH_LONG).show();
 
                 if(str.endsWith(".xml")) {
                     try {
                         ReadXMLFileDOMParser parser = new ReadXMLFileDOMParser(str);
                         loadImportedNoteDetails(parser.getImportNotes());
-                        Toast.makeText(this, "PARSER SUCCESS", Toast.LENGTH_LONG).show();
+                        Toast.makeText(this, "Note Imported Successfully", Toast.LENGTH_LONG).show();
                     } catch (Exception e) {
                         Log.e("ReadXMLFileDOMParser", e.toString());
                         PopupDialog.AlertMessageOK(this, "Wrong Note Type", "Only ResearchDB notes can be imported and must end in '.xml'");
@@ -173,14 +172,12 @@ public class AddNote extends AppCompatActivity {
         sourceTitle.setOnItemClickListener((parent, view, position, id) ->
                 populateSourceDetails(DBQueryTools.getSourcesByTitle(sourceTitle.getText().toString())));
 
-        sourceTitle.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                if ((event != null && (event.getKeyCode() == KeyEvent.KEYCODE_ENTER)) || (actionId == EditorInfo.IME_ACTION_DONE)) {
-                    //do what you want on the press of 'done'
-                    populateSourceDetails(DBQueryTools.getSourcesByTitle(sourceTitle.getText().toString()));
-                }
-                return false;
+        sourceTitle.setOnEditorActionListener((v, actionId, event) -> {
+            if ((event != null && (event.getKeyCode() == KeyEvent.KEYCODE_ENTER)) || (actionId == EditorInfo.IME_ACTION_DONE)) {
+                //do what you want on the press of 'done'
+                populateSourceDetails(DBQueryTools.getSourcesByTitle(sourceTitle.getText().toString()));
             }
+            return false;
         });
 
         tableLayoutAuthors.addOnLayoutChangeListener((v, left, top, right, bottom, oldLeft, oldTop, oldRight, oldBottom) -> {
@@ -216,7 +213,7 @@ public class AddNote extends AppCompatActivity {
     @Override
     public boolean onMenuOpened(int featureId, Menu menu) {
         super.onMenuOpened(R.menu.add_menu, addMenu);
-        if(!requiredFields(false))
+        if(!requiredFields(true))
             addMenu.findItem(R.id.add_note).setEnabled(false);
         else
             addMenu.findItem(R.id.add_note).setEnabled(true);
@@ -358,15 +355,13 @@ public class AddNote extends AppCompatActivity {
 
             // FILE(s)
             if(n.containsKey("File")) {
-                List<Files> files = new ArrayList<>();
-
                 n.get("File").forEach(f -> {
                     String[] ary = f.split("\\*", 2);
                     String cacheFilePath = getCacheDir().getPath() + "/" + ary[0];
                     byte[] bytes = ary[1].getBytes();
                     OutputStream os = null;
                     try {
-                        os = new FileOutputStream(new File(cacheFilePath));
+                        os = new FileOutputStream(cacheFilePath);
                         os.write(Base64.getDecoder().decode(bytes));
                         os.flush();
                         os.close();

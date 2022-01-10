@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.net.Uri;
-import android.os.Environment;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
 import android.util.Log;
@@ -24,7 +23,6 @@ import com.mistywillow.researchdb.researchdb.entities.Notes;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.text.SimpleDateFormat;
 import java.util.*;
 
 import static androidx.core.content.FileProvider.getUriForFile;
@@ -62,9 +60,6 @@ public class ViewNote extends AppCompatActivity {
     String nSummary = null;
     String nSource = null;
     String nAuthors = null;
-
-    long refreshMain = 0;
-
 
     @SuppressLint("SetTextI18n")
     @Override
@@ -104,7 +99,6 @@ public class ViewNote extends AppCompatActivity {
 
         // RECEIVE INTENT FROM NOTE ADAPTER PASSING SELECTED NOTE ID
         Intent n = getIntent();
-        Bundle extras = n.getExtras();
         nNoteID = n.getIntExtra("ID", 0);
         nType = n.getStringExtra("Type");
         nSummary = n.getStringExtra("Summary");
@@ -195,10 +189,6 @@ public class ViewNote extends AppCompatActivity {
             DBQueryTools.deleteNote(ViewNote.this, nNoteID);
             Intent intent = new Intent(this, MainActivity.class);
             startActivity(intent);
-
-            //Environment.getStorageDirectory().toPath();
-            //Toast.makeText(this, getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS).toString(), Toast.LENGTH_LONG).show();
-
         }
 
         return super.onOptionsItemSelected(item);
@@ -256,7 +246,6 @@ public class ViewNote extends AppCompatActivity {
 
     public static void checkFolderExists(Context context, String folder){
         File location = new File(context.getCacheDir() + "/" + folder);
-        //File location = new File(context.getFilesDir() + "/" + folder);
         if(!location.exists()) {
             if(location.mkdir())
                 Toast.makeText(context, "Directory " + folder + " was created!", Toast.LENGTH_SHORT).show();
@@ -272,14 +261,12 @@ public class ViewNote extends AppCompatActivity {
     }
 
     private void buildFile(File fPath, Files file){
-        // added getBytes(StandardCharacterSets.UTF_8)
         createFile(fPath.getAbsolutePath() + "/" + file.getFileName(), file.getFileData());
     }
 
     private void createFile(String fileName, byte[] fileBytes){
         FileOutputStream fos = null;
         try {
-            //fos = openFileOutput(fileName, MODE_PRIVATE);
             fos = new FileOutputStream(fileName);
             fos.write(fileBytes);
 
