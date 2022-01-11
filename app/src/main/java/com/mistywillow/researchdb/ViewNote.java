@@ -176,9 +176,10 @@ public class ViewNote extends AppCompatActivity {
         }else if(item.getItemId() == R.id.mark_for_delete) {
             rdb.getNotesDao().markNoteToDelete(nNoteID);
             PopupDialog.AlertMessageOK(this, "Note Marked to Delete",
-                    "You have marked this note for deletion but it is not deleted to avoid accidental deletion. " +
-                            "To fully delete this note select 'Permanently Delete Note.' You can also unmark it or review " +
-                            "it for deletion at a later time.");
+                    "You have marked this note for deletion only and has not been permanently deleted to prevent " +
+                            "accidental deletion. You can select 'Permanently Delete Note' now, review it for deletion " +
+                            "or restore it by un-marking it. It will not be listed in search results unless restored. The " +
+                            "topic associated with this note may return blank unless other notes related notes exist.");
 
         }else if(item.getItemId() == R.id.unMark_for_delete) {
             rdb.getNotesDao().unMarkNoteToDelete(nNoteID);
