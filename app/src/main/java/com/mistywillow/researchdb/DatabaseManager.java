@@ -1,7 +1,5 @@
 package com.mistywillow.researchdb;
 
-import android.util.Log;
-
 import java.io.*;
 
 public class DatabaseManager {
@@ -11,13 +9,13 @@ public class DatabaseManager {
             try {
                 copyFile(in, out);
             } catch (IOException e) {
-                Log.e("tag", "Failed to copy database import file", e);
+                e.printStackTrace();
             } finally {
                 if (in != null) {
                     try {
                         in.close();
                     } catch (IOException e) {
-                        Log.e("CopyAssets", "Failed to close.");
+                        e.printStackTrace();
                     }
                 }
                 if (out != null) {
@@ -25,7 +23,7 @@ public class DatabaseManager {
                         out.flush();
                         out.close();
                     } catch (IOException e) {
-                        Log.e("CopyAssets", "Failed to flush and close.");
+                        e.printStackTrace();
                     }
                 }
             }

@@ -89,6 +89,7 @@
     <string name="lbl_tab_quote_term">Quote and Term</string>
 
     <!-- FILE RELATED -->
+    <string name="lbl_column_delete">Delete</string>
     <string name="lbl_tab_files">File(s)</string>
     <string name="lbl_column_filename">Filename</string>
     <string name="lbl_column_filepath">Filepath</string>

@@ -7,7 +7,6 @@ import android.graphics.Typeface;
 import android.net.Uri;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
-import android.util.Log;
 import android.view.*;
 import android.webkit.MimeTypeMap;
 
@@ -229,17 +228,13 @@ public class ViewNote extends AppCompatActivity {
 
                 checkFolderExists(this, "note_files");
                 File filePaths = new File(getCacheDir().toString() + "/note_files/");
-                Log.d("File: filePaths", filePaths.getAbsolutePath());
 
                 File newFile = new File(filePaths, result);
-                Log.d("Files: newFile", newFile.getAbsolutePath());
-
                 if(!newFile.exists()){
                     buildFile(filePaths, nFile);
                 }
 
                 Uri contentUri = getUriForFile(ViewNote.this, "com.mistywillow.fileprovider", newFile);
-                Log.d("File: contentUri", Objects.requireNonNull(contentUri.getPath()));
                 openFile(contentUri, mimeType);
             });
         }
@@ -255,7 +250,6 @@ public class ViewNote extends AppCompatActivity {
     }
 
     private void openFile(Uri uri, String mime){
-        Log.d("ViewNote:openFile", mime+":"+uri.toString());
         Intent intent = new Intent(Intent.ACTION_VIEW);
         intent.setDataAndType(uri,mime);
         intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);

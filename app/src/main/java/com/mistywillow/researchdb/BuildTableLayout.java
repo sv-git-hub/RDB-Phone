@@ -3,7 +3,6 @@ package com.mistywillow.researchdb;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.Typeface;
-import android.util.Log;
 import android.view.Gravity;
 import android.widget.*;
 import androidx.appcompat.app.AppCompatActivity;
@@ -39,7 +38,7 @@ public class BuildTableLayout extends AppCompatActivity{
         trLayoutParams.weight = 1;
         btnAddRow.setLayoutParams(trLayoutParams);
         btnAddRow.setBackgroundColor(Color.WHITE);
-        btnAddRow.setText("Delete");
+        btnAddRow.setText(R.string.lbl_column_delete);
         btnAddRow.setTypeface(Typeface.DEFAULT,Typeface.BOLD);
         btnAddRow.setTextSize(12);
         btnAddRow.setGravity(Gravity.CENTER);
@@ -94,7 +93,6 @@ public class BuildTableLayout extends AppCompatActivity{
         if(bool_AddNames) {
             if (bool_DeleteBtn) {
                 row.addView(setupAuthorDeleteRowButton(context, table, DateTimestampManager.currentTimestamp()));
-                Log.e("BuildTableLayout", "setupAuthorDeleteRowButton");
                 row.addView(addEditTextToTable(context, first));
                 row.setClickable(true);
                 row.addView(addEditTextToTable(context, middle));
@@ -105,13 +103,10 @@ public class BuildTableLayout extends AppCompatActivity{
                 row.setClickable(true);
             }else{
                 row.addView(setupAuthorsAddRowButton(context, table));
-                Log.e("BuildTableLayout", "setupAuthorsAddRowButton");
-
                 row.addView(addRowTextViewToTable(context, first, true));
                 row.addView(addRowTextViewToTable(context, middle, true));
                 row.addView(addRowTextViewToTable(context, last, true));
                 row.addView(addRowTextViewToTable(context, suffix, true));
-                Log.e("BuildTableLayout", "addRowTextViewToTable");
             }
 
         }
@@ -120,7 +115,6 @@ public class BuildTableLayout extends AppCompatActivity{
             for(int r=1; r<5;r++) {
                 row.addView(addEditTextToTable(context, ""));
                 row.setClickable(true);
-                Log.e("BuildTableLayout", "addEditTextToTable");
             }
         }
         return row;

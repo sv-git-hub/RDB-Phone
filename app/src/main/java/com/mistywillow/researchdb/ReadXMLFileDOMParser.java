@@ -1,8 +1,5 @@
 package com.mistywillow.researchdb;
 
-import android.content.Context;
-import android.util.Log;
-import android.widget.Toast;
 import org.apache.commons.text.StringEscapeUtils;
 import org.w3c.dom.*;
 import org.xml.sax.SAXException;
@@ -42,7 +39,8 @@ public class ReadXMLFileDOMParser {
 
                     Node node = tableList.item(t);
                     tableList.item(t).getNodeName();
-                    Log.e("NODE", tableList.item(t).getNodeName() + "\n" + tableList.item(t).toString());
+
+
                     Element tElem = (Element) node;
 
                     NodeList child = tElem.getChildNodes();

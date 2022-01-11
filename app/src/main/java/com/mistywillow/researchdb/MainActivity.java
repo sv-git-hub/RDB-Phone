@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
-import android.util.Log;
 import android.view.*;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
@@ -165,10 +164,7 @@ public class MainActivity extends AppCompatActivity {
         if(!new File(this.getCacheDir().getAbsolutePath() + "/ResearchDB.pdf").exists())
             CopyAssets.copyAssets(this, "ResearchDB.pdf");
 
-        if(numNotes.size() > 0) {
-            mainMenu.findItem(R.id.review_notes).setEnabled(true);
-        }else{
-            mainMenu.findItem(R.id.review_notes).setEnabled(false);}
+        mainMenu.findItem(R.id.review_notes).setEnabled(numNotes.size() > 0);
 
         if (topic.getText().toString().equals("") && question.getText().toString().equals("") &&
                 customSearch.getText().toString().equals("") && rListNotes.getAdapter()==null) {
@@ -213,10 +209,8 @@ public class MainActivity extends AppCompatActivity {
     private void getHelp(){
         MimeTypeMap myMime = MimeTypeMap.getSingleton();
         File helpFile = new File(getCacheDir()+ "/ResearchDB.pdf");
-        Log.e("filename:", helpFile.getName());
         String mimeType = myMime.getMimeTypeFromExtension(getFileExtension(helpFile.getName()));
         Uri contentUri = getUriForFile(MainActivity.this, "com.mistywillow.fileprovider", helpFile);
-        Log.d("File: contentUri", Objects.requireNonNull(contentUri.getPath()));
         openFile(contentUri, mimeType);
     }
 
@@ -227,7 +221,6 @@ public class MainActivity extends AppCompatActivity {
 
 
     private void openFile(Uri uri, String mime){
-        Log.d("ViewNote:openFile", mime+":"+uri.toString());
         Intent intent = new Intent(Intent.ACTION_VIEW);
         intent.setDataAndType(uri,mime);
         intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
@@ -245,7 +238,7 @@ public class MainActivity extends AppCompatActivity {
             PopupDialog.AlertMessageOK(this, "Export Database Successful!", Globals.DATABASE +
                     " was successfully copied to your Downloads folder for sharing.");
         }catch (FileNotFoundException f){
-            Log.e("Export Database", f.toString());
+            f.printStackTrace();
 
         }
     }

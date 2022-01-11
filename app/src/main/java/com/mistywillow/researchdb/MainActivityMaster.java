@@ -11,8 +11,6 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
-import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.webkit.MimeTypeMap;
@@ -29,7 +27,6 @@ import com.mistywillow.researchdb.databases.MasterDatabase;
 import com.mistywillow.researchdb.masterdb.entity.MasterDatabaseList;
 
 import java.io.*;
-import java.util.Objects;
 
 import static android.Manifest.permission.*;
 import static androidx.core.content.FileProvider.getUriForFile;
@@ -92,8 +89,6 @@ public class MainActivityMaster extends AppCompatActivity {
                         DatabaseManager.copyDatabase(source, destination);
                         addDatabaseToList(strDBName);
                     } catch (FileNotFoundException f) {
-                        Log.e("Import DB Error", f.toString());
-                        Log.e("MainActivityMaster Database Type Issue", strDBName + " was the cause of this issue");
                         PopupDialog.AlertMessageOK(this, "Wrong Database Type", "Only ResearchDB databases can be imported and must end in '.db'");
                     }
                 }else{
@@ -191,10 +186,8 @@ public class MainActivityMaster extends AppCompatActivity {
     private void getHelp(){
         MimeTypeMap myMime = MimeTypeMap.getSingleton();
         File helpFile = new File(getCacheDir()+ "/ResearchDB.pdf");
-        Log.e("filename:", helpFile.getName());
         String mimeType = myMime.getMimeTypeFromExtension(getFileExtension(helpFile.getName()));
         Uri contentUri = getUriForFile(MainActivityMaster.this, "com.mistywillow.fileprovider", helpFile);
-        Log.d("File: contentUri", Objects.requireNonNull(contentUri.getPath()));
         openFile(contentUri, mimeType);
     }
 
@@ -205,7 +198,6 @@ public class MainActivityMaster extends AppCompatActivity {
 
 
     private void openFile(Uri uri, String mime){
-        Log.d("ViewNote:openFile", mime+":"+uri.toString());
         Intent intent = new Intent(Intent.ACTION_VIEW);
         intent.setDataAndType(uri,mime);
         intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);

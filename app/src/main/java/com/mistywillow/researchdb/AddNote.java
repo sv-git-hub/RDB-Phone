@@ -4,7 +4,6 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
-import android.util.Log;
 import android.view.*;
 import android.view.inputmethod.EditorInfo;
 import android.widget.*;
@@ -17,7 +16,6 @@ import androidx.appcompat.widget.Toolbar;
 import com.mistywillow.researchdb.databases.ResearchDatabase;
 import com.mistywillow.researchdb.researchdb.entities.*;
 
-import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -147,7 +145,7 @@ public class AddNote extends AppCompatActivity {
                         loadImportedNoteDetails(parser.getImportNotes());
                         Toast.makeText(this, "Note Imported Successfully", Toast.LENGTH_LONG).show();
                     } catch (Exception e) {
-                        Log.e("ReadXMLFileDOMParser", e.toString());
+                        e.printStackTrace();
                         PopupDialog.AlertMessageOK(this, "Wrong Note Type", "Only ResearchDB notes can be imported and must end in '.xml'");
                     }
                 }else{
@@ -209,17 +207,6 @@ public class AddNote extends AppCompatActivity {
                 DateTimestampManager.validateTopic(AddNote.this, topic.getText().toString());
         });
     }
-
-    /*@Override
-    public boolean onMenuOpened(int featureId, Menu menu) {
-        super.onMenuOpened(R.menu.add_menu, addMenu);
-        if(!requiredFields(false)) {
-            addMenu.findItem(R.id.add_note).setEnabled(false);
-        }else {
-            addMenu.findItem(R.id.add_note).setEnabled(true);
-        }
-        return true;
-    }*/
 
     // MENU METHODS
     @Override
@@ -336,7 +323,6 @@ public class AddNote extends AppCompatActivity {
             if(rdb.getSourcesDao().countByTitle(n.get("Source").get(1)) == 0){
 
                 Objects.requireNonNull(n.get("Author")).forEach(a -> {
-                    Log.e("AddNote.importNote", "Looping author " + a.split("\\*")[0]);
                     String[] arr = a.split("\\*");
                     if (arr.length == 4)
                         tableLayoutAuthors.addView(BuildTableLayout.setupAuthorsTableRow(this, tableLayoutAuthors,
@@ -377,7 +363,7 @@ public class AddNote extends AppCompatActivity {
                                 os.close();
                             }
                         }catch(IOException | NullPointerException io){
-                            Log.e("AddNote.importNotes", io.toString());
+                            io.printStackTrace();
                         }
                     }
                 });
