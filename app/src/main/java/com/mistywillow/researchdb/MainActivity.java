@@ -80,8 +80,8 @@ public class MainActivity extends AppCompatActivity {
                     loadNotes(captureNotes(researchDatabase.getNotesDao().getNotesOnTopic(topic.getText().toString())));
                 }
             });
-            topic.setOnKeyListener(new AutoOnKeyListener(topic));
-            topic.setOnFocusChangeListener(new AutoOnFocusChangeListener(topic));
+             topic.setOnKeyListener(new AutoOnKeyListener(topic));
+             topic.setOnFocusChangeListener(new AutoOnFocusChangeListener(topic));
 
             // QUESTION LIST
             ArrayAdapter<String> acQuestionAdapt = DBQueryTools.captureDBQuestions(this);
@@ -95,8 +95,8 @@ public class MainActivity extends AppCompatActivity {
                     loadNotes(captureNotes(researchDatabase.getNotesDao().getNotesOnQuestion(question.getText().toString())));
                 }
             });
-            question.setOnKeyListener(new AutoOnKeyListener(question));
-            question.setOnFocusChangeListener(new AutoOnFocusChangeListener(question));
+             question.setOnKeyListener(new AutoOnKeyListener(question));
+             question.setOnFocusChangeListener(new AutoOnFocusChangeListener(question));
 
             // CUSTOM SEARCH
             customSearch.setOnEditorActionListener((v, actionId, event) -> {
