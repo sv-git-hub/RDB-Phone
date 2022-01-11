@@ -143,7 +143,7 @@ public class AddNote extends AppCompatActivity {
                     try {
                         ReadXMLFileDOMParser parser = new ReadXMLFileDOMParser(str);
                         loadImportedNoteDetails(parser.getImportNotes());
-                        Toast.makeText(this, "Note Imported Successfully", Toast.LENGTH_LONG).show();
+                        //Toast.makeText(this, "Note Imported Successfully", Toast.LENGTH_LONG).show();
                     } catch (Exception e) {
                         e.printStackTrace();
                         PopupDialog.AlertMessageOK(this, "Wrong Note Type", "Only ResearchDB notes can be imported and must end in '.xml'");
@@ -290,7 +290,8 @@ public class AddNote extends AppCompatActivity {
     private void loadImportedNoteDetails(List<HashMap<String, List<String>>> data){
         if(data.size() > 1){
             PopupDialog.AlertMessageOK(this, "Multiple Note Import",
-                    "At present, only one note at a time can be imported.");
+                    "At present, only one note at a time can be imported. " +
+                            "This file contains: " + data.size());
             return;
         }
         data.forEach((n) ->{
@@ -368,7 +369,9 @@ public class AddNote extends AppCompatActivity {
                     }
                 });
             }
-
+            PopupDialog.AlertMessageOK(this, "Review and Add",
+                    "Your note is ready to import permanently, select 'Add Note.' If you decide not to " +
+                            "import this note either select clear or exit the page.");
         });
     }
 
