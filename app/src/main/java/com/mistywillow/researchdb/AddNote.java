@@ -210,15 +210,16 @@ public class AddNote extends AppCompatActivity {
         });
     }
 
-    @Override
+    /*@Override
     public boolean onMenuOpened(int featureId, Menu menu) {
         super.onMenuOpened(R.menu.add_menu, addMenu);
-        if(!requiredFields(true))
+        if(!requiredFields(false)) {
             addMenu.findItem(R.id.add_note).setEnabled(false);
-        else
+        }else {
             addMenu.findItem(R.id.add_note).setEnabled(true);
+        }
         return true;
-    }
+    }*/
 
     // MENU METHODS
     @Override
@@ -226,7 +227,6 @@ public class AddNote extends AppCompatActivity {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.add_menu, menu);
         addMenu = menu;
-        //setupMenuOptions();
         return true;
     }
 
