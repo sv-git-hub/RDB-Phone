@@ -5,8 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.util.Log;
 import android.view.*;
 import android.view.inputmethod.EditorInfo;
@@ -157,17 +155,8 @@ public class MainActivity extends AppCompatActivity {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.main_menu, menu);
         mainMenu = menu;
-        //setupMenuOptionsNotAvailable();
         return true;
     }
-
-    /*private void setupMenuOptionsNotAvailable() {
-        mainMenu.findItem(R.id.new_database).setEnabled(true);
-        mainMenu.findItem(R.id.delete_database).setEnabled(true);
-        mainMenu.findItem(R.id.add_import_note).setEnabled(true);
-        mainMenu.findItem(R.id.review_notes).setEnabled(true);
-        mainMenu.findItem(R.id.clear).setEnabled(true);
-    }*/
 
     @Override
     public boolean onMenuOpened(int featureId, Menu menu){
@@ -198,7 +187,7 @@ public class MainActivity extends AppCompatActivity {
 
         }else if(item.getItemId() == R.id.export_database) {
             exportDatabase();
-
+            PopupDialog.AlertMessageOK(this, "Export Successful", "The " + Globals.DATABASE + " ");
         }else if(item.getItemId() == R.id.delete_database) {
             PopupDialog.DeleteDatabaseYN(this, "Delete Database",
                     "Do you want to delete database: " + sharedPreferences.getString("database", ""));
@@ -270,7 +259,6 @@ public class MainActivity extends AppCompatActivity {
     /**https://stackoverflow.com/questions/36461730/how-to-delete-file-when-application-is-closed*/
 
     private void deleteNoteFiles() {
-        boolean tf;
         File file = new File(getFilesDir() + "/note_files");
         if (file.isDirectory()) {
             File[] files = file.listFiles();

@@ -199,6 +199,7 @@ public class ViewNote extends AppCompatActivity {
         notes.put(nNoteID, new HashMap<>(allNotes));
         String timeStamp = DateTimestampManager.currentTimestamp();
         new CreateXMLFileDOMParser(Globals.DATABASE + "_notes_" + timeStamp + ".xml", notes);
+        PopupDialog.AlertMessageOK(this, "Export Successful", "The note was exported successfully!");
     }
 
     /** Cache references used creating to and reading from cache
@@ -339,13 +340,15 @@ public class ViewNote extends AppCompatActivity {
         nDetails.add(noteDetails.getTopic());       // 17: Topic
         return nDetails;
     }
-
     private void populateFileData(List<Files> files){
-        tableLayout.addView(setupTableRow("FileID", "FileName", true));
         if(files.size() > 0){
+            if(tableLayout.getChildCount() == 1) tableLayout.removeView(tableLayout.getChildAt(0));
+            tableLayout.addView(setupTableRow("FileID", "FileName", true));
             for (Files f: files) {
                 tableLayout.addView(setupTableRow(String.valueOf(f.getFileID()), f.getFileName(), false));
             }
+        }else{
+            tableLayout.addView(setupTableRow("", "No Attachments", true));
         }
     }
 
