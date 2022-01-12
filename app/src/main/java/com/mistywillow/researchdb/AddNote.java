@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
+import android.util.Log;
 import android.view.*;
 import android.view.inputmethod.EditorInfo;
 import android.widget.*;
@@ -13,6 +14,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.ContextCompat;
 import com.mistywillow.researchdb.databases.ResearchDatabase;
 import com.mistywillow.researchdb.researchdb.entities.*;
 
@@ -46,6 +48,18 @@ public class AddNote extends AppCompatActivity {
 
     private TextView author;
 
+    private TextView lblType;
+    private TextView lblTopic;
+    private TextView lblSummary;
+    private TextView lblComment;
+    private TextView lblSource;
+    private TextView lblAuthor;
+    private TextView lblDate;
+    private TextView lblQuestion;
+    private TextView lblQuote;
+    private TextView lblTerm;
+    private TextView lblTimestamp;
+
     private Button btnAddFile;
 
     private TableLayout tableLayoutFiles;
@@ -77,6 +91,20 @@ public class AddNote extends AppCompatActivity {
         topic = findViewById(R.id.viewTopic);
         question = findViewById(R.id.viewQuestion);
         summary = findViewById(R.id.viewSummary);
+
+        // TEXTVIEW LABELS
+        lblType = findViewById(R.id.lbl_View_Type);
+        lblTopic = findViewById(R.id.lbl_View_Topic);
+        lblSummary = findViewById(R.id.lbl_View_Summary);
+        lblComment = findViewById(R.id.lbl_View_Comment);
+        lblSource = findViewById(R.id.lbl_View_Source);
+        lblAuthor = findViewById(R.id.lbl_View_Authors);
+        lblDate = findViewById(R.id.lbl_View_Date);
+        lblQuestion = findViewById(R.id.lbl_View_Question);;
+        lblQuote = findViewById(R.id.lbl_View_Quote);;
+        lblTerm = findViewById(R.id.lbl_View_Term);;
+        lblTimestamp = findViewById(R.id.lbl_View_TimeStamp);;
+
 
         // REGULAR EDITTEXT
         comment = findViewById(R.id.viewComment);
@@ -167,8 +195,11 @@ public class AddNote extends AppCompatActivity {
 
         });
 
-        sourceTitle.setOnItemClickListener((parent, view, position, id) ->
-                populateSourceDetails(DBQueryTools.getSourcesByTitle(sourceTitle.getText().toString())));
+        sourceTitle.setOnItemClickListener((parent, view, position, id) -> {
+            setLabelColor(lblSource, position);
+            populateSourceDetails(DBQueryTools.getSourcesByTitle(sourceTitle.getText().toString()));
+        });
+
 
         sourceTitle.setOnEditorActionListener((v, actionId, event) -> {
             if ((event != null && (event.getKeyCode() == KeyEvent.KEYCODE_ENTER)) || (actionId == EditorInfo.IME_ACTION_DONE)) {
@@ -240,6 +271,8 @@ public class AddNote extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
+
+
 
     private void addNewNote(){
         int srcID;
@@ -448,7 +481,7 @@ public class AddNote extends AppCompatActivity {
 
     private void populateSourceDetails(List<Sources> sources) {
 
-        if (sources.size() == 0) {
+        if (sources.size() == 0 && sourceTitle.length() != 0) {
             author.setText(R.string.add_author_phrase);
             selectedSourceID = 0;
             tableLayoutAuthors.addView(BuildTableLayout.setupAuthorsTableRow(this, tableLayoutAuthors,
@@ -460,10 +493,12 @@ public class AddNote extends AppCompatActivity {
             // sourceID is returned by the intentLauncher.startActivityForResult
             getCorrectAuthors(sources);
 
-        } else {
+        } else if (sourceTitle.length() != 0) {
             author.setText(DBQueryTools.captureAuthorNewOrOldSource(sources.get(0)));
             setSourceDetails(sources.get(0));
             selectedSourceID = sources.get(0).getSourceID();
+        }else if (sourceTitle.length() == 0){
+            clearSourceDetails();
         }
     }
 
@@ -479,7 +514,7 @@ public class AddNote extends AppCompatActivity {
     }
 
     private void setSourceDetails(Sources src){
-        if(src.getSourceID()!=0) {
+        if(src.getSourceID()!=0 && sourceTitle.length() !=0) {
             setCorrectSourceAuthor(src);
             date.setText(DBQueryTools.concatenateDate(String.valueOf(src.getMonth()), String.valueOf(src.getDay()), String.valueOf(src.getYear())));
             volume.setText(src.getVolume());
@@ -511,43 +546,88 @@ public class AddNote extends AppCompatActivity {
         issue.setText(null);
     }
 
+    public boolean checkTableForMissingAuthors(TableLayout table){
+        for (int i=1; i < table.getChildCount(); i++){
+            TableRow tblRow = (TableRow) table.getChildAt(i);
+            EditText fName = (EditText)tblRow.getChildAt(1);
+            if(fName.getText().toString().equals("")) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private void setLabelColor(TextView textView, int lenValue){
+        if(lenValue==0){
+            textView.setTextColor(ContextCompat.getColor(AddNote.this, R.color.colorRed));
+        }else{
+            textView.setTextColor(ContextCompat.getColor(AddNote.this, R.color.colorDkGray));
+        }
+    }
+
+    private void clearRedLabels(){
+        List<TextView> labels = new ArrayList<>(
+                Arrays.asList(lblType, lblTopic, lblQuestion,lblSummary, lblComment, lblQuote, lblTerm, lblSource, lblAuthor, lblDate, lblTimestamp));
+        for (TextView txtView: labels) {
+            setLabelColor(txtView, 1);
+        }
+    }
+
     private boolean requiredFields(Boolean useMessageTF){
         String msg;
+        clearRedLabels();
 
         if (topic.getText().toString().equals("")){
+            setLabelColor(lblTopic, topic.length());
             msg = "Please select or enter a topic.";
         }else {
             if (sourceTitle.getText().toString().equals("")) {
+                setLabelColor(lblSource, sourceTitle.length());
                 msg = "Please select an existing source or enter a title for a new source.";
 
             } else if (author.getText().toString().equals("")) {
+                setLabelColor(lblAuthor, author.length());
                 msg = "Please select an existing author or organization, or add a new author or organization.";
 
             }else if(author.getText().toString().equals("For new sources add new/existing author(s) below") && tableLayoutAuthors.getChildCount()==1){
+                setLabelColor(lblAuthor, 0);
                 msg = "Please enter a new or existing author in the Authors table below for new sources.";
 
+            }else if(author.getText().toString().equals("For new sources add new/existing author(s) below") && tableLayoutAuthors.getChildCount()>1 &&
+                    checkTableForMissingAuthors(tableLayoutAuthors)){
+                    setLabelColor(lblAuthor, 0);
+                    msg = "Please enter a new or existing author in the Authors table below for new sources.";
+
             } else if (sourceType.getSelectedItem().toString().equals("")) {
+                setLabelColor(lblType, 0);
                 msg = "Please select a source type.";
 
             } else if (sourceType.getSelectedItem().toString().equals("Question") && (question.getText().toString().isEmpty())) {
+                setLabelColor(lblQuestion, 0);
                 msg = "Please enter or select a question because 'Question' was selected as a source. A comment should expand on the meaning.";
 
             } else if (sourceType.getSelectedItem().toString().equals("Quote") && (quote.getText().toString().equals(""))) {
+                setLabelColor(lblQuestion, 0);
                 msg = "Please enter a quote because 'Quote' was selected as a source. A comment should expand on the meaning.";
 
             } else if (sourceType.getSelectedItem().toString().equals("Term") && (term.getText().toString().equals(""))) {
+                setLabelColor(lblTerm, 0);
                 msg = "Please enter the term and definition. Expand within comments of other sources of interpretation.";
 
             } else if ((sourceType.getSelectedItem().toString().equals("Video") || sourceType.getSelectedItem().toString().equals("Audio")) && timeStamp.getText().toString().equals("")) {
+                setLabelColor(lblTimestamp, 0);
                 msg = "Please enter a TimeStamp value for an audio or video source.";
 
             } else if (comment.getText().toString().equals("")) {
+                setLabelColor(lblComment, 0);
                 msg = "Please enter a comment. Comments are specific details related to the topic and summary.";
 
             } else if (summary.getText().toString().equals("")) {
+                setLabelColor(lblSummary, 0);
                 msg = "Please enter a summary point. This expands upon your Topic entry or selection.";
 
             }else if(date.getText().toString().equals("")){
+                setLabelColor(lblDate, 0);
                 msg = "Please enter a date. Every source must have a date, if not, use the current year.";
 
             } else {
@@ -567,8 +647,13 @@ public class AddNote extends AppCompatActivity {
         quote.setText(null);
         term.setText(null);
         sourceTitle.setText(null);
-        author.setText(null);
         comment.setText(null);
+        clearSourceDetails();
+
+    }
+
+    private void clearSourceDetails(){
+        author.setText(null);
         date.setText(null);
         volume.setText(null);
         edition.setText(null);
