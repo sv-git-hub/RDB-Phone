@@ -1,6 +1,14 @@
 apply plugin: 'com.android.application'
 
 android {
+    signingConfigs {
+        debug {
+            storeFile file('C:\\Users\\svallery\\.android\\my-key-store\\research_db.jks')
+            keyAlias 'KEY1RDB'
+            storePassword 'RDBTSV'
+            keyPassword 'RDBTSV'
+        }
+    }
     compileSdkVersion 30
     buildToolsVersion "30.0.2"
     defaultConfig {
@@ -15,6 +23,7 @@ android {
                 arguments = ["room.schemaLocation": "$projectDir/schemas".toString()]
             }
         }
+        signingConfig signingConfigs.debug
 
     }
     buildTypes {

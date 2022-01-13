@@ -170,21 +170,19 @@ public class EditNote extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if(item.getItemId() == R.id.update_note) {
-            captureFieldsUponUpdate();
-            List<Files> newNoteFiles = DBQueryTools.captureNoteFiles(viewNoteFiles, tableLayoutFiles);
-            startActivity(DBQueryTools.updateNote(this, orgNoteTableIDs, viewNoteDetails, updatedNoteDetails,
-                    viewNoteFiles, newNoteFiles, nid));
+            if (requiredFields()){
+                update();}
 
         }else if(item.getItemId() == android.R.id.home)
             onBackPressed();
         return super.onOptionsItemSelected(item);
     }
 
-    @Override
-    public boolean onMenuOpened(int featureId, Menu menu) {
-        super.onMenuOpened(R.menu.edit_menu, editMenu);
-        editMenu.findItem(R.id.update_note).setEnabled(requiredFields());
-        return true;
+    public void update() {
+        captureFieldsUponUpdate();
+        List<Files> newNoteFiles = DBQueryTools.captureNoteFiles(viewNoteFiles, tableLayoutFiles);
+        startActivity(DBQueryTools.updateNote(this, orgNoteTableIDs, viewNoteDetails, updatedNoteDetails,
+                viewNoteFiles, newNoteFiles, nid));
     }
 
     // CUSTOM METHODS
