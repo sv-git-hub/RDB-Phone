@@ -192,14 +192,20 @@ public class EditNote extends AppCompatActivity {
         ArrayAdapter<String> summaryAdapter = DBQueryTools.captureSummaries(this);
         summary.setThreshold(1);
         summary.setAdapter(summaryAdapter);
+        summary.setOnFocusChangeListener(new AutoOnFocusChangeListener(summary));
+        summary.setOnKeyListener(new AutoOnKeyListener(summary));
 
         ArrayAdapter<String> topicsAdapter = DBQueryTools.captureDBTopics(this);
         topic.setThreshold(1);
         topic.setAdapter(topicsAdapter);
+        topic.setOnFocusChangeListener(new AutoOnFocusChangeListener(topic));
+        topic.setOnKeyListener(new AutoOnKeyListener(topic));
 
         ArrayAdapter<String> acQuestionAdapt = DBQueryTools.captureDBQuestions(this);
         question.setThreshold(1);
         question.setAdapter(acQuestionAdapt);
+        question.setOnFocusChangeListener(new AutoOnFocusChangeListener(question));
+        question.setOnKeyListener(new AutoOnKeyListener(question));
     }
 
     private void captureFieldsUponUpdate(){

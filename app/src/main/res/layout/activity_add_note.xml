@@ -159,7 +159,7 @@
                     android:background="@color/colorWhite"
                     android:textSize="12sp"
                     android:padding="5dp"
-                    android:inputType="textMultiLine"
+                    android:inputType="text"
                     android:imeOptions="actionDone"
                     android:ems="10"
                     app:layout_constraintStart_toEndOf="@+id/lbl_View_Summary"
