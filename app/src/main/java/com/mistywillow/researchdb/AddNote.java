@@ -103,7 +103,7 @@ public class AddNote extends AppCompatActivity {
         lblQuestion = findViewById(R.id.lbl_View_Question);;
         lblQuote = findViewById(R.id.lbl_View_Quote);;
         lblTerm = findViewById(R.id.lbl_View_Term);;
-        lblTimestamp = findViewById(R.id.lbl_View_TimeStamp);;
+        lblTimestamp = findViewById(R.id.lbl_View_TimeStamp);
 
 
         // REGULAR EDITTEXT
@@ -607,7 +607,7 @@ public class AddNote extends AppCompatActivity {
                 msg = "Please enter or select a question because 'Question' was selected as a source. A comment should expand on the meaning.";
 
             } else if (sourceType.getSelectedItem().toString().equals("Quote") && (quote.getText().toString().equals(""))) {
-                setLabelColor(lblQuestion, 0);
+                setLabelColor(lblQuote, 0);
                 msg = "Please enter a quote because 'Quote' was selected as a source. A comment should expand on the meaning.";
 
             } else if (sourceType.getSelectedItem().toString().equals("Term") && (term.getText().toString().equals(""))) {

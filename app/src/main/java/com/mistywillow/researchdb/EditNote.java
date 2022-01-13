@@ -14,10 +14,12 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.ContextCompat;
 import com.mistywillow.researchdb.databases.ResearchDatabase;
 import com.mistywillow.researchdb.researchdb.entities.*;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
@@ -34,6 +36,7 @@ public class EditNote extends AppCompatActivity {
 
     private int nid;
 
+    // TEXTVIEWS
     private TextView sourceType;
     private TextView sourceTitle;
     private TextView author;
@@ -47,6 +50,15 @@ public class EditNote extends AppCompatActivity {
     private TextView issue;
     private TextView pgs_paras;
     private TextView timeStamp;
+
+    // LABELS
+    private TextView lblTopic;
+    private TextView lblSummary;
+    private TextView lblComment;
+    private TextView lblQuestion;
+    private TextView lblQuote;
+    private TextView lblTerm;
+    private TextView lblTimestamp;
 
 
     private AutoCompleteTextView topic;
@@ -78,6 +90,15 @@ public class EditNote extends AppCompatActivity {
         topic = findViewById(R.id.viewTopic);
         question = findViewById(R.id.viewQuestion);
         summary = findViewById(R.id.viewSummary);
+
+        // LABELS
+        lblTopic = findViewById(R.id.lbl_View_Topic);
+        lblSummary = findViewById(R.id.lbl_View_Summary);
+        lblComment = findViewById(R.id.lbl_View_Comment);
+        lblQuestion = findViewById(R.id.lbl_View_Question);;
+        lblQuote = findViewById(R.id.lbl_View_Quote);;
+        lblTerm = findViewById(R.id.lbl_View_Term);;
+        lblTimestamp = findViewById(R.id.lbl_View_TimeStamp);
 
         // REGULAR TEXT VIEWS
         sourceType = findViewById(R.id.viewType);
@@ -244,18 +265,54 @@ public class EditNote extends AppCompatActivity {
         return "<a href=\"" + link + "\">" + link + "</a> ";
     }
 
+    private void setLabelColor(TextView textView, int lenValue){
+        if(lenValue==0){
+            textView.setTextColor(ContextCompat.getColor(EditNote.this, R.color.colorRed));
+        }else{
+            textView.setTextColor(ContextCompat.getColor(EditNote.this, R.color.colorDkGray));
+        }
+    }
+
+    private void clearRedLabels(){
+        List<TextView> labels = new ArrayList<>(
+                Arrays.asList(lblTopic, lblQuestion,lblSummary, lblComment, lblQuote, lblTerm, lblTimestamp));
+        for (TextView txtView: labels) {
+            setLabelColor(txtView, 1);
+        }
+    }
+
     private boolean requiredFields(){
         String msg;
+        clearRedLabels();
 
         if (topic.getText().toString().equals("")){
+            setLabelColor(lblTopic, 0);
             msg = "Please select or enter a topic.";
         } else {
 
             if (comment.getText().toString().equals("")) {
+                setLabelColor(lblComment, 0);
                 msg = "Please enter a comment. Comments are specific details related to the topic and summary.";
 
             } else if (summary.getText().toString().equals("")) {
+                setLabelColor(lblSummary, 0);
                 msg = "Please enter a summary point. This expands upon your Topic entry or selection.";
+
+            } else if (sourceType.getText().toString().equals("Question") && (question.getText().toString().isEmpty())) {
+                setLabelColor(lblQuestion, 0);
+                msg = "Please enter or select a question because 'Question' was selected as a source. A comment should expand on the meaning.";
+
+            } else if (sourceType.getText().toString().equals("Quote") && (quote.getText().toString().equals(""))) {
+                setLabelColor(lblQuote, 0);
+                msg = "Please enter a quote because 'Quote' was selected as a source. A comment should expand on the meaning.";
+
+            } else if (sourceType.getText().toString().equals("Term") && (term.getText().toString().equals(""))) {
+                setLabelColor(lblTerm, 0);
+                msg = "Please enter the term and definition. Expand within comments of other sources of interpretation.";
+
+            } else if ((sourceType.getText().toString().equals("Video") || sourceType.getText().toString().equals("Audio")) && timeStamp.getText().toString().equals("")) {
+                setLabelColor(lblTimestamp, 0);
+                msg = "Please enter a TimeStamp value for an audio or video source.";
 
             } else {
                 return true;
