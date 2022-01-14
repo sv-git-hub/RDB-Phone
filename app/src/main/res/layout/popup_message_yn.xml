@@ -9,7 +9,7 @@
                 android:id="@+id/popupMessage"
                 android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
-                android:textSize="12sp"
+                android:textSize="14sp"
                 android:padding="10sp"
                 android:layout_margin="8dp"
                 app:layout_constraintTop_toTopOf="parent"

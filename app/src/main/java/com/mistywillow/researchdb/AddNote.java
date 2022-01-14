@@ -3,6 +3,7 @@ package com.mistywillow.researchdb;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.net.Uri;
 import android.util.Log;
 import android.view.*;
@@ -170,16 +171,24 @@ public class AddNote extends AppCompatActivity {
                 if(str.endsWith(".xml")) {
                     try {
                         ReadXMLFileDOMParser parser = new ReadXMLFileDOMParser(str);
-                        loadImportedNoteDetails(parser.getImportNotes());
-                        //Toast.makeText(this, "Note Imported Successfully", Toast.LENGTH_LONG).show();
+                        if(parser.getError() == 0) {
+                            invalidXMLMessage(0);
+                        }else if(parser.getError() == 2) {
+                            invalidXMLMessage(2);
+                        }else if(parser.getError() == 3){
+                            invalidXMLMessage(0);
+                        }else{
+                            loadImportedNoteDetails(parser.getImportNotes());
+                        }
                     } catch (Exception e) {
                         e.printStackTrace();
-                        PopupDialog.AlertMessageOK(this, "Wrong Note Type", "Only ResearchDB notes can be imported and must end in '.xml'");
+                        invalidXMLMessage(0);
                     }
                 }else{
-                    PopupDialog.AlertMessageOK(this, "Wrong Note Type", "Only ResearchDB notes can be imported and must end in '.xml'");
+                    invalidXMLMessage(0);
                 }
             }
+
         });
 
 
@@ -272,7 +281,17 @@ public class AddNote extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    private void invalidXMLMessage(int err){
+        if(err == 0) {
+            PopupDialog.AlertMessageOK(AddNote.this, "Invalid Import", "Failure: " +
+                    "the chosen XML was not recognized as a valid " + getResources().getString(R.string.app_name) + " XML file and not importable.");
+        }else if(err == 2){
+            PopupDialog.AlertMessageOK(this, "Multiple Note Import",
+                    "This file contains multiple notes. At present, only one note at a time can be imported.");
+        }else if(err== 3){
 
+        }
+    }
 
     private void addNewNote(){
         int srcID;
