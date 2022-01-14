@@ -22,7 +22,7 @@
     <string name="allowDateCharacters">0123456789/</string>
 
     <!-- MAIN MASTER RECYCLERVIEW -->
-    <string name="master_delete">X</string>
+    <string name="master_delete">Delete</string>
 
     <!-- MENU and MENU ITEMS -->
     <string name="master_guide">Guide</string>

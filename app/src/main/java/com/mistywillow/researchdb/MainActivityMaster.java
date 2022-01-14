@@ -23,7 +23,9 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.sqlite.db.SupportSQLiteDatabase;
 import com.mistywillow.researchdb.databases.MasterDatabase;
+import com.mistywillow.researchdb.databases.ResearchDatabase;
 import com.mistywillow.researchdb.masterdb.entity.MasterDatabaseList;
 
 import java.io.*;
@@ -87,7 +89,12 @@ public class MainActivityMaster extends AppCompatActivity {
                         InputStream source = new FileInputStream(sourcePath);
                         OutputStream destination = new FileOutputStream(destinationPath);
                         DatabaseManager.copyDatabase(source, destination);
-                        addDatabaseToList(strDBName);
+
+                        if(validateDatabase(strDBName)){
+                            addDatabaseToList(strDBName);
+                        }
+
+
                     } catch (FileNotFoundException f) {
                         PopupDialog.AlertMessageOK(this, "Wrong Database Type", "Only ResearchDB databases can be imported and must end in '.db'");
                     }
@@ -97,6 +104,19 @@ public class MainActivityMaster extends AppCompatActivity {
 
             }
         });
+    }
+
+    private boolean validateDatabase(String dbName){
+        ResearchDatabase rdb = ResearchDatabase.getInstance(this, dbName);
+        try {
+            SupportSQLiteDatabase supportDB = rdb.getOpenHelper().getWritableDatabase();
+            return true;
+        }catch (Exception e){
+            deleteDatabase(dbName);
+            PopupDialog.AlertMessageOK(this, "Database Failure", dbName +
+                    " failed to load for the following reason:\n\n" + e);
+        }
+        return false;
     }
 
     /**https://stackoverflow.com/questions/1109022/how-do-you-close-hide-the-android-soft-keyboard-programmatically*/
