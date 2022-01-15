@@ -143,7 +143,6 @@
                     android:text="@string/lbl_note_summary"
                     android:layout_width="75dp"
                     android:layout_height="wrap_content"
-                    android:hint="@string/hint_summary"
                     app:layout_constraintStart_toStartOf="parent"
                     android:layout_marginStart="5dp"
                     android:gravity="end"

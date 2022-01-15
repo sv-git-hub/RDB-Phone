@@ -131,7 +131,10 @@ public class BuildTableLayout extends AppCompatActivity{
         btnAddRow.setTypeface(Typeface.DEFAULT,Typeface.BOLD);
         btnAddRow.setGravity(Gravity.CENTER);
         btnAddRow.setPadding(5,5,5,5);
-        btnAddRow.setOnClickListener(v -> table.addView(setupAuthorsTableRow(context, table, "", "", "", "", false, false)));
+        btnAddRow.setOnClickListener(v -> {
+            table.addView(setupAuthorsTableRow(context, table, "", "", "", "", false, false));
+            table.getChildAt(table.getChildCount()-1).requestFocus();
+        });
         return btnAddRow;
     }
 

@@ -219,13 +219,13 @@ public class EditNote extends AppCompatActivity {
         updatedNoteDetails.add(parseDate[0]);                       // 7: Year
         updatedNoteDetails.add(parseDate[1]);                       // 8: Month
         updatedNoteDetails.add(parseDate[2]);                       // 9: Day
-        updatedNoteDetails.add(viewNoteDetails.get(10));            // 10: Volume
-        updatedNoteDetails.add(viewNoteDetails.get(11));            // 11: Edition
-        updatedNoteDetails.add(viewNoteDetails.get(12));            // 12: Issue
+        updatedNoteDetails.add(viewNoteDetails.get(Globals.VOLUME));// 10: Volume
+        updatedNoteDetails.add(viewNoteDetails.get(Globals.EDITION));// 11: Edition
+        updatedNoteDetails.add(viewNoteDetails.get(Globals.ISSUE)); // 12: Issue
         updatedNoteDetails.add(hyperlink.getText().toString());     // 13: Hyperlink
         updatedNoteDetails.add(comment.getText().toString());       // 14: Comment
-        updatedNoteDetails.add(viewNoteDetails.get(15));            // 15: Page
-        updatedNoteDetails.add(viewNoteDetails.get(16));            // 16: TimeStamp
+        updatedNoteDetails.add(pgs_paras.getText().toString());     // 15: Page
+        updatedNoteDetails.add(timeStamp.getText().toString());     // 16: TimeStamp
         updatedNoteDetails.add(topic.getText().toString());         // 17: Topic
     }
 

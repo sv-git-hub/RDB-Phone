@@ -220,6 +220,7 @@ public class AddNote extends AppCompatActivity {
 
         tableLayoutAuthors.addOnLayoutChangeListener((v, left, top, right, bottom, oldLeft, oldTop, oldRight, oldBottom) -> {
             if(sourceTitle.getText().length() !=0 && !sourceTitle.hasFocus()){
+                Log.e("tableLayoutAuthors", String.valueOf(tableLayoutAuthors.getChildCount()));
                 if (tableLayoutAuthors.getChildCount() > 1) {
                     author.setText(R.string.add_author_phrase);
                     // If selected Source was found but a new author added, the there is a duplicate but new Source
@@ -505,7 +506,7 @@ public class AddNote extends AppCompatActivity {
             selectedSourceID = 0;
             tableLayoutAuthors.addView(BuildTableLayout.setupAuthorsTableRow(this, tableLayoutAuthors,
                     "", "", "", "", false, true));
-            tableLayoutAuthors.requestFocus();
+            tableLayoutAuthors.getChildAt(tableLayoutAuthors.getChildCount()-1).requestFocus();
             setZeroSourceDetails();
 
         } else if (sources.size() > 1){
