@@ -157,6 +157,7 @@
                     android:layout_height="wrap_content"
                     android:background="@color/colorWhite"
                     android:textSize="12sp"
+                    android:maxLength="75"
                     android:padding="5dp"
                     android:inputType="text"
                     android:imeOptions="actionDone"

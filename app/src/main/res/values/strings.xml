@@ -104,7 +104,7 @@
     <string name="hint_term">Term</string>
     <string name="hint_topic">Topic</string>
     <string name="hint_quote">Quote</string>
-    <string name="hint_summary">Summary (Keep short to 50 if possible)</string>
+    <string name="hint_summary">Summary (Be brief - limit 75 chars)</string>
     <string name="hint_hyperlink">Hyperlink</string>
     <string name="hint_date">mm/dd/yyyy</string>
     <string name="autoHint_date">yyyy, mm/yyyy, mm/dd/yyyy</string>
