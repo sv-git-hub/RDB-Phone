@@ -11,6 +11,7 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.OpenableColumns;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.webkit.MimeTypeMap;
@@ -50,6 +51,7 @@ public class MainActivityMaster extends AppCompatActivity {
     String mSelectedDatabaseName = "";
 
     private static final int PERMISSION_REQUEST_CODE = 200;
+    private String strDBName;
 
 
     @Override
@@ -80,8 +82,9 @@ public class MainActivityMaster extends AppCompatActivity {
         resultLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
             if (result.getResultCode() == Activity.RESULT_OK && result.getData() != null){
                 Uri uri = result.getData().getData();
-                String sourcePath = RealPathUtil.getRealPath(this, uri);
-                String strDBName = sourcePath.substring(sourcePath.lastIndexOf("/")+1);
+                /*String sourcePath = RealPathUtil.getRealPath(this, uri);
+                String strDBName = sourcePath.substring(sourcePath.lastIndexOf("/")+1);*/
+                databaseNameAndSize(uri);
                 String destinationPath = this.getDatabasePath(strDBName).getPath();
 
                 if(strDBName.endsWith(".db")) {
@@ -102,6 +105,22 @@ public class MainActivityMaster extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    private void databaseNameAndSize(Uri dbURI){
+
+        Cursor returnCursor = this.getContentResolver().query(dbURI, new String[]{
+                OpenableColumns.DISPLAY_NAME, OpenableColumns.SIZE
+        }, null, null, null);
+
+        /*
+         * Get the column indexes of the data in the Cursor,
+         *     * move to the first row in the Cursor, get the data,
+         *     * and display it.
+         * */
+        int nameIndex = returnCursor.getColumnIndex(OpenableColumns.DISPLAY_NAME);
+        returnCursor.moveToFirst();
+        strDBName = (returnCursor.getString(nameIndex));
     }
 
     private boolean validateDatabase(String dbName){
