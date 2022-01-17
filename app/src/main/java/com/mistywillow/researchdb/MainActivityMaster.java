@@ -92,7 +92,9 @@ public class MainActivityMaster extends AppCompatActivity {
                         if(validateDatabase(strDBName)){
                             addDatabaseToList(strDBName);
                         }
-                    } catch (FileNotFoundException f) {
+                        source.close();
+                        destination.close();
+                    } catch (IOException f) {
                         PopupDialog.AlertMessageOK(this, "Wrong Database Type", "Only ResearchDB databases can be imported and must end in '.db'");
                     }
                 }else{

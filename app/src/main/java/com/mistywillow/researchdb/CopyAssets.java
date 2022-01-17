@@ -53,5 +53,7 @@ public class CopyAssets {
         while((read = in.read(buffer)) != -1){
             out.write(buffer, 0, read);
         }
+        in.close();
+        out.close();
     }
 }

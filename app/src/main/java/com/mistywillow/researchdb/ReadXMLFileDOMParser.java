@@ -82,6 +82,7 @@ public class ReadXMLFileDOMParser {
                 }
                 importNotes.add(tables);
             }
+            istream.close();
         } catch (
                 IOException | ParserConfigurationException | SAXException e) {
             e.printStackTrace();
