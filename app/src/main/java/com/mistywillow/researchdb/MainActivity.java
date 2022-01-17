@@ -232,14 +232,26 @@ public class MainActivity extends AppCompatActivity {
         String destinationPath = Globals.DOWNLOADS_FOLDER + "/" + Globals.DATABASE;
 
         try {
-            InputStream source = this.getContentResolver().openInputStream(Uri.fromFile(new File(sourcePath)));
-            OutputStream destination = this.getContentResolver().openOutputStream(Uri.fromFile(new File(destinationPath)));
-            DatabaseManager.copyDatabase(source, destination);
-            PopupDialog.AlertMessageOK(this, "Export Database Successful!", Globals.DATABASE +
-                    " was successfully copied to your Downloads folder for sharing.");
-        }catch (FileNotFoundException f){
-            f.printStackTrace();
+            if(new File(destinationPath).exists()) {
+                PopupDialog.AlertMessageOK(this, "Database Export Exists",
+                        "An existing " + Globals.DATABASE + " is located in the downloads folder and won't be " +
+                                "overwritten as a safety measure to prevent accidental deletion. This reinforces intention " +
+                                "requiring the user to delete it specifically.\n\n" +
+                                "Please delete or move this previous version and then export this version.");
+            }else{
 
+                InputStream source = this.getContentResolver().openInputStream(Uri.fromFile(new File(sourcePath)));
+                OutputStream destination = this.getContentResolver().openOutputStream(Uri.fromFile(new File(destinationPath)));
+                DatabaseManager.copyDatabase(source, destination);
+                source.close();
+                destination.close();
+
+                PopupDialog.AlertMessageOK(this, "Export Database Successful!", Globals.DATABASE +
+                    " was successfully copied to your Downloads folder for sharing.");
+            }
+
+        }catch (IOException f){
+            f.printStackTrace();
         }
     }
 

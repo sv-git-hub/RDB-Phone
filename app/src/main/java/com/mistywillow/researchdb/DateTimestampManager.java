@@ -13,7 +13,8 @@ public class DateTimestampManager {
     public static void validateTopic(Context context, String checkTopic){
         String regEx = "^([\\w'-]*)$|^([\\w'-]* [\\w'-]*:?[\\w'-]*)$|^([\\w'-]* [\\w'-]* [\\w'-]*:?[\\w'-]*)$";
         if (!checkTopic.matches(regEx)) {
-            PopupDialog.AlertMessageOK(context,"Error: Invalid Topic", "Keep your topic one to three words. No special characters.");
+            PopupDialog.AlertMessageOK(context,"Error: Invalid Topic", "Keep your topic one to three words with " +
+                    " no special characters and point specific. Use the Summary for brief specifics and Comments for details.");
         }
     }
 
