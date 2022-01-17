@@ -86,22 +86,18 @@ public class MainActivityMaster extends AppCompatActivity {
 
                 if(strDBName.endsWith(".db")) {
                     try {
-                        InputStream source = new FileInputStream(sourcePath);
-                        OutputStream destination = new FileOutputStream(destinationPath);
+                        InputStream source = this.getContentResolver().openInputStream(uri);
+                        OutputStream destination = this.getContentResolver().openOutputStream(Uri.fromFile(new File(destinationPath)));
                         DatabaseManager.copyDatabase(source, destination);
-
                         if(validateDatabase(strDBName)){
                             addDatabaseToList(strDBName);
                         }
-
-
                     } catch (FileNotFoundException f) {
                         PopupDialog.AlertMessageOK(this, "Wrong Database Type", "Only ResearchDB databases can be imported and must end in '.db'");
                     }
                 }else{
                     PopupDialog.AlertMessageOK(this, "Wrong Database Type", "Only ResearchDB databases can be imported and must end in '.db'");
                 }
-
             }
         });
     }

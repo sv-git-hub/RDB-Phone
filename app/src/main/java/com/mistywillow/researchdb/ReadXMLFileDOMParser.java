@@ -1,6 +1,5 @@
 package com.mistywillow.researchdb;
 
-import android.util.Log;
 import org.apache.commons.text.StringEscapeUtils;
 import org.w3c.dom.*;
 import org.xml.sax.SAXException;
@@ -32,7 +31,6 @@ public class ReadXMLFileDOMParser {
             Document doc = docBuilder.parse(istream);
             NodeList noteList = doc.getElementsByTagName("note");
 
-            Log.e("noteList", String.valueOf(noteList.getLength()));
             if (noteList.getLength() == 0){
                 error = 0;
                 return;
@@ -92,10 +90,10 @@ public class ReadXMLFileDOMParser {
 
     private boolean missingRequiredNodes(NodeList children){
         List<String> nodes = new ArrayList<>(Arrays.asList("QUOTE", "COMMENT", "AUTHOR", "QUESTION", "TERM", "TOPIC", "SOURCE", "FILE"));
-        Log.e("tableList.getLength()",String.valueOf(children.getLength()));
+
         for (int node = 0; node < children.getLength(); node++) {
             String name = children.item(node).getAttributes().item(0).getNodeValue();
-            Log.e("node name", children.item(node).getAttributes().item(0).getNodeValue());
+
             if(!nodes.contains(name.toUpperCase())){
                 return true;
             }

@@ -3,9 +3,7 @@ package com.mistywillow.researchdb;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
-import android.content.res.Resources;
 import android.net.Uri;
-import android.util.Log;
 import android.view.*;
 import android.view.inputmethod.EditorInfo;
 import android.widget.*;
@@ -220,7 +218,7 @@ public class AddNote extends AppCompatActivity {
 
         tableLayoutAuthors.addOnLayoutChangeListener((v, left, top, right, bottom, oldLeft, oldTop, oldRight, oldBottom) -> {
             if(sourceTitle.getText().length() !=0 && !sourceTitle.hasFocus()){
-                Log.e("tableLayoutAuthors", String.valueOf(tableLayoutAuthors.getChildCount()));
+
                 if (tableLayoutAuthors.getChildCount() > 1) {
                     author.setText(R.string.add_author_phrase);
                     // If selected Source was found but a new author added, the there is a duplicate but new Source

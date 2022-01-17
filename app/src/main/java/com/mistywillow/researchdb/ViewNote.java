@@ -225,17 +225,25 @@ public class ViewNote extends AppCompatActivity {
                 MimeTypeMap myMime = MimeTypeMap.getSingleton();
                 String mimeType = myMime.getMimeTypeFromExtension(getFileExtension(nFile.getFileName()));
 
+                try {
 
-                checkFolderExists(this, "note_files");
-                File filePaths = new File(getCacheDir().toString() + "/note_files/");
+                    checkFolderExists(this, "note_files");
+                    File filePaths = new File(getCacheDir().toString() + "/note_files/");
 
-                File newFile = new File(filePaths, result);
-                if(!newFile.exists()){
-                    buildFile(filePaths, nFile);
+                    File newFile = new File(filePaths, result);
+                    if(!newFile.exists()){
+                        buildFile(filePaths, nFile);
+                    }
+
+                    Uri contentUri = getUriForFile(ViewNote.this, "com.mistywillow.fileprovider", newFile);
+                    openFile(contentUri, mimeType);
+
+                }catch(Exception e){
+                    e.printStackTrace();
+                    PopupDialog.AlertMessageOK(this, "Open File Failed", "Attachment failed to open " +
+                            "or the temporary cache directory couldn't be created.");
                 }
 
-                Uri contentUri = getUriForFile(ViewNote.this, "com.mistywillow.fileprovider", newFile);
-                openFile(contentUri, mimeType);
             });
         }
         return row;
@@ -243,10 +251,7 @@ public class ViewNote extends AppCompatActivity {
 
     public static void checkFolderExists(Context context, String folder){
         File location = new File(context.getCacheDir() + "/" + folder);
-        if(!location.exists()) {
-            if(location.mkdir())
-                Toast.makeText(context, "Directory " + folder + " was created!", Toast.LENGTH_SHORT).show();
-        }
+        if(!location.exists()) location.mkdir();
     }
 
     private void openFile(Uri uri, String mime){

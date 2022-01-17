@@ -183,7 +183,7 @@ public class MainActivity extends AppCompatActivity {
 
         }else if(item.getItemId() == R.id.export_database) {
             exportDatabase();
-            PopupDialog.AlertMessageOK(this, "Export Successful", "The " + Globals.DATABASE + " ");
+
         }else if(item.getItemId() == R.id.delete_database) {
             PopupDialog.DeleteDatabaseYN(this, "Delete Database",
                     "Do you want to delete database: " + sharedPreferences.getString("database", ""));
@@ -232,8 +232,8 @@ public class MainActivity extends AppCompatActivity {
         String destinationPath = Globals.DOWNLOADS_FOLDER + "/" + Globals.DATABASE;
 
         try {
-            InputStream source = new FileInputStream(sourcePath);
-            OutputStream destination = new FileOutputStream(destinationPath);
+            InputStream source = this.getContentResolver().openInputStream(Uri.fromFile(new File(sourcePath)));
+            OutputStream destination = this.getContentResolver().openOutputStream(Uri.fromFile(new File(destinationPath)));
             DatabaseManager.copyDatabase(source, destination);
             PopupDialog.AlertMessageOK(this, "Export Database Successful!", Globals.DATABASE +
                     " was successfully copied to your Downloads folder for sharing.");

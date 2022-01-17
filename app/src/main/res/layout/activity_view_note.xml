@@ -209,6 +209,7 @@
                     android:ems="10"
                     android:background="@color/colorWhite"
                     android:textSize="12sp"
+                    android:textColorLink="@color/colorBlue"
                     android:padding="5dp"
                     app:layout_constraintStart_toEndOf="@+id/lbl_View_Hyperlink"
                     app:layout_constraintEnd_toEndOf="parent"
