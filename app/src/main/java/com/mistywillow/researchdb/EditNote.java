@@ -122,8 +122,9 @@ public class EditNote extends AppCompatActivity {
         resultLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
             if (result.getResultCode() == Activity.RESULT_OK && result.getData() != null){
                 Uri uri = result.getData().getData();
-                String str = RealPathUtil.getRealPath(this, uri);
-                tableLayoutFiles.addView(BuildTableLayout.setupFilesTableRow(EditNote.this,tableLayoutFiles, str,false));
+                //String str = RealPathUtil.getRealPath(this, uri);
+                String util = UriUtils.getPathFromUri(this, uri);
+                tableLayoutFiles.addView(BuildTableLayout.setupFilesTableRow(EditNote.this,tableLayoutFiles, util,false));
             }
         });
 

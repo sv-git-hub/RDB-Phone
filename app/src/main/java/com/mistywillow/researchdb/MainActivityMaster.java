@@ -121,6 +121,7 @@ public class MainActivityMaster extends AppCompatActivity {
         int nameIndex = returnCursor.getColumnIndex(OpenableColumns.DISPLAY_NAME);
         returnCursor.moveToFirst();
         strDBName = (returnCursor.getString(nameIndex));
+        returnCursor.close();
     }
 
     private boolean validateDatabase(String dbName){

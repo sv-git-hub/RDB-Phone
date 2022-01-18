@@ -2,8 +2,10 @@ package com.mistywillow.researchdb;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.content.ContentProvider;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Environment;
 import android.view.*;
 import android.view.inputmethod.EditorInfo;
 import android.widget.*;
@@ -17,6 +19,7 @@ import androidx.core.content.ContextCompat;
 import com.mistywillow.researchdb.databases.ResearchDatabase;
 import com.mistywillow.researchdb.researchdb.entities.*;
 
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -127,8 +130,9 @@ public class AddNote extends AppCompatActivity {
         resultLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
             if (result.getResultCode() == Activity.RESULT_OK && result.getData() != null){
                 Uri uri = result.getData().getData();
-                String str = RealPathUtil.getRealPath(this, uri);
-                tableLayoutFiles.addView(BuildTableLayout.setupFilesTableRow(AddNote.this,tableLayoutFiles, str,false));
+                //String str = RealPathUtil.getRealPath(this, uri);
+                String util = UriUtils.getPathFromUri(this, uri);
+                tableLayoutFiles.addView(BuildTableLayout.setupFilesTableRow(AddNote.this,tableLayoutFiles, util,false));
             }
         });
 
@@ -164,7 +168,7 @@ public class AddNote extends AppCompatActivity {
         xmlLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
             if (result.getResultCode() == Activity.RESULT_OK && result.getData() != null){
                 Uri uri = result.getData().getData();
-                String str = RealPathUtil.getRealPath(this, uri);
+                String str = UriUtils.getPathFromUri(this, uri);
 
                 if(str.endsWith(".xml")) {
                     try {
