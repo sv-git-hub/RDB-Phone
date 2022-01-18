@@ -170,8 +170,10 @@ public class AddNote extends AppCompatActivity {
                 Uri uri = result.getData().getData();
                 String str = UriUtils.getPathFromUri(this, uri);
 
+
                 if(str.endsWith(".xml")) {
                     try {
+
                         ReadXMLFileDOMParser parser = new ReadXMLFileDOMParser(str);
                         if(parser.getError() == 0) {
                             invalidXMLMessage(0);
@@ -183,11 +185,12 @@ public class AddNote extends AppCompatActivity {
                             loadImportedNoteDetails(parser.getImportNotes());
                         }
                     } catch (Exception e) {
-                        e.printStackTrace();
                         invalidXMLMessage(0);
+                        e.printStackTrace();
+
                     }
                 }else{
-                    invalidXMLMessage(0);
+                    invalidXMLMessage(3);
                 }
             }
 
@@ -292,7 +295,8 @@ public class AddNote extends AppCompatActivity {
             PopupDialog.AlertMessageOK(this, "Multiple Note Import",
                     "This file contains multiple notes. At present, only one note at a time can be imported.");
         }else if(err== 3){
-
+            PopupDialog.AlertMessageOK(AddNote.this, "Invalid Import", "Failure: " +
+                    "the chosen file was not recognized as a valid " + getResources().getString(R.string.app_name) + " XML file and may be corrupted.");
         }
     }
 
