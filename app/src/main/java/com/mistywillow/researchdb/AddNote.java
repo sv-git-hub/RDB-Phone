@@ -2,10 +2,8 @@ package com.mistywillow.researchdb;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.content.ContentProvider;
 import android.content.Intent;
 import android.net.Uri;
-import android.os.Environment;
 import android.view.*;
 import android.view.inputmethod.EditorInfo;
 import android.widget.*;
@@ -19,7 +17,6 @@ import androidx.core.content.ContextCompat;
 import com.mistywillow.researchdb.databases.ResearchDatabase;
 import com.mistywillow.researchdb.researchdb.entities.*;
 
-import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -211,20 +208,20 @@ public class AddNote extends AppCompatActivity {
 
         sourceTitle.setOnItemClickListener((parent, view, position, id) -> {
             setLabelColor(lblSource, position);
-            populateSourceDetails(DBQueryTools.getSourcesByTitle(sourceTitle.getText().toString()));
+            populateSourceDetails(DBQueryTools.getSourcesByTitle(sourceTitle.getText().toString().trim()));
         });
 
 
         sourceTitle.setOnEditorActionListener((v, actionId, event) -> {
             if ((event != null && (event.getKeyCode() == KeyEvent.KEYCODE_ENTER)) || (actionId == EditorInfo.IME_ACTION_DONE)) {
                 //do what you want on the press of 'done'
-                populateSourceDetails(DBQueryTools.getSourcesByTitle(sourceTitle.getText().toString()));
+                populateSourceDetails(DBQueryTools.getSourcesByTitle(sourceTitle.getText().toString().trim()));
             }
             return false;
         });
 
         tableLayoutAuthors.addOnLayoutChangeListener((v, left, top, right, bottom, oldLeft, oldTop, oldRight, oldBottom) -> {
-            if(sourceTitle.getText().length() !=0 && !sourceTitle.hasFocus()){
+            if(sourceTitle.getText().toString().trim().length() !=0 && !sourceTitle.hasFocus()){
 
                 if (tableLayoutAuthors.getChildCount() > 1) {
                     author.setText(R.string.add_author_phrase);
@@ -233,7 +230,7 @@ public class AddNote extends AppCompatActivity {
                         selectedSourceID = 0;
                     }
                 }else if(tableLayoutAuthors.getChildCount() == 1 && bottom != oldBottom){
-                    populateSourceDetails(DBQueryTools.getSourcesByTitle(sourceTitle.getText().toString()));
+                    populateSourceDetails(DBQueryTools.getSourcesByTitle(sourceTitle.getText().toString().trim()));
                 }
             }
         });
@@ -487,7 +484,7 @@ public class AddNote extends AppCompatActivity {
         newNoteDetails = new ArrayList<>();
         newNoteDetails.add(sourceType.getSelectedItem().toString()); // 0: Type
         newNoteDetails.add(summary.getText().toString());       // 1: Summary
-        newNoteDetails.add(sourceTitle.getText().toString());   // 2: Source
+        newNoteDetails.add(sourceTitle.getText().toString().trim());   // 2: Source
         newNoteDetails.add(author.getText().toString());        // 3: Author(s)
         newNoteDetails.add(question.getText().toString());      // 4: Question
         newNoteDetails.add(quote.getText().toString());         // 5: Quote
@@ -607,7 +604,7 @@ public class AddNote extends AppCompatActivity {
             setLabelColor(lblTopic, topic.length());
             msg = "Please select or enter a topic.";
         }else {
-            if (sourceTitle.getText().toString().equals("")) {
+            if (sourceTitle.getText().toString().trim().equals("")) {
                 setLabelColor(lblSource, sourceTitle.length());
                 msg = "Please select an existing source or enter a title for a new source.";
 

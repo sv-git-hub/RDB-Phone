@@ -104,7 +104,7 @@
                     android:padding="5dp"
                     android:inputType="text"
                     android:imeOptions="actionDone"
-                    android:hint="@string/hint_topic"
+                    android:hint="@string/hint_topic_1_3"
                     android:ems="10"
                     android:singleLine="true" android:textSize="12sp"
                     app:layout_constraintStart_toEndOf="@+id/lbl_View_Topic"

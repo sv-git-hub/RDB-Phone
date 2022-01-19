@@ -46,7 +46,7 @@
             android:layout_marginTop="5dp"
             android:layout_marginBottom="5dp"
             app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintVertical_bias="1.0">
+            app:layout_constraintVertical_bias="0.0">
 
         <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
@@ -74,7 +74,7 @@
             <Spinner
                     android:id="@+id/viewType"
                     android:layout_width="110dp"
-                    android:layout_height="25dp"
+                    android:layout_height="26dp"
                     app:layout_constraintStart_toEndOf="@+id/lbl_View_Type"
                     app:layout_constraintBaseline_toBaselineOf="@+id/lbl_View_Type"
                     android:layout_marginTop="5dp"
@@ -101,7 +101,7 @@
                     android:padding="5dp"
                     android:inputType="text"
                     android:imeOptions="actionDone"
-                    android:hint="@string/hint_topic"
+                    android:hint="@string/hint_topic_1_3"
                     android:ems="10"
                     android:singleLine="true" android:textSize="12sp"
                     app:layout_constraintStart_toEndOf="@+id/lbl_View_Topic"
@@ -191,7 +191,7 @@
                     android:background="@color/colorWhite"
                     android:padding="5dp"
                     android:textIsSelectable="true"
-                    android:inputType="textMultiLine"
+                    android:inputType="text|textMultiLine"
                     android:imeOptions="actionDone"
                     android:hint="@string/hint_comment"
                     android:textSize="12sp"

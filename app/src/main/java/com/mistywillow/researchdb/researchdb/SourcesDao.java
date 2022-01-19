@@ -16,7 +16,7 @@ public interface SourcesDao {
     void deleteSource(Sources source);
 
     // GETS ALL SOURCES
-    @Query("SELECT * FROM Source")
+    @Query("SELECT * FROM Source ORDER BY Title")
     List<Sources> getSources();
 
     // GETS INDIVIDUAL SOURCES
