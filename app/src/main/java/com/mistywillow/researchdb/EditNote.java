@@ -18,10 +18,8 @@ import androidx.core.content.ContextCompat;
 import com.mistywillow.researchdb.databases.ResearchDatabase;
 import com.mistywillow.researchdb.researchdb.entities.*;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Objects;
+import java.net.URI;
+import java.util.*;
 
 public class EditNote extends AppCompatActivity {
 
@@ -33,6 +31,8 @@ public class EditNote extends AppCompatActivity {
     private List<String> updatedNoteDetails;
 
     private List<Files> viewNoteFiles;
+    private HashMap<String, Uri>fileURIs;
+    private String filePath;
 
     private int nid;
 
@@ -114,6 +114,7 @@ public class EditNote extends AppCompatActivity {
         timeStamp = findViewById(R.id.viewTimeStamp);
 
         btnAddFile = findViewById(R.id.addFile);
+        fileURIs = new HashMap<>();
 
         // TABLES
         tableLayoutFiles = findViewById(R.id.table_files);
@@ -122,9 +123,8 @@ public class EditNote extends AppCompatActivity {
         resultLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
             if (result.getResultCode() == Activity.RESULT_OK && result.getData() != null){
                 Uri uri = result.getData().getData();
-                //String str = RealPathUtil.getRealPath(this, uri);
-                String util = UriUtils.getPathFromUri(this, uri);
-                tableLayoutFiles.addView(BuildTableLayout.setupFilesTableRow(EditNote.this,tableLayoutFiles, util,false));
+                manageNewFileURIs(uri);
+                tableLayoutFiles.addView(BuildTableLayout.setupFilesTableRow(EditNote.this,tableLayoutFiles, filePath,false));
             }
         });
 
@@ -153,7 +153,8 @@ public class EditNote extends AppCompatActivity {
 
     private void setupOnClickActions() {
         btnAddFile.setOnClickListener(v -> {
-            Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+            Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
+            intent.addCategory(Intent.CATEGORY_OPENABLE);
             intent.setType("*/*");
             resultLauncher.launch(intent);
         });
@@ -179,9 +180,16 @@ public class EditNote extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    private void manageNewFileURIs(Uri file){
+        filePath = UriUtils.getPathFromUri(this, file);
+        if(!fileURIs.containsKey(filePath)){
+            fileURIs.put(filePath,file);
+        }
+    }
+
     public void update() {
         captureFieldsUponUpdate();
-        List<Files> newNoteFiles = DBQueryTools.captureNoteFiles(viewNoteFiles, tableLayoutFiles);
+        List<Files> newNoteFiles = DBQueryTools.captureNoteFiles(EditNote.this, viewNoteFiles, tableLayoutFiles, fileURIs);
         startActivity(DBQueryTools.updateNote(this, orgNoteTableIDs, viewNoteDetails, updatedNoteDetails,
                 viewNoteFiles, newNoteFiles, nid));
     }

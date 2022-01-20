@@ -3,7 +3,9 @@ package com.mistywillow.researchdb;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
+import android.database.Cursor;
 import android.net.Uri;
+import android.provider.OpenableColumns;
 import android.view.*;
 import android.view.inputmethod.EditorInfo;
 import android.widget.*;
@@ -17,9 +19,11 @@ import androidx.core.content.ContextCompat;
 import com.mistywillow.researchdb.databases.ResearchDatabase;
 import com.mistywillow.researchdb.researchdb.entities.*;
 
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.net.URI;
 import java.util.*;
 
 public class AddNote extends AppCompatActivity {
@@ -69,6 +73,8 @@ public class AddNote extends AppCompatActivity {
 
     private List<String> newNoteDetails;
     private List<Integer> newSourcesAuthorIDs;
+    private HashMap<String, Uri>fileURIs;
+    private String filePath;
 
     @SuppressLint("SetTextI18n")
     @Override
@@ -118,6 +124,7 @@ public class AddNote extends AppCompatActivity {
         issue = findViewById(R.id.viewIssue);
 
         btnAddFile = findViewById(R.id.addFile);
+        fileURIs = new HashMap<>();
 
         tableLayoutFiles = findViewById(R.id.table_files);
         tableLayoutFiles.addView(BuildTableLayout.setupFilesTableRow(this,tableLayoutFiles, "FilePath/FileName",true));
@@ -127,9 +134,8 @@ public class AddNote extends AppCompatActivity {
         resultLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
             if (result.getResultCode() == Activity.RESULT_OK && result.getData() != null){
                 Uri uri = result.getData().getData();
-                //String str = RealPathUtil.getRealPath(this, uri);
-                String util = UriUtils.getPathFromUri(this, uri);
-                tableLayoutFiles.addView(BuildTableLayout.setupFilesTableRow(AddNote.this,tableLayoutFiles, util,false));
+                manageNewFileURIs(uri);
+                tableLayoutFiles.addView(BuildTableLayout.setupFilesTableRow(AddNote.this,tableLayoutFiles, filePath,false));
             }
         });
 
@@ -200,7 +206,8 @@ public class AddNote extends AppCompatActivity {
 
     private void setupOnClickActions() {
         btnAddFile.setOnClickListener(v -> {
-            Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+            Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
+            intent.addCategory(Intent.CATEGORY_OPENABLE);
             intent.setType("*/*");
             resultLauncher.launch(intent);
 
@@ -297,6 +304,26 @@ public class AddNote extends AppCompatActivity {
         }
     }
 
+    private void manageNewFileURIs(Uri file){
+        filePath = UriUtils.getPathFromUri(this, file);
+        if(!fileURIs.containsKey(filePath)){
+            fileURIs.put(filePath,file);
+        }
+    }
+
+    private String getFileNameFromURI(Uri dbURI){
+        String temp;
+        Cursor returnCursor = this.getContentResolver().query(dbURI, new String[]{
+                OpenableColumns.DISPLAY_NAME }, null, null, null);
+        /* Get the column indexes of the data in the Cursor, move to the first row in the Cursor, get the data,
+         * and display it.*/
+        int nameIndex = returnCursor.getColumnIndex(OpenableColumns.DISPLAY_NAME);
+        returnCursor.moveToFirst();
+        temp = (returnCursor.getString(nameIndex));
+        returnCursor.close();
+        return temp;
+    }
+
     private void addNewNote(){
         int srcID;
         captureNoteDetails();
@@ -339,7 +366,7 @@ public class AddNote extends AppCompatActivity {
             }
         }
 
-        List<Files> addFiles = DBQueryTools.captureNoteFiles(null, tableLayoutFiles);
+        List<Files> addFiles = DBQueryTools.captureNoteFiles(this, null, tableLayoutFiles, fileURIs);
         startActivity(DBQueryTools.addNewNote(this, newNoteIDs, addFiles));
     }
 
@@ -409,6 +436,7 @@ public class AddNote extends AppCompatActivity {
                         os.flush();
                         os.close();
 
+                        manageNewFileURIs(Uri.fromFile(new File(cacheFilePath)));
                         tableLayoutFiles.addView(BuildTableLayout.setupFilesTableRow(AddNote.this,tableLayoutFiles, cacheFilePath,false));
 
                     }catch(Exception io){

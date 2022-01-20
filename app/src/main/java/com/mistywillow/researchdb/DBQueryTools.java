@@ -2,6 +2,8 @@ package com.mistywillow.researchdb;
 
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
+import android.util.Log;
 import android.view.View;
 import android.widget.*;
 import androidx.sqlite.db.SimpleSQLiteQuery;
@@ -11,6 +13,8 @@ import com.mistywillow.researchdb.researchdb.entities.*;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.InputStream;
+import java.net.URI;
 import java.util.*;
 
 public class DBQueryTools {
@@ -131,13 +135,12 @@ public class DBQueryTools {
         return new ArrayAdapter<>(context, R.layout.custom_dropdown_list, orgSummaries);
     }
 
-    public static List<Files> captureNoteFiles(List<Files> curFiles, TableLayout table){
+    public static List<Files> captureNoteFiles(Context context, List<Files> curFiles, TableLayout table, HashMap<String, Uri>fileURIs){
         List<Files> noteFiles = new ArrayList<>();
         int i = table.getChildCount();
         if(i>1){
             for (int itr = 1; itr<i; itr++) { // iterating through indexes
                 TableRow tr = (TableRow) table.getChildAt(itr);
-                /*TextView id = (TextView) tr.getChildAt(0);*/
                 TextView tv = (TextView) tr.getChildAt(1); // 1 is the file path position
                 // Check if file exists by ID, if so, this is an update, add it to the new file list
                 if(curFiles != null && !tv.getText().toString().contains("/")){
@@ -151,7 +154,7 @@ public class DBQueryTools {
                     File f = new File(tv.getText().toString());
                     String n = f.getName();
                     try {
-                        FileInputStream fis = new FileInputStream(f.getPath());
+                        InputStream fis = context.getContentResolver().openInputStream(fileURIs.get(f.getPath()));
                         ByteArrayOutputStream bos = new ByteArrayOutputStream();
                         byte[] buf = new byte[1024];
                         for (int read; (read = fis.read(buf)) != -1; ) {
@@ -161,6 +164,7 @@ public class DBQueryTools {
 
                         noteFiles.add(new Files(0, n, bos.toByteArray()));
                     } catch (Exception e) {
+                        Log.e("getContentResolver", e.toString());
                         e.printStackTrace();
                     }
                 }
