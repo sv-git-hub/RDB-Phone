@@ -23,7 +23,6 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.net.URI;
 import java.util.*;
 
 public class AddNote extends AppCompatActivity {
@@ -67,7 +66,6 @@ public class AddNote extends AppCompatActivity {
 
     private TableLayout tableLayoutFiles;
     private TableLayout tableLayoutAuthors;
-    private Menu addMenu;
 
     private int selectedSourceID;
 
@@ -105,9 +103,9 @@ public class AddNote extends AppCompatActivity {
         lblSource = findViewById(R.id.lbl_View_Source);
         lblAuthor = findViewById(R.id.lbl_View_Authors);
         lblDate = findViewById(R.id.lbl_View_Date);
-        lblQuestion = findViewById(R.id.lbl_View_Question);;
-        lblQuote = findViewById(R.id.lbl_View_Quote);;
-        lblTerm = findViewById(R.id.lbl_View_Term);;
+        lblQuestion = findViewById(R.id.lbl_View_Question);
+        lblQuote = findViewById(R.id.lbl_View_Quote);
+        lblTerm = findViewById(R.id.lbl_View_Term);
         lblTimestamp = findViewById(R.id.lbl_View_TimeStamp);
 
 
@@ -174,7 +172,8 @@ public class AddNote extends AppCompatActivity {
                 String str = UriUtils.getPathFromUri(this, uri);
 
 
-                if(str.endsWith(".xml")) {
+                assert str != null;
+                if(str.toLowerCase().endsWith(".xml")) {
                     try {
 
                         ReadXMLFileDOMParser parser = new ReadXMLFileDOMParser(str);
@@ -263,7 +262,6 @@ public class AddNote extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.add_menu, menu);
-        addMenu = menu;
         return true;
     }
 

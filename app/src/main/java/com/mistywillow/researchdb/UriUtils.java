@@ -14,7 +14,6 @@ import android.os.Build;
 import android.os.Environment;
 import java.io.FileOutputStream;
 import android.provider.MediaStore;
-import android.util.Log;
 
 /*https://handyopinion.com/get-file-path-from-uri-in-android-java/*/
 public class UriUtils {
@@ -24,8 +23,8 @@ public class UriUtils {
     public static String getPathFromUri(final Context context, final Uri uri) {
         // check here to is it KITKAT or new version
         final boolean isKitKatOrAbove = Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT;
-        String selection = null;
-        String[] selectionArgs = null;
+        String selection;
+        String[] selectionArgs;
         // DocumentProvider
         if (isKitKatOrAbove && DocumentsContract.isDocumentUri(context, uri)) {
             // ExternalStorageProvider
@@ -35,7 +34,7 @@ public class UriUtils {
                 final String type = split[0];
 
                 String fullPath = getPathFromExtSD(split);
-                if (fullPath != "") {
+                if (!fullPath.equals("")) {
                     return fullPath;
                 } else {
                     return null;
@@ -71,7 +70,7 @@ public class UriUtils {
                         };
                         for (String contentUriPrefix : contentUriPrefixesToTry) {
                             try {
-                                final Uri contentUri = ContentUris.withAppendedId(Uri.parse(contentUriPrefix), Long.valueOf(id));
+                                final Uri contentUri = ContentUris.withAppendedId(Uri.parse(contentUriPrefix), Long.parseLong(id));
 
                                 return getDataColumn(context, contentUri, null, null);
                             } catch (NumberFormatException e) {
@@ -88,7 +87,7 @@ public class UriUtils {
                     }
                     try {
                         contentUri = ContentUris.withAppendedId(
-                                Uri.parse("content://downloads/public_downloads"), Long.valueOf(id));
+                                Uri.parse("content://downloads/public_downloads"), Long.parseLong(id));
 
                     } catch (NumberFormatException e) {
                         e.printStackTrace();
@@ -154,7 +153,7 @@ public class UriUtils {
     private static String getPathFromExtSD(String[] pathData) {
         final String type = pathData[0];
         final String relativePath = "/" + pathData[1];
-        String fullPath = "";
+        String fullPath;
 
         if ("primary".equalsIgnoreCase(type)) {
             fullPath = Environment.getExternalStorageDirectory() + relativePath;
@@ -177,8 +176,7 @@ public class UriUtils {
     }
 
     private static String getDriveFilePath(Uri uri, Context context) {
-        Uri returnUri = uri;
-        Cursor returnCursor = context.getContentResolver().query(returnUri, null, null, null, null);
+        Cursor returnCursor = context.getContentResolver().query(uri, null, null, null, null);
 
         int nameIndex = returnCursor.getColumnIndex(OpenableColumns.DISPLAY_NAME);
         int sizeIndex = returnCursor.getColumnIndex(OpenableColumns.SIZE);
@@ -205,12 +203,12 @@ public class UriUtils {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        returnCursor.close();
         return file.getPath();
     }
 
     private static String getMediaFilePathForN(Uri uri, Context context) {
-        Uri returnUri = uri;
-        Cursor returnCursor = context.getContentResolver().query(returnUri, null, null, null, null);
+        Cursor returnCursor = context.getContentResolver().query(uri, null, null, null, null);
 
         int nameIndex = returnCursor.getColumnIndex(OpenableColumns.DISPLAY_NAME);
         int sizeIndex = returnCursor.getColumnIndex(OpenableColumns.SIZE);
@@ -221,7 +219,7 @@ public class UriUtils {
         try {
             InputStream inputStream = context.getContentResolver().openInputStream(uri);
             FileOutputStream outputStream = new FileOutputStream(file);
-            int read = 0;
+            int read;
             int maxBufferSize = 1 * 1024 * 1024;
             int bytesAvailable = inputStream.available();
 
@@ -237,6 +235,7 @@ public class UriUtils {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        returnCursor.close();
         return file.getPath();
     }
 

@@ -288,7 +288,8 @@ public class MainActivityMaster extends AppCompatActivity {
 
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                             if (shouldShowRequestPermissionRationale(ACCESS_FINE_LOCATION)) {
-                                showMessageOKCancel("You need to allow access to both the permissions",
+                                showMessageOKCancel("You need to allow access permissions for " +
+                                                getResources().getString(R.string.app_name) + " to be used.",
                                         new DialogInterface.OnClickListener() {
                                             @Override
                                             public void onClick(DialogInterface dialog, int which) {

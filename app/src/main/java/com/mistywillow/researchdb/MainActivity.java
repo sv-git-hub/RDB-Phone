@@ -103,8 +103,10 @@ public class MainActivity extends AppCompatActivity {
                 if(actionId == EditorInfo.IME_ACTION_DONE)
                     if(!customSearch.getText().toString().trim().equals("")){
                         noteIDsFromCustomSearch = new ArrayList<>();
+                        topic.setText("");
+                        question.setText("");
                         rListNotes.setAdapter(null);
-                        completeSearch(exact.isChecked(), customSearch.getText().toString());
+                        completeSearch(exact.isChecked(), customSearch.getText().toString().trim());
                         loadNotes(captureNotes(researchDatabase.getNotesDao().getAllNotesOnNoteIDs(noteIDsFromCustomSearch)));
                     }
                 return false;
@@ -138,7 +140,7 @@ public class MainActivity extends AppCompatActivity {
         if(!customSearch.getText().toString().trim().equals("")){
             noteIDsFromCustomSearch = new ArrayList<>();
             rListNotes.setAdapter(null);
-            completeSearch(exact.isChecked(), customSearch.getText().toString());
+            completeSearch(exact.isChecked(), customSearch.getText().toString().trim());
             loadNotes(captureNotes(researchDatabase.getNotesDao().getAllNotesOnNoteIDs(noteIDsFromCustomSearch)));
         }
     }

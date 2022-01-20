@@ -1,6 +1,5 @@
 package com.mistywillow.researchdb;
 
-import android.util.Log;
 import android.view.View;
 import android.widget.AutoCompleteTextView;
 

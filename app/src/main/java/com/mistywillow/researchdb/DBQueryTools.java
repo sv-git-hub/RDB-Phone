@@ -3,7 +3,6 @@ package com.mistywillow.researchdb;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
-import android.util.Log;
 import android.view.View;
 import android.widget.*;
 import androidx.sqlite.db.SimpleSQLiteQuery;
@@ -164,7 +163,6 @@ public class DBQueryTools {
 
                         noteFiles.add(new Files(0, n, bos.toByteArray()));
                     } catch (Exception e) {
-                        Log.e("getContentResolver", e.toString());
                         e.printStackTrace();
                     }
                 }

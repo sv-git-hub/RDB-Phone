@@ -18,7 +18,6 @@ import androidx.core.content.ContextCompat;
 import com.mistywillow.researchdb.databases.ResearchDatabase;
 import com.mistywillow.researchdb.researchdb.entities.*;
 
-import java.net.URI;
 import java.util.*;
 
 public class EditNote extends AppCompatActivity {
@@ -67,7 +66,6 @@ public class EditNote extends AppCompatActivity {
 
     private Button btnAddFile;
     private TableLayout tableLayoutFiles;
-    private Menu editMenu;
 
     @SuppressLint("SetTextI18n")
     @Override
@@ -95,9 +93,9 @@ public class EditNote extends AppCompatActivity {
         lblTopic = findViewById(R.id.lbl_View_Topic);
         lblSummary = findViewById(R.id.lbl_View_Summary);
         lblComment = findViewById(R.id.lbl_View_Comment);
-        lblQuestion = findViewById(R.id.lbl_View_Question);;
-        lblQuote = findViewById(R.id.lbl_View_Quote);;
-        lblTerm = findViewById(R.id.lbl_View_Term);;
+        lblQuestion = findViewById(R.id.lbl_View_Question);
+        lblQuote = findViewById(R.id.lbl_View_Quote);
+        lblTerm = findViewById(R.id.lbl_View_Term);
         lblTimestamp = findViewById(R.id.lbl_View_TimeStamp);
 
         // REGULAR TEXT VIEWS
@@ -165,7 +163,6 @@ public class EditNote extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.edit_menu, menu);
-        editMenu = menu;
         return true;
     }
 
