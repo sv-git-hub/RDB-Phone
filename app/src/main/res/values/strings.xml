@@ -30,6 +30,13 @@
     <string name="menu_title_edit">Edit</string>
     <string name="menu_title_help">Help</string>
 
+    <!-- NOTE LIST -->
+    <string name="note_number">#####</string>
+    <string name="note_source_type">Note Source Type</string>
+    <string name="note_summary_description">Note Summary Description</string>
+    <string name="note_source">Note Source</string>
+    <string name="note_author">Note Author(s)</string>
+
     <!-- TOOLBAR -->
     <string name="toolbar_search">SEARCH</string>
     <string name="toolbar_add">ADD NOTE</string>
@@ -103,7 +110,7 @@
     <string name="hint_authors">Author(s)</string>
     <string name="hint_term">Term</string>
     <string name="hint_topic">Topic</string>
-    <string name="hint_topic_1_3">Topic (1-3 Words Only)</string>
+    <string name="hint_topic_1_3">Topic (1 to 3 Words Only)</string>
     <string name="hint_quote">Quote</string>
     <string name="hint_summary">Summary (Be brief - limit 75 chars)</string>
     <string name="hint_hyperlink">Hyperlink</string>
