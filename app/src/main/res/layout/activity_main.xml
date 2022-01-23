@@ -26,7 +26,10 @@
                 android:textSize="12sp"
                 android:textStyle="bold|italic"
                 android:padding="2dp"
-                android:textAlignment="viewStart"/>
+                android:textAlignment="viewStart"
+                tools:layout_editor_absoluteY="18dp"
+                tools:layout_editor_absoluteX="16dp"
+                tools:ignore="TextContrastCheck"/>
     </androidx.appcompat.widget.Toolbar>
 
     <AutoCompleteTextView
@@ -44,7 +47,7 @@
             android:imeOptions="actionDone"
             app:layout_constraintStart_toStartOf="parent"
             android:layout_marginStart="8dp"
-            android:background="#FAFAFA"/>
+            android:background="#FAFAFA" tools:ignore="TouchTargetSizeCheck,TextContrastCheck"/>
     <!--android:imeOptions="actionDone"-->
 
     <EditText
@@ -53,12 +56,11 @@
             android:id="@+id/txtCustom"
             android:paddingStart="5dp"
             android:paddingEnd="5dp"
-
-            android:layout_marginRight="8dp"
+            android:textColorHint="@color/colorGray61"
+            android:layout_marginEnd="8dp"
             app:layout_constraintEnd_toStartOf="@id/cbx_exact"
             app:layout_constraintStart_toEndOf="@+id/listTopic"
             app:layout_constraintTop_toTopOf="@+id/listTopic"
-            android:layout_marginLeft="8dp"
             android:layout_marginStart="8dp"
             android:background="#FAFAFA"
             android:hint="@string/hint_custom_Search"
@@ -66,7 +68,8 @@
             android:imeOptions="actionDone"
             android:cursorVisible="true"
             android:textSize="12sp" android:gravity="center_vertical"
-            app:layout_constraintHorizontal_bias="1.0" android:autofillHints="@string/hint_custom_Search"/>
+            app:layout_constraintHorizontal_bias="1.0" android:autofillHints="@string/hint_custom_Search"
+            tools:ignore="TouchTargetSizeCheck"/>
 
     <CheckBox
             android:layout_width="wrap_content"
@@ -76,7 +79,7 @@
             app:layout_constraintStart_toEndOf="@id/txtCustom"
             app:layout_constraintEnd_toEndOf="parent"
 
-            />
+            tools:ignore="TouchTargetSizeCheck"/>
 
     <AutoCompleteTextView
             android:layout_width="0dp"
@@ -85,16 +88,16 @@
             app:layout_constraintTop_toBottomOf="@+id/listTopic"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            android:textColorHint="@color/colorGray61"
             android:hint="@string/hint_question"
             android:padding="5dp"
             android:textSize="12sp"
             android:inputType="text"
             android:imeOptions="actionDone"
             android:layout_marginTop="8dp"
-            android:layout_marginLeft="8dp"
             android:layout_marginStart="8dp"
-            android:layout_marginRight="8dp" android:layout_marginEnd="8dp"
-            android:id="@+id/listQuestion" android:background="#FAFAFA"/>
+            android:layout_marginEnd="8dp"
+            android:id="@+id/listQuestion" android:background="#FAFAFA" tools:ignore="TouchTargetSizeCheck"/>
 
     <androidx.recyclerview.widget.RecyclerView
             android:layout_width="0dp"

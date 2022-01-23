@@ -29,7 +29,8 @@
                 android:textSize="12sp"
                 android:textStyle="bold|italic"
                 android:padding="2dp"
-                android:textAlignment="viewStart"/>
+                android:textAlignment="viewStart" tools:ignore="TextContrastCheck" tools:layout_editor_absoluteY="18dp"
+                tools:layout_editor_absoluteX="16dp"/>
 
 
     </androidx.appcompat.widget.Toolbar>
@@ -77,9 +78,9 @@
                     android:layout_height="26dp"
                     app:layout_constraintStart_toEndOf="@+id/lbl_View_Type"
                     app:layout_constraintBaseline_toBaselineOf="@+id/lbl_View_Type"
-                    android:layout_marginTop="5dp"
                     android:layout_marginStart="5dp"
-                    android:background="@color/colorWhite"/>
+                    android:background="@color/colorWhite"
+                    tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck"/>
 
             <TextView
                     android:id="@+id/lbl_View_Topic"
@@ -99,6 +100,7 @@
                     android:layout_height="wrap_content"
                     android:background="@color/colorWhite"
                     android:padding="5dp"
+                    android:textColorHint="@color/colorMdDkGray"
                     android:inputType="text"
                     android:imeOptions="actionDone"
                     android:hint="@string/hint_topic_1_3"
@@ -106,7 +108,7 @@
                     android:singleLine="true" android:textSize="12sp"
                     app:layout_constraintStart_toEndOf="@+id/lbl_View_Topic"
                     app:layout_constraintBaseline_toBaselineOf="@+id/lbl_View_Topic"
-                    android:layout_marginStart="5dp"/>
+                    android:layout_marginStart="5dp" tools:ignore="TouchTargetSizeCheck"/>
             <TextView
                     android:id="@+id/lbl_View_Question"
                     android:text="@string/lbl_note_question"
@@ -127,6 +129,7 @@
                     android:background="@color/colorWhite"
                     android:textSize="12sp"
                     android:padding="5dp"
+                    android:textColorHint="@color/colorMdDkGray"
                     android:inputType="textMultiLine"
                     android:imeOptions="actionDone"
                     android:hint="@string/hint_question"
@@ -134,7 +137,7 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     android:layout_marginStart="8dp"
                     android:layout_marginEnd="8dp"
-                    app:layout_constraintTop_toTopOf="@+id/lbl_View_Question"/>
+                    app:layout_constraintTop_toTopOf="@+id/lbl_View_Question" tools:ignore="TouchTargetSizeCheck"/>
             <TextView
                     android:id="@+id/lbl_View_Summary"
                     android:text="@string/lbl_note_summary"
@@ -159,6 +162,7 @@
                     android:textSize="12sp"
                     android:maxLength="75"
                     android:padding="5dp"
+                    android:textColorHint="@color/colorMdDkGray"
                     android:inputType="text"
                     android:imeOptions="actionDone"
                     android:ems="10"
@@ -166,7 +170,7 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintBaseline_toBaselineOf="@+id/lbl_View_Summary"
                     android:layout_marginStart="5dp"
-                    android:layout_marginEnd="5dp"/>
+                    android:layout_marginEnd="5dp" tools:ignore="TouchTargetSizeCheck"/>
 
             <TextView
                     android:id="@+id/lbl_View_Comment"
@@ -190,6 +194,7 @@
                     android:layout_height="wrap_content"
                     android:background="@color/colorWhite"
                     android:padding="5dp"
+                    android:textColorHint="@color/colorMdDkGray"
                     android:textIsSelectable="true"
                     android:inputType="text|textMultiLine"
                     android:imeOptions="actionDone"
@@ -201,7 +206,8 @@
                     app:layout_constraintTop_toBottomOf="@+id/lbl_View_Comment"
                     android:layout_marginTop="5dp"
                     android:layout_marginStart="5dp"
-                    android:layout_marginEnd="5dp" android:autofillHints="@string/hint_comment"/>
+                    android:layout_marginEnd="5dp" android:autofillHints="@string/hint_comment"
+                    tools:ignore="TouchTargetSizeCheck"/>
 
             <TextView
                     android:id="@+id/lbl_View_Hyperlink"
@@ -228,13 +234,14 @@
                     android:background="@color/colorWhite"
                     android:textSize="12sp"
                     android:padding="5dp"
+                    android:textColorHint="@color/colorMdDkGray"
                     android:inputType="text"
                     android:imeOptions="actionDone"
                     app:layout_constraintStart_toEndOf="@+id/lbl_View_Hyperlink"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintBaseline_toBaselineOf="@+id/lbl_View_Hyperlink"
                     android:layout_marginStart="5dp"
-                    android:layout_marginEnd="5dp"/>
+                    android:layout_marginEnd="5dp" tools:ignore="TouchTargetSizeCheck"/>
 
             <TextView
                     android:id="@+id/lbl_View_Quote"
@@ -257,6 +264,7 @@
                     android:layout_height="wrap_content"
                     android:autofillHints="@string/hint_quote"
                     android:padding="5dp"
+                    android:textColorHint="@color/colorMdDkGray"
                     android:inputType="textMultiLine"
                     android:imeOptions="actionDone"
                     android:background="@color/colorWhite"
@@ -265,7 +273,7 @@
                     app:layout_constraintStart_toEndOf="@+id/lbl_View_Quote"
                     app:layout_constraintBaseline_toBaselineOf="@+id/lbl_View_Quote"
                     app:layout_constraintEnd_toEndOf="parent" android:layout_marginStart="5dp"
-                    android:layout_marginEnd="5dp"/>
+                    android:layout_marginEnd="5dp" tools:ignore="TouchTargetSizeCheck"/>
             <TextView
                     android:id="@+id/lbl_View_Term"
                     android:text="@string/lbl_note_term"
@@ -287,6 +295,7 @@
                     android:hint="@string/hint_term"
                     android:autofillHints="@string/hint_term"
                     android:padding="5dp"
+                    android:textColorHint="@color/colorMdDkGray"
                     android:inputType="textMultiLine"
                     android:imeOptions="actionDone"
                     android:background="@color/colorWhite"
@@ -294,7 +303,7 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintBaseline_toBaselineOf="@+id/lbl_View_Term"
                     app:layout_constraintStart_toEndOf="@+id/lbl_View_Term" android:layout_marginStart="5dp"
-                    android:layout_marginEnd="5dp"/>
+                    android:layout_marginEnd="5dp" tools:ignore="TouchTargetSizeCheck"/>
 
             <Button android:layout_width="wrap_content"
                     android:layout_height="40dp"
@@ -303,7 +312,7 @@
                     android:textSize="12sp"
                     app:layout_constraintTop_toBottomOf="@id/viewTerm"
                     app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintRight_toRightOf="parent"/>
+                    app:layout_constraintRight_toRightOf="parent" tools:ignore="TouchTargetSizeCheck"/>
 
             <TableLayout
                     android:id="@+id/table_files"
@@ -345,13 +354,15 @@
                     android:imeOptions="actionDone"
                     android:hint="@string/hint_source"
                     android:padding="5dp"
+                    android:textColorHint="@color/colorMdDkGray"
                     android:background="@color/colorWhite"
                     app:layout_constraintStart_toEndOf="@id/lbl_View_Source"
                     android:layout_marginStart="5dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     android:textSize="12sp"
                     android:layout_marginEnd="5dp"
-                    app:layout_constraintBaseline_toBaselineOf="@+id/lbl_View_Source"/>
+                    app:layout_constraintBaseline_toBaselineOf="@+id/lbl_View_Source"
+                    tools:ignore="TouchTargetSizeCheck"/>
             <TextView
                     android:id="@+id/lbl_View_Authors"
                     android:text="@string/lbl_note_Authors"
@@ -372,6 +383,7 @@
                     android:layout_height="wrap_content"
                     android:hint="@string/hint_authors"
                     android:padding="5dp"
+                    android:textColorHint="@color/colorMdDkGray"
                     android:background="@color/colorWhite"
                     android:textSize="12sp"
                     app:layout_constraintStart_toEndOf="@id/lbl_View_Authors"
@@ -398,6 +410,7 @@
                     android:layout_height="wrap_content"
                     android:background="@color/colorWhite"
                     android:padding="5dp"
+                    android:textColorHint="@color/colorMdDkGray"
                     android:inputType="text"
                     android:digits="@string/allowDateCharacters"
                     android:imeOptions="actionDone"
@@ -407,7 +420,7 @@
                     android:singleLine="true" android:textSize="12sp"
                     app:layout_constraintStart_toEndOf="@+id/lbl_View_Date"
                     app:layout_constraintBaseline_toBaselineOf="@+id/lbl_View_Date"
-                    android:layout_marginStart="5dp" tools:ignore="TextFields"/>
+                    android:layout_marginStart="5dp" tools:ignore="TextFields,TouchTargetSizeCheck"/>
             <TextView
                     android:id="@+id/lbl_View_Volume"
                     android:text="@string/lbl_note_volume"
@@ -426,6 +439,7 @@
                     android:layout_width="100dp"
                     android:layout_height="wrap_content"
                     android:background="@color/colorWhite"
+                    android:textColorHint="@color/colorMdDkGray"
                     android:inputType="text"
                     android:imeOptions="actionDone"
                     android:padding="5dp"
@@ -435,7 +449,7 @@
                     android:singleLine="true" android:textSize="12sp"
                     app:layout_constraintStart_toEndOf="@+id/lbl_View_Volume"
                     app:layout_constraintBaseline_toBaselineOf="@+id/lbl_View_Date"
-                    android:layout_marginStart="5dp"/>
+                    android:layout_marginStart="5dp" tools:ignore="TouchTargetSizeCheck"/>
             <TextView
                     android:id="@+id/lbl_View_PgsParas"
                     android:text="@string/lbl_note_pgs_paras"
@@ -455,6 +469,7 @@
                     android:layout_height="wrap_content"
                     android:background="@color/colorWhite"
                     android:padding="5dp"
+                    android:textColorHint="@color/colorMdDkGray"
                     android:inputType="text"
                     android:imeOptions="actionDone"
                     android:hint="@string/hint_pgs_paras"
@@ -463,7 +478,7 @@
                     android:singleLine="true" android:textSize="12sp"
                     app:layout_constraintStart_toEndOf="@+id/lbl_View_PgsParas"
                     app:layout_constraintBaseline_toBaselineOf="@+id/lbl_View_PgsParas"
-                    android:layout_marginStart="5dp"/>
+                    android:layout_marginStart="5dp" tools:ignore="TouchTargetSizeCheck"/>
             <TextView
                     android:id="@+id/lbl_View_Edition"
                     android:text="@string/lbl_note_edition"
@@ -485,13 +500,14 @@
                     android:inputType="text"
                     android:imeOptions="actionDone"
                     android:padding="5dp"
+                    android:textColorHint="@color/colorMdDkGray"
                     android:hint="@string/hint_edition"
                     android:autofillHints="@string/hint_edition"
                     android:ems="10"
                     android:singleLine="true" android:textSize="12sp"
                     app:layout_constraintStart_toEndOf="@+id/lbl_View_Edition"
                     app:layout_constraintBaseline_toBaselineOf="@+id/lbl_View_PgsParas"
-                    android:layout_marginStart="5dp"/>
+                    android:layout_marginStart="5dp" tools:ignore="TouchTargetSizeCheck"/>
             <TextView
                     android:id="@+id/lbl_View_TimeStamp"
                     android:text="@string/lbl_note_timestamp"
@@ -511,6 +527,7 @@
                     android:layout_height="wrap_content"
                     android:background="@color/colorWhite"
                     android:padding="5dp"
+                    android:textColorHint="@color/colorMdDkGray"
                     android:inputType="text"
                     android:imeOptions="actionDone"
                     android:hint="@string/hint_timestamp"
@@ -519,7 +536,7 @@
                     android:singleLine="true" android:textSize="12sp"
                     app:layout_constraintStart_toEndOf="@+id/lbl_View_TimeStamp"
                     app:layout_constraintBaseline_toBaselineOf="@+id/lbl_View_TimeStamp"
-                    android:layout_marginStart="5dp"/>
+                    android:layout_marginStart="5dp" tools:ignore="TouchTargetSizeCheck"/>
             <TextView
                     android:id="@+id/lbl_View_Issue"
                     android:text="@string/lbl_note_issue"
@@ -539,6 +556,7 @@
                     android:layout_height="wrap_content"
                     android:background="@color/colorWhite"
                     android:padding="5dp"
+                    android:textColorHint="@color/colorMdDkGray"
                     android:inputType="text"
                     android:imeOptions="actionDone"
                     android:hint="@string/hint_issue"
@@ -547,7 +565,7 @@
                     android:singleLine="true" android:textSize="12sp"
                     app:layout_constraintStart_toEndOf="@+id/lbl_View_Issue"
                     app:layout_constraintBaseline_toBaselineOf="@+id/lbl_View_Issue"
-                    android:layout_marginStart="5dp"/>
+                    android:layout_marginStart="5dp" tools:ignore="TouchTargetSizeCheck"/>
             <TableLayout
                     android:id="@+id/table_authors"
                     android:layout_width="wrap_content"

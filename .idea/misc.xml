@@ -1,5 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="DesignSurface">
+    <option name="filePathToZoomLevelMap">
+      <map>
+        <entry key="..\:/Users/scott/IdeaProjects/RDB-Phone/app/src/main/res/layout/activity_add_note.xml" value="0.35260416666666666" />
+        <entry key="..\:/Users/scott/IdeaProjects/RDB-Phone/app/src/main/res/layout/activity_edit_note.xml" value="0.35260416666666666" />
+        <entry key="..\:/Users/scott/IdeaProjects/RDB-Phone/app/src/main/res/layout/activity_main.xml" value="0.35260416666666666" />
+        <entry key="..\:/Users/scott/IdeaProjects/RDB-Phone/app/src/main/res/layout/activity_main_master.xml" value="0.19939577039274925" />
+        <entry key="..\:/Users/scott/IdeaProjects/RDB-Phone/app/src/main/res/layout/activity_view_note.xml" value="0.35260416666666666" />
+        <entry key="..\:/Users/scott/IdeaProjects/RDB-Phone/app/src/main/res/layout/custom_database_list.xml" value="0.35260416666666666" />
+        <entry key="..\:/Users/scott/IdeaProjects/RDB-Phone/app/src/main/res/layout/custom_notes_list.xml" value="0.35260416666666666" />
+      </map>
+    </option>
+  </component>
   <component name="NullableNotNullManager">
     <option name="myDefaultNullable" value="androidx.annotation.Nullable" />
     <option name="myDefaultNotNull" value="androidx.annotation.NonNull" />

@@ -31,6 +31,7 @@
                 app:layout_constraintEnd_toStartOf="@id/appName"
                 android:layout_marginTop="8dp"
                 android:layout_marginStart="8dp"
+                tools:ignore="ContentDescription"
                 tools:layout_editor_absoluteX="378dp"/>
 
         <TextView
@@ -39,7 +40,7 @@
                   android:layout_height="40dp"
                   android:text="@string/app_name"
                   android:textSize="24sp"
-                android:gravity="center|left"
+                android:gravity="center|start"
                   android:textColor="@color/colorDkGray"
                   android:textStyle="bold|italic"
                   app:layout_constraintTop_toTopOf="parent"
@@ -89,44 +90,45 @@
             android:layout_marginStart="8dp"
             android:layout_marginEnd="8dp"/>
 
-    <TextView
-            android:id="@+id/how_to_enter_database"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/master_how_to_enter_db"
-            android:textSize="12sp"
-            android:textColor="@color/colorDkGray"
-            android:padding="5dp"
-            app:layout_constraintTop_toBottomOf="@id/label_create"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginTop="8dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginEnd="8dp"
-            app:layout_constraintHorizontal_bias="1.0"/>
+        <TextView
+                android:id="@+id/how_to_enter_database"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/master_how_to_enter_db"
+                android:textSize="12sp"
+                android:textColor="@color/colorGray61"
+                android:padding="5dp"
+                app:layout_constraintTop_toBottomOf="@id/label_create"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginTop="8dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                app:layout_constraintHorizontal_bias="1.0"/>
 
-    <EditText
-            android:id="@+id/database_name"
-            android:layout_width="0dp"
-            android:layout_height="25dp"
-            android:inputType="text"
-            android:maxLength="28"
-            android:textColorHint="@color/colorGray"
-            android:hint="@string/master_hint"
-            android:textColor="@color/colorBlack"
-            android:textSize="12sp"
-            android:digits="@string/allowCharacters"
-            android:padding="5dp"
-            android:imeOptions="actionDone"
-            android:cursorVisible="true"
-            app:layout_constraintTop_toBottomOf="@id/how_to_enter_database"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/addDatabase"
-            android:layout_marginTop="8dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginEnd="8dp"
-            android:background="@color/colorWhite"
-            app:layout_constraintHorizontal_bias="1.0"/>
+        <EditText
+                android:id="@+id/database_name"
+                android:layout_width="0dp"
+                android:layout_height="25dp"
+                android:inputType="text"
+                android:maxLength="28"
+                android:importantForAutofill="no"
+                android:textColorHint="@color/colorMdDkGray"
+                android:hint="@string/master_hint"
+                android:textColor="@color/colorBlack"
+                android:textSize="12sp"
+                android:digits="@string/allowCharacters"
+                android:padding="5dp"
+                android:imeOptions="actionDone"
+                android:cursorVisible="true"
+                app:layout_constraintTop_toBottomOf="@id/how_to_enter_database"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/addDatabase"
+                android:layout_marginTop="8dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                android:background="@color/colorWhite"
+                app:layout_constraintHorizontal_bias="1.0" tools:ignore="TouchTargetSizeCheck"/>
 
     <Button
             android:id="@+id/addDatabase"
@@ -169,7 +171,7 @@
             android:layout_height="wrap_content"
             android:text="@string/master_how_to_import_db"
             android:textSize="12sp"
-            android:textColor="@color/colorDkGray"
+            android:textColor="@color/colorGray61"
             android:padding="5dp"
             app:layout_constraintTop_toBottomOf="@id/label_import"
             app:layout_constraintStart_toStartOf="parent"
@@ -180,16 +182,16 @@
             android:background="@color/colorLtGray"
             app:layout_constraintHorizontal_bias="1.0"/>
 
-    <Button
-            android:id="@+id/importDatabase"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/master_import_db"
-            app:layout_constraintTop_toBottomOf="@id/label_import"
-            app:layout_constraintStart_toEndOf="@id/how_to_import_database"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginEnd="8dp"
-            android:layout_marginTop="8dp"/>
+        <Button
+                android:id="@+id/importDatabase"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/master_import_db"
+                app:layout_constraintTop_toBottomOf="@id/label_import"
+                app:layout_constraintStart_toEndOf="@id/how_to_import_database"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginEnd="8dp"
+                android:layout_marginTop="8dp" tools:ignore="DuplicateSpeakableTextCheck"/>
 
     <View
             android:id="@+id/divider2"
@@ -221,7 +223,7 @@
             android:layout_height="wrap_content"
             android:text="@string/master_how_to_select_db"
             android:textSize="12sp"
-            android:textColor="@color/colorDkGray"
+            android:textColor="@color/colorGray61"
             android:padding="5dp"
             app:layout_constraintTop_toBottomOf="@id/label_select"
             app:layout_constraintStart_toStartOf="parent"

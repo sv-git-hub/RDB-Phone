@@ -11,4 +11,7 @@
     <color name="colorDkGray">#707078</color>
     <color name="colorRed">#CE0018</color>
     <color name="colorBlue">#3336EE</color>
+    <color name="colorMdDkGray">#757575</color>
+    <color name="colorGray61">#616161</color>
+    <color name="colorSkyBlue">#0277BD</color>
 </resources>
