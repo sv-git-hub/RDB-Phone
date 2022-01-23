@@ -3,9 +3,7 @@ package com.mistywillow.researchdb;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
-import android.database.Cursor;
 import android.net.Uri;
-import android.provider.OpenableColumns;
 import android.view.*;
 import android.view.inputmethod.EditorInfo;
 import android.widget.*;
@@ -307,19 +305,6 @@ public class AddNote extends AppCompatActivity {
         if(!fileURIs.containsKey(filePath)){
             fileURIs.put(filePath,file);
         }
-    }
-
-    private String getFileNameFromURI(Uri dbURI){
-        String temp;
-        Cursor returnCursor = this.getContentResolver().query(dbURI, new String[]{
-                OpenableColumns.DISPLAY_NAME }, null, null, null);
-        /* Get the column indexes of the data in the Cursor, move to the first row in the Cursor, get the data,
-         * and display it.*/
-        int nameIndex = returnCursor.getColumnIndex(OpenableColumns.DISPLAY_NAME);
-        returnCursor.moveToFirst();
-        temp = (returnCursor.getString(nameIndex));
-        returnCursor.close();
-        return temp;
     }
 
     private void addNewNote(){
